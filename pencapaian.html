@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Belajar - Pikir Kritis</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-brand">
+                <svg class="logo-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 4L4 10V22L16 28L28 22V10L16 4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                    <path d="M16 16L16 28" stroke="currentColor" stroke-width="2"/>
+                    <path d="M4 10L16 16L28 10" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span class="brand-text">Pikir Kritis</span>
+            </div>
+            <div class="nav-actions">
+                <a href="index.html" class="btn btn-secondary">Kembali ke Beranda</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="dashboard">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2 class="sidebar-title">Menu Dashboard</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#overview" class="sidebar-link active">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+                        <rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+                        <rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+                        <rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span>Ringkasan</span>
+                </a>
+                <a href="materi.html" class="sidebar-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 19.5C4 18.837 4.26339 18.2011 4.73223 17.7322C5.20107 17.2634 5.83696 17 6.5 17H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M6.5 2H20V22H6.5C5.83696 22 5.20107 21.7366 4.73223 21.2678C4.26339 20.7989 4 20.163 4 19.5V4.5C4 3.83696 4.26339 3.20107 4.73223 2.73223C5.20107 2.26339 5.83696 2 6.5 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Materi Pelajaran</span>
+                </a>
+                <a href="progress.html" class="sidebar-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22 12H18L15 21L9 3L6 12H2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Progress Belajar</span>
+                </a>
+                <a href="pencapaian.html" class="sidebar-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 15C15.866 15 19 11.866 19 8C19 4.13401 15.866 1 12 1C8.13401 1 5 4.13401 5 8C5 11.866 8.13401 15 12 15Z" stroke="currentColor" stroke-width="2"/>
+                        <path d="M8.21 13.89L7 23L12 20L17 23L15.79 13.88" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Pencapaian</span>
+                </a>
+            </nav>
+        </aside>
+        <section class="dashboard-content">
+            <h1 class="dashboard-title">Pencapaian Belajar</h1>
+            <p class="dashboard-description">Lihat pencapaian dan lencana yang telah kamu raih selama belajar berpikir kritis.</p>
+            <div class="achievements-grid">
+                <div class="achievement-card">
+                    <div class="achievement-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 15C15.866 15 19 11.866 19 8C19 4.13401 15.866 1 12 1C8.13401 1 5 4.13401 5 8C5 11.866 8.13401 15 12 15Z" stroke="#4A90E2" stroke-width="2"/>
+                            <path d="M8.21 13.89L7 23L12 20L17 23L15.79 13.88" stroke="#4A90E2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="achievement-title">Pemula Berpikir Kritis</h3>
+                    <p class="achievement-description">Menyelesaikan modul pengenalan berpikir kritis.</p>
+                </div>
+                <!-- Tambahkan lebih banyak kartu pencapaian di sini -->
+            </div>

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Belajar - Pikir Kritis</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-brand">
+                <svg class="logo-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 4L4 10V22L16 28L28 22V10L16 4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                    <path d="M16 16L16 28" stroke="currentColor" stroke-width="2"/>
+                    <path d="M4 10L16 16L28 10" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span class="brand-text">Pikir Kritis</span>
+            </div>
+            <div class="nav-actions">
+                <a href="index.html" class="btn btn-secondary">Kembali ke Beranda</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="dashboard">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2 class="sidebar-title">Menu Dashboard</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#overview" class="sidebar-link active">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+                        <rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+                        <rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+                        <rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span>Ringkasan</span>
+                </a>
+                <a href="materi.html" class="sidebar-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 19.5C4 18.837 4.26339 18.2011 4.73223 17.7322C5.20107 17.2634 5.83696 17 6.5 17H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M6.5 2H20V22H6.5C5.83696 22 5.20107 21.7366 4.73223 21.2678C4.26339 20.7989 4 20.163 4 19.5V4.5C4 3.83696 4.26339 3.20107 4.73223 2.73223C5.20107 2.26339 5.83696 2 6.5 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Materi Pelajaran</span>
+                </a>
+                <a href="progress.html" class="sidebar-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22 12H18L15 21L9 3L6 12H2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Progress Belajar</span>
+                </a>
+                <a href="pencapaian.html" class="sidebar-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 15C15.866 15 19 11.866 19 8C19 4.13401 15.866 1 12 1C8.13401 1 5 4.13401 5 8C5 11.866 8.13401 15 12 15Z" stroke="currentColor" stroke-width="2"/>
+                        <path d="M8.21 13.89L7 23L12 20L17 23L15.79 13.88" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Pencapaian</span>
+                </a>
+            </nav>
+        </aside>
+
+        <div class="main-content">
+            <section id="overview" class="dashboard-section active">
+                <div class="section-header">
+                    <h1 class="page-title">Selamat Datang di Dashboard Belajar</h1>
+                    <p class="page-subtitle">Lanjutkan perjalanan belajar berpikir kritis Anda</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon stat-icon-blue">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 19.5C4 18.837 4.26339 18.2011 4.73223 17.7322C5.20107 17.2634 5.83696 17 6.5 17H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M6.5 2H20V22H6.5C5.83696 22 5.20107 21.7366 4.73223 21.2678C4.26339 20.7989 4 20.163 4 19.5V4.5C4 3.83696 4.26339 3.20107 4.73223 2.73223C5.20107 2.26339 5.83696 2 6.5 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <h3 class="stat-value">6</h3>
+                            <p class="stat-label">Total Materi</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon stat-icon-green">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.7088 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18455 2.99721 7.13631 4.39828 5.49706C5.79935 3.85781 7.69279 2.71537 9.79619 2.24013C11.8996 1.76489 14.1003 1.98232 16.07 2.86" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <h3 class="stat-value">0</h3>
+                            <p class="stat-label">Materi Selesai</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon stat-icon-orange">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <h3 class="stat-value">0 jam</h3>
+                            <p class="stat-label">Waktu Belajar</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon stat-icon-purple">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 15C15.866 15 19 11.866 19 8C19 4.13401 15.866 1 12 1C8.13401 1 5 4.13401 5 8C5 11.866 8.13401 15 12 15Z" stroke="currentColor" stroke-width="2"/>
+                                <path d="M8.21 13.89L7 23L12 20L17 23L15.79 13.88" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <h3 class="stat-value">0%</h3>
+                            <p class="stat-label">Progress Keseluruhan</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="continue-learning">
+                    <h2 class="section-title">Lanjutkan Belajar</h2>
+                    <div class="current-lesson-card">
+                        <div class="lesson-info">
+                            <span class="lesson-badge">Materi 01</span>
+                            <h3 class="lesson-title">Pengantar Berpikir Kritis</h3>
+                            <p class="lesson-description">Memahami dasar-dasar berpikir kritis, mengapa penting, dan bagaimana memulainya.</p>
+                        </div>
+                        <div class="lesson-action">
+                            <button class="btn btn-primary btn-start">Mulai Belajar</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="lessons" class="dashboard-section">
+                <div class="section-header">
+                    <h1 class="page-title">Materi Pelajaran</h1>
+                    <p class="page-subtitle">Pelajari semua materi berpikir kritis secara bertahap</p>
+                </div>
+
+                <div class="lessons-grid">
+                    <div class="lesson-card" data-lesson="1">
+                        <div class="lesson-header">
+                            <span class="lesson-number">01</span>
+                            <span class="lesson-status lesson-status-locked">Belum Dimulai</span>
+                        </div>
+                        <h3 class="lesson-card-title">Pengantar Berpikir Kritis</h3>
+                        <p class="lesson-card-description">Memahami dasar-dasar berpikir kritis, mengapa penting, dan bagaimana memulainya. Pelajari perbedaan antara opini dan fakta.</p>
+                        <div class="lesson-meta">
+                            <div class="lesson-duration">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                                <span>45 menit</span>
+                            </div>
+                        </div>
+                        <div class="lesson-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%"></div>
+                            </div>
+                            <span class="progress-text">0% selesai</span>
+                        </div>
+                        <button class="btn btn-primary btn-lesson">Mulai Materi</button>
+                    </div>
+
+                    <div class="lesson-card" data-lesson="2">
+                        <div class="lesson-header">
+                            <span class="lesson-number">02</span>
+                            <span class="lesson-status lesson-status-locked">Terkunci</span>
+                        </div>
+                        <h3 class="lesson-card-title">Identifikasi Argumen</h3>
+                        <p class="lesson-card-description">Belajar mengenali struktur argumen, premis, dan kesimpulan. Praktik menganalisis berbagai jenis argumen dalam konteks nyata.</p>
+                        <div class="lesson-meta">
+                            <div class="lesson-duration">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                                <span>60 menit</span>
+                            </div>
+                        </div>
+                        <div class="lesson-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%"></div>
+                            </div>
+                            <span class="progress-text">0% selesai</span>
+                        </div>
+                        <button class="btn btn-secondary btn-lesson" disabled>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="5" y="11" width="14" height="10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M7 11V7C7 5.67392 7.52678 4.40215 8.46447 3.46447C9.40215 2.52678 10.6739 2 12 2C13.3261 2 14.5979 2.52678 15.5355 3.46447C16.4732 4.40215 17 5.67392 17 7V11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Terkunci
+                        </button>
+                    </div>
+
+                    <div class="lesson-card" data-lesson="3">
+                        <div class="lesson-header">
+                            <span class="lesson-number">03</span>
+                            <span class="lesson-status lesson-status-locked">Terkunci</span>
+                        </div>
+                        <h3 class="lesson-card-title">Logical Fallacies</h3>
+                        <p class="lesson-card-description">Kenali kesalahan logika umum seperti ad hominem, strawman, dan slippery slope. Hindari jebakan berpikir yang keliru.</p>
+                        <div class="lesson-meta">
+                            <div class="lesson-duration">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                                <span>55 menit</span>
+                            </div>
+                        </div>
+                        <div class="lesson-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%"></div>
+                            </div>
+                            <span class="progress-text">0% selesai</span>
+                        </div>
+                        <button class="btn btn-secondary btn-lesson" disabled>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="5" y="11" width="14" height="10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M7 11V7C7 5.67392 7.52678 4.40215 8.46447 3.46447C9.40215 2.52678 10.6739 2 12 2C13.3261 2 14.5979 2.52678 15.5355 3.46447C16.4732 4.40215 17 5.67392 17 7V11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Terkunci
+                        </button>
+                    </div>
+
+                    <div class="lesson-card" data-lesson="4">
+                        <div class="lesson-header">
+                            <span class="lesson-number">04</span>
+                            <span class="lesson-status lesson-status-locked">Terkunci</span>
+                        </div>
+                        <h3 class="lesson-card-title">Cognitive Biases</h3>
+                        <p class="lesson-card-description">Pahami bias kognitif yang mempengaruhi keputusan kita, dari confirmation bias hingga anchoring effect.</p>
+                        <div class="lesson-meta">
+                            <div class="lesson-duration">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                                <span>50 menit</span>
+                            </div>
+                        </div>
+                        <div class="lesson-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%"></div>
+                            </div>
+                            <span class="progress-text">0% selesai</span>
+                        </div>
+                        <button class="btn btn-secondary btn-lesson" disabled>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="5" y="11" width="14" height="10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M7 11V7C7 5.67392 7.52678 4.40215 8.46447 3.46447C9.40215 2.52678 10.6739 2 12 2C13.3261 2 14.5979 2.52678 15.5355 3.46447C16.4732 4.40215 17 5.67392 17 7V11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Terkunci
+                        </button>
+                    </div>
+
+                    <div class="lesson-card" data-lesson="5">
+                        <div class="lesson-header">
+                            <span class="lesson-number">05</span>
+                            <span class="lesson-status lesson-status-locked">Terkunci</span>
+                        </div>
+                        <h3 class="lesson-card-title">Evaluasi Sumber Informasi</h3>
+                        <p class="lesson-card-description">Teknik memverifikasi kredibilitas sumber, membedakan fakta dari misinformasi, dan media literacy di era digital.</p>
+                        <div class="lesson-meta">
+                            <div class="lesson-duration">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                                <span>65 menit</span>
+                            </div>
+                        </div>
+                        <div class="lesson-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%"></div>
+                            </div>
+                            <span class="progress-text">0% selesai</span>
+                        </div>
+                        <button class="btn btn-secondary btn-lesson" disabled>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="5" y="11" width="14" height="10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M7 11V7C7 5.67392 7.52678 4.40215 8.46447 3.46447C9.40215 2.52678 10.6739 2 12 2C13.3261 2 14.5979 2.52678 15.5355 3.46447C16.4732 4.40215 17 5.67392 17 7V11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Terkunci
+                        </button>
+                    </div>
+
+                    <div class="lesson-card" data-lesson="6">
+                        <div class="lesson-header">
+                            <span class="lesson-number">06</span>
+                            <span class="lesson-status lesson-status-locked">Terkunci</span>
+                        </div>
+                        <h3 class="lesson-card-title">Pengambilan Keputusan Rasional</h3>
+                        <p class="lesson-card-description">Framework untuk membuat keputusan yang lebih baik dengan mempertimbangkan bukti, risiko, dan konsekuensi.</p>
+                        <div class="lesson-meta">
+                            <div class="lesson-duration">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                                <span>70 menit</span>
+                            </div>
+                        </div>
+                        <div class="lesson-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%"></div>
+                            </div>
+                            <span class="progress-text">0% selesai</span>
+                        </div>
+                        <button class="btn btn-secondary btn-lesson" disabled>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="5" y="11" width="14" height="10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M7 11V7C7 5.67392 7.52678 4.40215 8.46447 3.46447C9.40215 2.52678 10.6739 2 12 2C13.3261 2 14.5979 2.52678 15.5355 3.46447C16.4732 4.40215 17 5.67392 17 7V11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Terkunci
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="progress" class="dashboard-section">
+                <div class="section-header">
+                    <h1 class="page-title">Progress Belajar</h1>
+                    <p class="page-subtitle">Pantau perkembangan pembelajaran Anda</p>
+                </div>
+
+                <div class="progress-overview">
+                    <div class="progress-card">
+                        <h3 class="progress-card-title">Progress Keseluruhan</h3>
+                        <div class="circular-progress">
+                            <svg class="progress-ring" width="200" height="200">
+                                <circle class="progress-ring-circle" stroke="#e5e7eb" stroke-width="12" fill="transparent" r="90" cx="100" cy="100"/>
+                                <circle class="progress-ring-circle progress-ring-fill" stroke="#2563eb" stroke-width="12" fill="transparent" r="90" cx="100" cy="100" style="stroke-dasharray: 565.48; stroke-dashoffset: 565.48;"/>
+                            </svg>
+                            <div class="progress-percentage">
+                                <span class="percentage-value">0</span>
+                                <span class="percentage-symbol">%</span>
+                            </div>
+                        </div>
+                        <p class="progress-text">0 dari 6 materi selesai</p>
+                    </div>
+
+                    <div class="progress-list">
+                        <h3 class="progress-list-title">Detail Progress per Materi</h3>
+                        <div class="progress-items">
+                            <div class="progress-item">
+                                <div class="progress-item-header">
+                                    <span class="progress-item-title">Pengantar Berpikir Kritis</span>
+                                    <span class="progress-item-percentage">0%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="progress-item">
+                                <div class="progress-item-header">
+                                    <span class="progress-item-title">Identifikasi Argumen</span>
+                                    <span class="progress-item-percentage">0%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="progress-item">
+                                <div class="progress-item-header">
+                                    <span class="progress-item-title">Logical Fallacies</span>
+                                    <span class="progress-item-percentage">0%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="progress-item">
+                                <div class="progress-item-header">
+                                    <span class="progress-item-title">Cognitive Biases</span>
+                                    <span class="progress-item-percentage">0%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="progress-item">
+                                <div class="progress-item-header">
+                                    <span class="progress-item-title">Evaluasi Sumber Informasi</span>
+                                    <span class="progress-item-percentage">0%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="progress-item">
+                                <div class="progress-item-header">
+                                    <span class="progress-item-title">Pengambilan Keputusan Rasional</span>
+                                    <span class="progress-item-percentage">0%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="achievements" class="dashboard-section">
+                <div class="section-header">
+                    <h1 class="page-title">Pencapaian</h1>
+                    <p class="page-subtitle">Kumpulkan lencana dan raih milestone pembelajaran</p>
+                </div>
+
+                <div class="achievements-grid">
+                    <div class="achievement-card achievement-locked">
+                        <div class="achievement-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <h3 class="achievement-title">Langkah Pertama</h3>
+                        <p class="achievement-description">Selesaikan materi pertama</p>
+                        <span class="achievement-status">Terkunci</span>
+                    </div>
+
+                    <div class="achievement-card achievement-locked">
+                        <div class="achievement-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 15C15.866 15 19 11.866 19 8C19 4.13401 15.866 1 12 1C8.13401 1 5 4.13401 5 8C5 11.866 8.13401 15 12 15Z" stroke="currentColor" stroke-width="2"/>
+                                <path d="M8.21 13.89L7 23L12 20L17 23L15.79 13.88" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <h3 class="achievement-title">Setengah Perjalanan</h3>
+                        <p class="achievement-description">Selesaikan 3 materi</p>
+                        <span class="achievement-status">Terkunci</span>
+                    </div>
+
+                    <div class="achievement-card achievement-locked">
+                        <div class="achievement-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.7088 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18455 2.99721 7.13631 4.39828 5.49706C5.79935 3.85781 7.69279 2.71537 9.79619 2.24013C11.8996 1.76489 14.1003 1.98232 16.07 2.86" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <h3 class="achievement-title">Pemikir Kritis</h3>
+                        <p class="achievement-description">Selesaikan semua materi</p>
+                        <span class="achievement-status">Terkunci</span>
+                    </div>
+
+                    <div class="achievement-card achievement-locked">
+                        <div class="achievement-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <h3 class="achievement-title">Pembelajar Konsisten</h3>
+                        <p class="achievement-description">Belajar 7 hari berturut-turut</p>
+                        <span class="achievement-status">Terkunci</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>
