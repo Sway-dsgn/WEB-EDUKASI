@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materi Pelajaran - Pikir Kritis</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-brand">
+                <svg class="logo-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 4L4 10V22L16 28L28 22V10L16 4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                    <path d="M16 16L16 28" stroke="currentColor" stroke-width="2"/>
+                    <path d="M4 10L16 16L28 10" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span class="brand-text">Pikir Kritis</span>
+            </div>
+            <div class="nav-actions">
+                <a href="dashboard.html" class="btn btn-secondary">Kembali ke Dashboard</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="lesson-container">
+        <div class="lesson-sidebar">
+            <div class="lesson-nav-header">
+                <h3 class="lesson-nav-title">Materi Pelajaran</h3>
+            </div>
+            <nav class="lesson-nav">
+                <a href="materi.html" class="lesson-nav-item active" data-lesson="1">
+                    <span class="lesson-nav-number">01</span>
+                    <span class="lesson-nav-text">Pengantar Berpikir Kritis</span>
+                </a>
+                <a href="materi2.html" class="lesson-nav-item" data-lesson="2">
+                    <span class="lesson-nav-number">02</span>
+                    <span class="lesson-nav-text">Identifikasi Argumen</span>
+                </a>
+                <a href="materi3.html" class="lesson-nav-item" data-lesson="3">
+                    <span class="lesson-nav-number">03</span>
+                    <span class="lesson-nav-text">Logical Fallacies</span>
+                </a>
+                <a href="materi4.html" class="lesson-nav-item" data-lesson="4">
+                    <span class="lesson-nav-number">04</span>
+                    <span class="lesson-nav-text">Cognitive Biases</span>
+                </a>
+                <a href="materi5.html" class="lesson-nav-item" data-lesson="5">
+                    <span class="lesson-nav-number">05</span>
+                    <span class="lesson-nav-text">Evaluasi Sumber</span>
+                </a>
+                <a href="materi6.html" class="lesson-nav-item" data-lesson="6">
+                    <span class="lesson-nav-number">06</span>
+                    <span class="lesson-nav-text">Keputusan Rasional</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="lesson-content">
+            <div class="lesson-header">
+                <div class="lesson-progress-bar">
+                    <div class="progress-fill" style="width: 0%"></div>
+                </div>
+                <span class="lesson-progress-text">0% selesai</span>
+            </div>
+            
+              <article class="lesson" id="lesson-2" style="display: none;">
+                <h1 class="lesson-title">Identifikasi Argumen</h1>
+                <div class="lesson-meta">
+                    <span class="lesson-duration">60 menit</span>
+                    <span class="lesson-difficulty">Menengah</span>
+                </div>
+
+                <section class="lesson-section">
+                    <h2 class="section-heading">Struktur Dasar Argumen</h2>
+                    <p class="lesson-text">Setiap argumen terdiri dari dua bagian utama: Premis dan Kesimpulan.</p>
+                    <p class="lesson-text"><strong>Premis</strong> adalah pernyataan yang memberikan alasan atau bukti. <strong>Kesimpulan</strong> adalah pernyataan yang ditarik berdasarkan premis.</p>
+                </section>
+
+                <section class="lesson-section">
+                    <h2 class="section-heading">Contoh Argumen</h2>
+                    <div class="lesson-example">
+                        <p class="example-text"><strong>Premis 1:</strong> Semua manusia adalah makhluk hidup.</p>
+                        <p class="example-text"><strong>Premis 2:</strong> Saya adalah manusia.</p>
+                        <p class="example-text"><strong>Kesimpulan:</strong> Oleh karena itu, saya adalah makhluk hidup.</p>
+                    </div>
+                </section>
+
+                <section class="lesson-section">
+                    <h2 class="section-heading">Jenis-jenis Argumen</h2>
+                    <div class="lesson-cards">
+                        <div class="lesson-card">
+                            <h3 class="card-title">Argumen Deduktif</h3>
+                            <p class="card-text">Dari hal umum ke hal khusus. Jika premis benar, kesimpulan pasti benar.</p>
+                        </div>
+                        <div class="lesson-card">
+                            <h3 class="card-title">Argumen Induktif</h3>
+                            <p class="card-text">Dari hal khusus ke hal umum. Kesimpulan mungkin benar berdasarkan bukti.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="lesson-navigation">
+                    <button class="btn btn-secondary" id="prev-btn-2">Materi Sebelumnya</button>
+                    <button class="btn btn-primary" id="next-btn-2">Materi Berikutnya</button>
+                </div>
+            </article>
+

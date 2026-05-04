@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Belajar - Pikir Kritis</title>
+    <title>Materi Pelajaran - Pikir Kritis</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+    <script src="materi.js"></script>
 </head>
 <body>
     <header class="header">
@@ -19,45 +19,372 @@
                 <span class="brand-text">Pikir Kritis</span>
             </div>
             <div class="nav-actions">
-                <a href="index.html" class="btn btn-secondary">Kembali ke Beranda</a>
+                <a href="dashboard.html" class="btn btn-secondary">Kembali ke Dashboard</a>
             </div>
         </nav>
     </header>
 
-    <main class="dashboard">
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <h2 class="sidebar-title">Menu Dashboard</h2>
+    <main class="lesson-container">
+        <div class="lesson-sidebar">
+            <div class="lesson-nav-header">
+                <h3 class="lesson-nav-title">Materi Pelajaran</h3>
             </div>
-            <nav class="sidebar-nav">
-                <a href="#overview" class="sidebar-link active">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/>
-                        <rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/>
-                        <rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/>
-                        <rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/>
-                    </svg>
-                    <span>Ringkasan</span>
+            <nav class="lesson-nav">
+                <a href="materi.html" class="lesson-nav-item active" data-lesson="1">
+                    <span class="lesson-nav-number">01</span>
+                    <span class="lesson-nav-text">Pengantar Berpikir Kritis</span>
                 </a>
-                <a href="materi.html" class="sidebar-link">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M4 19.5C4 18.837 4.26339 18.2011 4.73223 17.7322C5.20107 17.2634 5.83696 17 6.5 17H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M6.5 2H20V22H6.5C5.83696 22 5.20107 21.7366 4.73223 21.2678C4.26339 20.7989 4 20.163 4 19.5V4.5C4 3.83696 4.26339 3.20107 4.73223 2.73223C5.20107 2.26339 5.83696 2 6.5 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    <span>Materi Pelajaran</span>
+                <a href="materi2.html" class="lesson-nav-item" data-lesson="2">
+                    <span class="lesson-nav-number">02</span>
+                    <span class="lesson-nav-text">Identifikasi Argumen</span>
                 </a>
-                <a href="progress.html" class="sidebar-link">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M22 12H18L15 21L9 3L6 12H2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    <span>Progress Belajar</span>
+                <a href="materi3.html" class="lesson-nav-item" data-lesson="3">
+                    <span class="lesson-nav-number">03</span>
+                    <span class="lesson-nav-text">Logical Fallacies</span>
                 </a>
-                <a href="pencapaian.html" class="sidebar-link">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 15C15.866 15 19 11.866 19 8C19 4.13401 15.866 1 12 1C8.13401 1 5 4.13401 5 8C5 11.866 8.13401 15 12 15Z" stroke="currentColor" stroke-width="2"/>
-                        <path d="M8.21 13.89L7 23L12 20L17 23L15.79 13.88" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    <span>Pencapaian</span>
+                <a href="materi4.html" class="lesson-nav-item" data-lesson="4">
+                    <span class="lesson-nav-number">04</span>
+                    <span class="lesson-nav-text">Cognitive Biases</span>
+                </a>
+                <a href="materi5.html" class="lesson-nav-item" data-lesson="5">
+                    <span class="lesson-nav-number">05</span>
+                    <span class="lesson-nav-text">Evaluasi Sumber</span>
+                </a>
+                <a href="materi6.html" class="lesson-nav-item" data-lesson="6">
+                    <span class="lesson-nav-number">06</span>
+                    <span class="lesson-nav-text">Keputusan Rasional</span>
                 </a>
             </nav>
-        </aside>
+        </div>
+
+        <div class="lesson-content">
+            <div class="lesson-header">
+                <div class="lesson-progress-bar">
+                    <div class="progress-fill" style="width: 0%"></div>
+                </div>
+                <span class="lesson-progress-text">0% selesai</span>
+            </div>
+
+            <!-- Lesson 1: Pengantar Berpikir Kritis -->
+            <article class="lesson" id="lesson-1">
+                <h1 class="lesson-title">Pengantar Berpikir Kritis</h1>
+                <div class="lesson-meta">
+                    <span class="lesson-duration">45 menit</span>
+                    <span class="lesson-difficulty">Pemula</span>
+                </div>
+
+                <section class="lesson-section">
+                    <h2 class="section-heading">Apa itu Berpikir Kritis?</h2>
+                    <p class="lesson-text">Berpikir kritis adalah kemampuan untuk menganalisis, mengevaluasi, dan merenungkan informasi dengan cara yang objektif dan rasional. Ini bukan hanya tentang berpikir, tetapi berpikir dengan benar dan mendalam.</p>
+                    <p class="lesson-text">Berpikir kritis melibatkan pertanyaan-pertanyaan penting seperti: Apakah ini benar? Dari mana informasi ini berasal? Apa buktinya? Apakah ada sudut pandang lain?</p>
+                </section>
+
+                <section class="lesson-section">
+                    <h2 class="section-heading">Mengapa Berpikir Kritis Penting?</h2>
+                    <ul class="lesson-list">
+                        <li><strong>Membuat Keputusan Lebih Baik:</strong> Dengan menganalisis informasi secara mendalam, Anda dapat membuat keputusan yang lebih bijaksana dalam kehidupan sehari-hari.</li>
+                        <li><strong>Menghindari Manipulasi:</strong> Berpikir kritis membantu Anda mengidentifikasi argumen yang menyesatkan dan propaganda.</li>
+                        <li><strong>Meningkatkan Pembelajaran:</strong> Daripada sekadar menerima informasi, Anda akan memahami dan menguji kevalidannya.</li>
+                        <li><strong>Komunikasi Lebih Efektif:</strong> Anda dapat mengkomunikasikan ide dengan lebih jelas dan membela pendapat dengan bukti yang kuat.</li>
+                    </ul>
+                </section>
+
+                <section class="lesson-section">
+                    <h2 class="section-heading">Elemen Kunci Berpikir Kritis</h2>
+                    <div class="lesson-cards">
+                        <div class="lesson-card">
+                            <h3 class="card-title">Observasi</h3>
+                            <p class="card-text">Perhatikan detail dan fakta tanpa bias awal.</p>
+                        </div>
+                        <div class="lesson-card">
+                            <h3 class="card-title">Analisis</h3>
+                            <p class="card-text">Pisahkan informasi menjadi bagian-bagian untuk memahami strukturnya.</p>
+                        </div>
+                        <div class="lesson-card">
+                            <h3 class="card-title">Evaluasi</h3>
+                            <p class="card-text">Timbang kekuatan dan kelemahan argumen atau informasi.</p>
+                        </div>
+                        <div class="lesson-card">
+                            <h3 class="card-title">Kesimpulan</h3>
+                            <p class="card-text">Buat keputusan atau kesimpulan berdasarkan bukti yang ada.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="lesson-section">
+                    <h2 class="section-heading">Perbedaan Opini vs Fakta</h2>
+                    <div class="comparison-table">
+                        <div class="table-row table-header">
+                            <div class="table-cell">Opini</div>
+                            <div class="table-cell">Fakta</div>
+                        </div>
+                        <div class="table-row">
+                            <div class="table-cell">Berdasarkan keyakinan pribadi</div>
+                            <div class="table-cell">Berdasarkan bukti terukur</div>
+                        </div>
+                        <div class="table-row">
+                            <div class="table-cell">Dapat berbeda antar orang</div>
+                            <div class="table-cell">Sama untuk semua orang</div>
+                        </div>
+                        <div class="table-row">
+                            <div class="table-cell">Tidak dapat dibuktikan benar/salah</div>
+                            <div class="table-cell">Dapat diverifikasi</div>
+                        </div>
+                        <div class="table-row">
+                            <div class="table-cell">Contoh: "Film ini bagus"</div>
+                            <div class="table-cell">Contoh: "Paris adalah ibukota Prancis"</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="lesson-section">
+                    <h2 class="section-heading">Latihan Praktis</h2>
+                    <div class="quiz-section">
+                        <h3 class="quiz-title">Identifikasi: Opini atau Fakta?</h3>
+                        <div class="quiz-item">
+                            <p class="quiz-question">1. Indonesia memiliki 34 provinsi.</p>
+                            <div class="quiz-options">
+                                <label class="quiz-option">
+                                    <input type="radio" name="quiz1" value="opini">
+                                    <span>Opini</span>
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="quiz1" value="fakta">
+                                    <span>Fakta</span>
+                                </label>
+                            </div>
+                            <p class="quiz-answer">Jawaban: Fakta - Ini adalah informasi yang dapat diverifikasi.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="lesson-navigation">
+                    <button class="btn btn-secondary" id="prev-btn" disabled>Materi Sebelumnya</button>
+                    <button class="btn btn-primary" id="next-btn">Materi Berikutnya</button>
+                </div>
+            </article>
+
+            <article class="lesson" id="lesson-2" style="display: none;">
+                <h1 class="lesson-title">Identifikasi Argumen</h1>
+                <div class="lesson-meta">
+                    <span class="lesson-duration">60 menit</span>
+                    <span class="lesson-difficulty">Menengah</span>
+                </div>
+
+                <section class="lesson-section">
+                    <h2 class="section-heading">Struktur Dasar Argumen</h2>
+                    <p class="lesson-text">Setiap argumen terdiri dari dua bagian utama: Premis dan Kesimpulan.</p>
+                    <p class="lesson-text"><strong>Premis</strong> adalah pernyataan yang memberikan alasan atau bukti. <strong>Kesimpulan</strong> adalah pernyataan yang ditarik berdasarkan premis.</p>
+                </section>
+
+                <section class="lesson-section">
+                    <h2 class="section-heading">Contoh Argumen</h2>
+                    <div class="lesson-example">
+                        <p class="example-text"><strong>Premis 1:</strong> Semua manusia adalah makhluk hidup.</p>
+                        <p class="example-text"><strong>Premis 2:</strong> Saya adalah manusia.</p>
+                        <p class="example-text"><strong>Kesimpulan:</strong> Oleh karena itu, saya adalah makhluk hidup.</p>
+                    </div>
+                </section>
+
+                <section class="lesson-section">
+                    <h2 class="section-heading">Jenis-jenis Argumen</h2>
+                    <div class="lesson-cards">
+                        <div class="lesson-card">
+                            <h3 class="card-title">Argumen Deduktif</h3>
+                            <p class="card-text">Dari hal umum ke hal khusus. Jika premis benar, kesimpulan pasti benar.</p>
+                        </div>
+                        <div class="lesson-card">
+                            <h3 class="card-title">Argumen Induktif</h3>
+                            <p class="card-text">Dari hal khusus ke hal umum. Kesimpulan mungkin benar berdasarkan bukti.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="lesson-navigation">
+                    <button class="btn btn-secondary" id="prev-btn-2">Materi Sebelumnya</button>
+                    <button class="btn btn-primary" id="next-btn-2">Materi Berikutnya</button>
+                </div>
+            </article>
+
+            <!-- Lesson 3: Logical Fallacies -->
+            <article class="lesson" id="lesson-3" style="display: none;">
+                <h1 class="lesson-title">Logical Fallacies - Kesalahan Berpikir</h1>
+                <div class="lesson-meta">
+                    <span class="lesson-duration">55 menit</span>
+                    <span class="lesson-difficulty">Menengah</span>
+                </div>
+
+                <section class="lesson-section">
+                    <h2 class="section-heading">Apa itu Logical Fallacies?</h2>
+                    <p class="lesson-text">Logical fallacies adalah kesalahan dalam penalaran yang membuat argumen tidak valid atau menyesatkan, meskipun mungkin terdengar meyakinkan.</p>
+                </section>
+
+                <section class="lesson-section">
+                    <h2 class="section-heading">Fallacies Umum</h2>
+                    <div class="lesson-cards">
+                        <div class="lesson-card">
+                            <h3 class="card-title">Ad Hominem</h3>
+                            <p class="card-text">Menyerang orang yang berpendapat, bukan pendapatnya. Contoh: "Dia salah karena dia bodoh."</p>
+                        </div>
+                        <div class="lesson-card">
+                            <h3 class="card-title">Strawman</h3>
+                            <p class="card-text">Memutar argumen lawan menjadi versi yang lebih mudah diserang.</p>
+                        </div>
+                        <div class="lesson-card">
+                            <h3 class="card-title">Hasty Generalization</h3>
+                            <p class="card-text">Menarik kesimpulan umum dari sampel terbatas. "Satu mobil Merek X rusak, jadi semua mobil Merek X rusak."</p>
+                        </div>
+                        <div class="lesson-card">
+                            <h3 class="card-title">False Dilemma</h3>
+                            <p class="card-text">Menyajikan hanya dua pilihan padahal ada lebih banyak. "Anda harus setuju atau Anda adalah musuh kami."</p>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="lesson-navigation">
+                    <button class="btn btn-secondary" id="prev-btn-3">Materi Sebelumnya</button>
+                    <button class="btn btn-primary" id="next-btn-3">Materi Berikutnya</button>
+                </div>
+            </article>
+
+            <!-- Lesson 4: Cognitive Biases -->
+            <article class="lesson" id="lesson-4" style="display: none;">
+                <h1 class="lesson-title">Cognitive Biases - Bias Kognitif</h1>
+                <div class="lesson-meta">
+                    <span class="lesson-duration">50 menit</span>
+                    <span class="lesson-difficulty">Menengah</span>
+                </div>
+
+                <section class="lesson-section">
+                    <h2 class="section-heading">Memahami Cognitive Biases</h2>
+                    <p class="lesson-text">Cognitive biases adalah pola pikiran otomatis yang membuat kita cenderung membuat penilaian tertentu atau keputusan berdasarkan asumsi daripada analisis lengkap.</p>
+                </section>
+
+                <section class="lesson-section">
+                    <h2 class="section-heading">Bias Kognitif Umum</h2>
+                    <div class="lesson-cards">
+                        <div class="lesson-card">
+                            <h3 class="card-title">Confirmation Bias</h3>
+                            <p class="card-text">Cenderung mencari informasi yang mendukung keyakinan kita dan mengabaikan yang bertentangan.</p>
+                        </div>
+                        <div class="lesson-card">
+                            <h3 class="card-title">Anchoring Bias</h3>
+                            <p class="card-text">Terlalu bergantung pada informasi pertama (anchor) saat membuat keputusan.</p>
+                        </div>
+                        <div class="lesson-card">
+                            <h3 class="card-title">Availability Bias</h3>
+                            <p class="card-text">Menganggap sesuatu lebih umum karena mudah diingat atau terlihat.</p>
+                        </div>
+                        <div class="lesson-card">
+                            <h3 class="card-title">Dunning-Kruger Effect</h3>
+                            <p class="card-text">Orang dengan pengetahuan terbatas percaya diri berlebihan dalam kemampuan mereka.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="lesson-navigation">
+                    <button class="btn btn-secondary" id="prev-btn-4">Materi Sebelumnya</button>
+                    <button class="btn btn-primary" id="next-btn-4">Materi Berikutnya</button>
+                </div>
+            </article>
+
+            <!-- Lesson 5: Evaluasi Sumber Informasi -->
+            <article class="lesson" id="lesson-5" style="display: none;">
+                <h1 class="lesson-title">Evaluasi Sumber Informasi</h1>
+                <div class="lesson-meta">
+                    <span class="lesson-duration">65 menit</span>
+                    <span class="lesson-difficulty">Menengah</span>
+                </div>
+
+                <section class="lesson-section">
+                    <h2 class="section-heading">Mengapa Evaluasi Sumber Penting?</h2>
+                    <p class="lesson-text">Di era digital, informasi mudah diakses tetapi kualitasnya sangat bervariasi. Belajar mengevaluasi sumber adalah kunci untuk menghindari misinformasi.</p>
+                </section>
+
+                <section class="lesson-section">
+                    <h2 class="section-heading">Kriteria CRAAP untuk Evaluasi Sumber</h2>
+                    <div class="lesson-cards">
+                        <div class="lesson-card">
+                            <h3 class="card-title">Currency (Kecepatan)</h3>
+                            <p class="card-text">Apakah informasi terbaru? Kapan terakhir diperbarui?</p>
+                        </div>
+                        <div class="lesson-card">
+                            <h3 class="card-title">Relevance (Relevansi)</h3>
+                            <p class="card-text">Apakah informasi sesuai dengan kebutuhan Anda?</p>
+                        </div>
+                        <div class="lesson-card">
+                            <h3 class="card-title">Authority (Otoritas)</h3>
+                            <p class="card-text">Siapa penulis? Apa kredibilitas mereka? Apa organisasi mereka?</p>
+                        </div>
+                        <div class="lesson-card">
+                            <h3 class="card-title">Accuracy (Akurasi)</h3>
+                            <p class="card-text">Apakah ada sumber rujukan? Apakah informasi terverifikasi?</p>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="lesson-navigation">
+                    <button class="btn btn-secondary" id="prev-btn-5">Materi Sebelumnya</button>
+                    <button class="btn btn-primary" id="next-btn-5">Materi Berikutnya</button>
+                </div>
+            </article>
+
+            <!-- Lesson 6: Pengambilan Keputusan Rasional -->
+            <article class="lesson" id="lesson-6" style="display: none;">
+                <h1 class="lesson-title">Pengambilan Keputusan Rasional</h1>
+                <div class="lesson-meta">
+                    <span class="lesson-duration">70 menit</span>
+                    <span class="lesson-difficulty">Lanjut</span>
+                </div>
+
+                <section class="lesson-section">
+                    <h2 class="section-heading">Framework Pengambilan Keputusan</h2>
+                    <p class="lesson-text">Keputusan yang baik memerlukan proses sistematis. Berikut adalah framework untuk membuat keputusan yang lebih rasional:</p>
+                </section>
+
+                <section class="lesson-section">
+                    <h2 class="section-heading">5 Langkah Pengambilan Keputusan</h2>
+                    <div class="lesson-cards">
+                        <div class="lesson-card">
+                            <h3 class="card-title">1. Definisikan Masalah</h3>
+                            <p class="card-text">Pahami masalah dengan jelas. Apa yang perlu diputuskan?</p>
+                        </div>
+                        <div class="lesson-card">
+                            <h3 class="card-title">2. Kumpulkan Informasi</h3>
+                            <p class="card-text">Cari fakta dan bukti relevan dari sumber terpercaya.</p>
+                        </div>
+                        <div class="lesson-card">
+                            <h3 class="card-title">3. Identifikasi Pilihan</h3>
+                            <p class="card-text">Apa saja opsi yang tersedia? Jangan hanya dua pilihan.</p>
+                        </div>
+                        <div class="lesson-card">
+                            <h3 class="card-title">4. Analisis Konsekuensi</h3>
+                            <p class="card-text">Apa dampak positif dan negatif dari setiap pilihan?</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="lesson-section">
+                    <h2 class="section-heading">Langkah Terakhir: Putuskan dan Evaluasi</h2>
+                    <p class="lesson-text">Setelah analisis menyeluruh, buat keputusan terbaik dengan bukti yang ada. Ingat bahwa tidak semua keputusan sempurna, tetapi proses rasional meningkatkan peluang hasil yang baik.</p>
+                </section>
+
+                <div class="lesson-navigation">
+                    <button class="btn btn-secondary" id="prev-btn-6">Materi Sebelumnya</button>
+                    <button class="btn btn-primary" id="next-btn-6" disabled>Selesai</button>
+                </div>
+            </article>
+
+            <div class="lesson-footer">
+                <p>Apakah konten ini membantu? Berikan feedback Anda untuk meningkatkan kualitas materi.</p>
+                <div class="feedback-buttons">
+                    <button class="feedback-btn feedback-helpful">Membantu</button>
+                    <button class="feedback-btn feedback-notHelpful">Kurang Membantu</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="materi.js"></script>
+</body>
+</html>
