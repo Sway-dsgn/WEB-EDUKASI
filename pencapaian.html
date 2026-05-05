@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pencapaian - Pikir Kritis</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-brand">
+                <svg class="logo-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 4L4 10V22L16 28L28 22V10L16 4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                    <path d="M16 16L16 28" stroke="currentColor" stroke-width="2"/>
+                    <path d="M4 10L16 16L28 10" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span class="brand-text">Pikir Kritis</span>
+            </div>
+            <div class="nav-actions">
+                <a href="dashboard.html" class="btn btn-secondary">Kembali ke Dashboard</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="achievements-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2 class="sidebar-title">Menu</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#badges" class="sidebar-link active">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 15C15.866 15 19 11.866 19 8C19 4.13401 15.866 1 12 1C8.13401 1 5 4.13401 5 8C5 11.866 8.13401 15 12 15Z" stroke="currentColor" stroke-width="2"/>
+                        <path d="M8.21 13.89L7 23L12 20L17 23L15.79 13.88" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Lencana</span>
+                </a>
+                <a href="#certificates" class="sidebar-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 19.5C4 18.837 4.26339 18.2011 4.73223 17.7322C5.20107 17.2634 5.83696 17 6.5 17H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M6.5 2H20V22H6.5C5.83696 22 5.20107 21.7366 4.73223 21.2678C4.26339 20.7989 4 20.163 4 19.5V4.5C4 3.83696 4.26339 3.20107 4.73223 2.73223C5.20107 2.26339 5.83696 2 6.5 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Sertifikat</span>
+                </a>
+                <a href="#stats" class="sidebar-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 3V21H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M7 15L12 9L17 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M17 14V20H20V7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Statistik</span>
+                </a>
+                <a href="#leaderboard" class="sidebar-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 10L12 7L17 10V15C17 18.3137 14.866 21 12 21C9.13401 21 7 18.3137 7 15V10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M10 18H14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <span>Leaderboard</span>
+                </a>
+            </nav>
+        </aside>
+
+        <div class="main-content">
+            <!-- Badges Section -->
+            <section id="badges" class="achievement-section active">
+                <div class="section-header">
+                    <h1 class="page-title">Lencana Pencapaian</h1>
+                    <p class="page-subtitle">Kumpulkan lencana dengan menyelesaikan tantangan pembelajaran</p>
+                </div>
+
+                <div class="achievements-summary">
+                    <div class="summary-card">
+                        <span class="summary-label">Lencana Terkumpul</span>
+                        <span class="summary-value" id="badges-collected">0 dari 12</span>
+                        <div class="summary-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="achievements-grid">
+                    <!-- Badge 1: Langkah Pertama -->
+                    <div class="achievement-card achievement-locked">
+                        <div class="achievement-header">
+                            <div class="achievement-icon">
+                                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 15C15.866 15 19 11.866 19 8C19 4.13401 15.866 1 12 1C8.13401 1 5 4.13401 5 8C5 11.866 8.13401 15 12 15Z" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M8.21 13.89L7 23L12 20L17 23L15.79 13.88" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <span class="achievement-level">Level 1</span>
+                        </div>
+                        <h3 class="achievement-name">Langkah Pertama</h3>
+                        <p class="achievement-description">Selesaikan materi pertama</p>
+                        <div class="achievement-progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <p class="achievement-progress-text">0% selesai</p>
+                        <span class="achievement-status locked">Terkunci</span>
+                    </div>
+
+                    <!-- Badge 2: Pembelajar Baru -->
+                    <div class="achievement-card achievement-locked">
+                        <div class="achievement-header">
+                            <div class="achievement-icon">
+                                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 19.5C4 18.837 4.26339 18.2011 4.73223 17.7322C5.20107 17.2634 5.83696 17 6.5 17H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M6.5 2H20V22H6.5C5.83696 22 5.20107 21.7366 4.73223 21.2678C4.26339 20.7989 4 20.163 4 19.5V4.5C4 3.83696 4.26339 3.20107 4.73223 2.73223C5.20107 2.26339 5.83696 2 6.5 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <span class="achievement-level">Level 1</span>
+                        </div>
+                        <h3 class="achievement-name">Pembelajar Baru</h3>
+                        <p class="achievement-description">Akses dashboard untuk pertama kalinya</p>
+                        <div class="achievement-progress-bar">
+                            <div class="progress-fill" style="width: 100%"></div>
+                        </div>
+                        <p class="achievement-progress-text">100% selesai</p>
+                        <span class="achievement-status unlocked">Terbuka</span>
+                    </div>
+
+                    <!-- Badge 3: Analis Argumen -->
+                    <div class="achievement-card achievement-locked">
+                        <div class="achievement-header">
+                            <div class="achievement-icon">
+                                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M20.59 13.41L21.17 14C21.373 14.202 21.373 14.521 21.17 14.724L14.12 21.77C13.917 21.973 13.598 21.973 13.395 21.77L2.23 10.61C2.027 10.407 2.027 10.088 2.23 9.885L2.81 9.305C3.013 9.102 3.332 9.102 3.535 9.305L13.76 19.53L20.01 13.29C20.213 13.087 20.532 13.087 20.735 13.29L20.59 13.41Z" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </div>
+                            <span class="achievement-level">Level 2</span>
+                        </div>
+                        <h3 class="achievement-name">Analis Argumen</h3>
+                        <p class="achievement-description">Selesaikan materi Identifikasi Argumen</p>
+                        <div class="achievement-progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <p class="achievement-progress-text">0% selesai</p>
+                        <span class="achievement-status locked">Terkunci</span>
+                    </div>
+
+                    <!-- Badge 4: Pendeteksi Fallacy -->
+                    <div class="achievement-card achievement-locked">
+                        <div class="achievement-header">
+                            <div class="achievement-icon">
+                                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M12 8V12L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <span class="achievement-level">Level 2</span>
+                        </div>
+                        <h3 class="achievement-name">Pendeteksi Fallacy</h3>
+                        <p class="achievement-description">Selesaikan materi Logical Fallacies</p>
+                        <div class="achievement-progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <p class="achievement-progress-text">0% selesai</p>
+                        <span class="achievement-status locked">Terkunci</span>
+                    </div>
+
+                    <!-- Badge 5: Ahli Bias -->
+                    <div class="achievement-card achievement-locked">
+                        <div class="achievement-header">
+                            <div class="achievement-icon">
+                                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2Z" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <span class="achievement-level">Level 2</span>
+                        </div>
+                        <h3 class="achievement-name">Ahli Bias</h3>
+                        <p class="achievement-description">Selesaikan materi Cognitive Biases</p>
+                        <div class="achievement-progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <p class="achievement-progress-text">0% selesai</p>
+                        <span class="achievement-status locked">Terkunci</span>
+                    </div>
+
+                    <!-- Badge 6: Evaluator Sumber -->
+                    <div class="achievement-card achievement-locked">
+                        <div class="achievement-header">
+                            <div class="achievement-icon">
+                                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M9 22V12H15V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <span class="achievement-level">Level 2</span>
+                        </div>
+                        <h3 class="achievement-name">Evaluator Sumber</h3>
+                        <p class="achievement-description">Selesaikan materi Evaluasi Sumber Informasi</p>
+                        <div class="achievement-progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <p class="achievement-progress-text">0% selesai</p>
+                        <span class="achievement-status locked">Terkunci</span>
+                    </div>
+
+                    <!-- Badge 7: Pembuat Keputusan -->
+                    <div class="achievement-card achievement-locked">
+                        <div class="achievement-header">
+                            <div class="achievement-icon">
+                                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M13 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V9L13 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M13 2V9H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <span class="achievement-level">Level 3</span>
+                        </div>
+                        <h3 class="achievement-name">Pembuat Keputusan</h3>
+                        <p class="achievement-description">Selesaikan materi Pengambilan Keputusan Rasional</p>
+                        <div class="achievement-progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <p class="achievement-progress-text">0% selesai</p>
+                        <span class="achievement-status locked">Terkunci</span>
+                    </div>
+
+                    <!-- Badge 8: Seperempat Perjalanan -->
+                    <div class="achievement-card achievement-locked">
+                        <div class="achievement-header">
+                            <div class="achievement-icon">
+                                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M13 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V9L13 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M13 2V9H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M9 14H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="M9 18H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <span class="achievement-level">Level 2</span>
+                        </div>
+                        <h3 class="achievement-name">Seperempat Perjalanan</h3>
+                        <p class="achievement-description">Selesaikan 2 materi pembelajaran</p>
+                        <div class="achievement-progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <p class="achievement-progress-text">0% selesai</p>
+                        <span class="achievement-status locked">Terkunci</span>
+                    </div>
+
+                    <!-- Badge 9: Setengah Perjalanan -->
+                    <div class="achievement-card achievement-locked">
+                        <div class="achievement-header">
+                            <div class="achievement-icon">
+                                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <span class="achievement-level">Level 3</span>
+                        </div>
+                        <h3 class="achievement-name">Setengah Perjalanan</h3>
+                        <p class="achievement-description">Selesaikan 3 materi pembelajaran</p>
+                        <div class="achievement-progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <p class="achievement-progress-text">0% selesai</p>
+                        <span class="achievement-status locked">Terkunci</span>
+                    </div>
+
+                    <!-- Badge 10: Tiga Perempat Perjalanan -->
+                    <div class="achievement-card achievement-locked">
+                        <div class="achievement-header">
+                            <div class="achievement-icon">
+                                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <span class="achievement-level">Level 3</span>
+                        </div>
+                        <h3 class="achievement-name">Tiga Perempat Perjalanan</h3>
+                        <p class="achievement-description">Selesaikan 4-5 materi pembelajaran</p>
+                        <div class="achievement-progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <p class="achievement-progress-text">0% selesai</p>
+                        <span class="achievement-status locked">Terkunci</span>
+                    </div>
+
+                    <!-- Badge 11: Master Berpikir Kritis -->
+                    <div class="achievement-card achievement-locked">
+                        <div class="achievement-header">
+                            <div class="achievement-icon">
+                                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <span class="achievement-level">Level 4</span>
+                        </div>
+                        <h3 class="achievement-name">Master Berpikir Kritis</h3>
+                        <p class="achievement-description">Selesaikan semua 6 materi pembelajaran</p>
+                        <div class="achievement-progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <p class="achievement-progress-text">0% selesai</p>
+                        <span class="achievement-status locked">Terkunci</span>
+                    </div>
+
+                    <!-- Badge 12: Pembelajar Konsisten -->
+                    <div class="achievement-card achievement-locked">
+                        <div class="achievement-header">
+                            <div class="achievement-icon">
+                                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M13 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V9L13 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M13 2V9H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M9 14H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="M9 18H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <span class="achievement-level">Level 4</span>
+                        </div>
+                        <h3 class="achievement-name">Pembelajar Konsisten</h3>
+                        <p class="achievement-description">Belajar 7 hari berturut-turut</p>
+                        <div class="achievement-progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <p class="achievement-progress-text">0% selesai</p>
+                        <span class="achievement-status locked">Terkunci</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Certificates Section -->
+            <section id="certificates" class="achievement-section">
+                <div class="section-header">
+                    <h1 class="page-title">Sertifikat Pembelajaran</h1>
+                    <p class="page-subtitle">Dapatkan sertifikat resmi setelah menyelesaikan pembelajaran</p>
+                </div>
+
+                <div class="certificates-container">
+                    <div class="certificate-card certificate-locked">
+                        <div class="certificate-header">
+                            <div class="certificate-icon">
+                                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6 4H18C19.1046 4 20 4.89543 20 6V16C20 17.1046 19.1046 18 18 18H6C4.89543 18 4 17.1046 4 16V6C4 4.89543 4.89543 4 6 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M12 12L12 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="M8 21H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <span class="certificate-status locked">Terkunci</span>
+                        </div>
+                        <h3 class="certificate-title">Sertifikat Completion</h3>
+                        <p class="certificate-description">Selesaikan semua 6 materi pembelajaran untuk mendapatkan sertifikat</p>
+                        <div class="certificate-requirements">
+                            <h4 class="requirements-title">Persyaratan:</h4>
+                            <ul class="requirements-list">
+                                <li>Selesaikan semua 6 materi pembelajaran</li>
+                                <li>Capai skor minimal 70% di setiap materi</li>
+                                <li>Selesaikan kuiz/latihan</li>
+                                <li>Waktu pembelajaran minimal 5 jam</li>
+                            </ul>
+                        </div>
+                        <button class="btn btn-secondary btn-download" disabled>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M12 15V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Download Sertifikat
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Statistics Section -->
+            <section id="stats" class="achievement-section">
+                <div class="section-header">
+                    <h1 class="page-title">Statistik Pencapaian</h1>
+                    <p class="page-subtitle">Lihat ringkasan pencapaian dan performa Anda</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 15C15.866 15 19 11.866 19 8C19 4.13401 15.866 1 12 1C8.13401 1 5 4.13401 5 8C5 11.866 8.13401 15 12 15Z" stroke="currentColor" stroke-width="2"/>
+                                <path d="M8.21 13.89L7 23L12 20L17 23L15.79 13.88" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <h3 class="stat-title">Lencana Terbuka</h3>
+                        <p class="stat-value" id="stat-badges">0 / 12</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2Z" stroke="currentColor" stroke-width="2"/>
+                                <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <h3 class="stat-title">Materi Selesai</h3>
+                        <p class="stat-value" id="stat-completed">0 / 6</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <h3 class="stat-title">Waktu Belajar</h3>
+                        <p class="stat-value" id="stat-time">0 jam</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.7088 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18455 2.99721 7.13631 4.39828 5.49706C5.79935 3.85781 7.69279 2.71537 9.79619 2.24013C11.8996 1.76489 14.1003 1.98232 16.07 2.86" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <h3 class="stat-title">Tingkat Penyelesaian</h3>
+                        <p class="stat-value" id="stat-completion">0%</p>
+                    </div>
+                </div>
+
+                <div class="achievement-details">
+                    <h3 class="details-title">Ringkasan Pencapaian</h3>
+                    <div class="details-list">
+                        <div class="detail-item">
+                            <span class="detail-label">Lencana Dibuka:</span>
+                            <span class="detail-value" id="detail-badges">0 dari 12</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Sertifikat Completion:</span>
+                            <span class="detail-value" id="detail-certificate">Belum Terbuka</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Materi Terlengkap:</span>
+                            <span class="detail-value" id="detail-best-module">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Rata-rata Skor:</span>
+                            <span class="detail-value" id="detail-avg-score">0%</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Leaderboard Section -->
+            <section id="leaderboard" class="achievement-section">
+                <div class="section-header">
+                    <h1 class="page-title">Leaderboard</h1>
+                    <p class="page-subtitle">Posisi Anda dibanding pembelajar lain</p>
+                </div>
+
+                <div class="leaderboard-filters">
+                    <button class="filter-btn active" data-filter="overall">Keseluruhan</button>
+                    <button class="filter-btn" data-filter="monthly">Bulan Ini</button>
+                    <button class="filter-btn" data-filter="weekly">Minggu Ini</button>
+                </div>
+
+                <div class="leaderboard-container">
+                    <div class="leaderboard-header">
+                        <span class="rank-col">Peringkat</span>
+                        <span class="name-col">Nama Pengguna</span>
+                        <span class="score-col">Skor</span>
+                        <span class="badges-col">Lencana</span>
+                    </div>
+
+                    <div class="leaderboard-list">
+                        <div class="leaderboard-item your-rank">
+                            <span class="rank-col">-</span>
+                            <span class="name-col">
+                                <span class="your-badge">Anda</span>
+                                Pengguna Baru
+                            </span>
+                            <span class="score-col">0</span>
+                            <span class="badges-col">0</span>
+                        </div>
+
+                        <div class="leaderboard-item">
+                            <span class="rank-col">1</span>
+                            <span class="name-col">Ahmad Wijaya</span>
+                            <span class="score-col">950</span>
+                            <span class="badges-col">11</span>
+                        </div>
+
+                        <div class="leaderboard-item">
+                            <span class="rank-col">2</span>
+                            <span class="name-col">Siti Nurhaliza</span>
+                            <span class="score-col">920</span>
+                            <span class="badges-col">10</span>
+                        </div>
+
+                        <div class="leaderboard-item">
+                            <span class="rank-col">3</span>
+                            <span class="name-col">Budi Santoso</span>
+                            <span class="score-col">890</span>
+                            <span class="badges-col">9</span>
+                        </div>
+
+                        <div class="leaderboard-item">
+                            <span class="rank-col">4</span>
+                            <span class="name-col">Rina Kusuma</span>
+                            <span class="score-col">850</span>
+                            <span class="badges-col">8</span>
+                        </div>
+
+                        <div class="leaderboard-item">
+                            <span class="rank-col">5</span>
+                            <span class="name-col">Doni Hermawan</span>
+                            <span class="score-col">820</span>
+                            <span class="badges-col">7</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="leaderboard-note">
+                    <p>Leaderboard ini menampilkan data contoh. Skor dan peringkat Anda akan terupdate seiring dengan kemajuan pembelajaran.</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="achievements.js"></script>
+</body>
+</html>
