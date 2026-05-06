@@ -2,12 +2,12 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EDUVIX.ID – belajar</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="script.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EDUVIX.ID – Beranda</title>
+  <link rel="stylesheet" href="beranda.css" />
+  <script src="beranda.js" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 </head>
 <body>
 
@@ -18,29 +18,25 @@
     </div>
 
     <nav class="sidebar-nav">
-      <a href="#" class="nav-item">
+      <a href="dashboard.html" class="nav-item active">
         <i class="fa-solid fa-house"></i>
         <span>Beranda</span>
       </a>
-      <a href="#" class="nav-item">
+      <a href="materi komunitas.html" class="nav-item">
         <i class="fa-solid fa-chalkboard-user"></i>
-        <span>Guru</span>
+        <span>Materi Komunitas</span>
       </a>
       <a href="#" class="nav-item">
         <i class="fa-solid fa-layer-group"></i>
-        <span>Rombel</span>
+        <span>Pencapaian</span>
       </a>
       <a href="#" class="nav-item">
         <i class="fa-solid fa-user-graduate"></i>
-        <span>Siswa</span>
+        <span>Progress</span>
       </a>
-      <a href="#" class="nav-item active">
+      <a href="" class="nav-item">
         <i class="fa-solid fa-file-pen"></i>
-        <span>Ujian</span>
-      </a>
-      <a href="#" class="nav-item">
-        <i class="fa-solid fa-clipboard-list"></i>
-        <span>Tugas</span>
+        <span>Materi</span>
       </a>
     </nav>
 
@@ -50,197 +46,226 @@
     </a>
   </aside>
 
-  <!-- MAIN CONTENT -->
+  <!-- MAIN -->
   <main class="main-content">
 
-    <!-- TOP BAR -->
+    <!-- TOPBAR -->
     <header class="topbar">
-      <div class="search-box">
-        <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" placeholder="Temukan di sini ..." />
-      </div>
-      <div class="user-profile">
-        <div class="avatar">
-          <i class="fa-solid fa-user"></i>
+      <div class="topbar-left">
+        <button class="menu-toggle" id="menuToggle">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="Temukan di sini ..." />
         </div>
-        <span class="user-name">Winda Widyastuti</span>
-        <i class="fa-solid fa-chevron-down"></i>
+      </div>
+      <div class="topbar-right">
+        <button class="notif-btn">
+          <i class="fa-solid fa-bell"></i>
+          <span class="badge">3</span>
+        </button>
+        <div class="user-profile" id="userProfile">
+          <div class="avatar">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <span>User20</span>
+          <i class="fa-solid fa-chevron-down"></i>
+        </div>
       </div>
     </header>
 
     <!-- PAGE CONTENT -->
     <div class="page-body">
 
-      <!-- LEFT COLUMN -->
-      <section class="left-col">
-        <h1 class="page-title">Ujian Siswa</h1>
-
-        <!-- TABS -->
-        <div class="tabs">
-          <button class="tab" onclick="filterTab(this, 'semua')">Semua</button>
-          <button class="tab active" onclick="filterTab(this, 'mendatang')">Mendatang</button>
-          <button class="tab" onclick="filterTab(this, 'selesai')">Selesai</button>
-          <button class="tab" onclick="filterTab(this, 'berjalan')">Berjalan</button>
+      <!-- HERO GREETING -->
+      <section class="hero-greeting reveal">
+        <div class="greeting-text">
+          <p class="greeting-sub">Selamat datang kembali 👋</p>
+          <h1 class="greeting-name">Halo, <span>User20!</span></h1>
+          <p class="greeting-desc">Lanjutkan belajarmu hari ini dan raih pencapaian baru.</p>
         </div>
-
-        <!-- EXAM LIST -->
-        <div class="exam-list" id="examList">
-
-          <div class="exam-card" data-status="mendatang">
-            <div class="exam-thumb thumb-teal">
-              <i class="fa-solid fa-flask"></i>
-            </div>
-            <div class="exam-info">
-              <h3>Ulangan Harian – Kimia Kelas XII</h3>
-              <p>Senyawa Turunan Alkana</p>
-              <span class="exam-date"><i class="fa-regular fa-calendar"></i> Mulai : 15 November 2021</span>
-            </div>
-            <div class="exam-actions">
-              <button class="btn-icon edit" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
-              <button class="btn-icon delete" title="Hapus"><i class="fa-solid fa-trash"></i></button>
-            </div>
+        <div class="greeting-visual">
+          <div class="floating-card fc1">
+            <i class="fa-solid fa-fire"></i>
+            <span>0 Hari Streak</span>
           </div>
-
-          <div class="exam-card" data-status="mendatang">
-            <div class="exam-thumb thumb-pink">
-              <i class="fa-solid fa-atom"></i>
-            </div>
-            <div class="exam-info">
-              <h3>Ulangan Harian – Kimia Kelas XI</h3>
-              <p>Kelarutan dan Hasil Kali Kelarutan</p>
-              <span class="exam-date"><i class="fa-regular fa-calendar"></i> Mulai : 16 November 2021</span>
-            </div>
-            <div class="exam-actions">
-              <button class="btn-icon edit" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
-              <button class="btn-icon delete" title="Hapus"><i class="fa-solid fa-trash"></i></button>
-            </div>
+          <div class="floating-card fc2">
+            <i class="fa-solid fa-star"></i>
+            <span>Level 1</span>
           </div>
-
-          <div class="exam-card" data-status="mendatang">
-            <div class="exam-thumb thumb-purple">
-              <i class="fa-solid fa-microscope"></i>
-            </div>
-            <div class="exam-info">
-              <h3>Ulangan Harian – Kimia Kelas X</h3>
-              <p>Stoikiometri</p>
-              <span class="exam-date"><i class="fa-regular fa-calendar"></i> Mulai : 17 November 2021</span>
-            </div>
-            <div class="exam-actions">
-              <button class="btn-icon edit" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
-              <button class="btn-icon delete" title="Hapus"><i class="fa-solid fa-trash"></i></button>
-            </div>
-          </div>
-
-          <div class="exam-card" data-status="selesai">
-            <div class="exam-thumb thumb-green">
-              <i class="fa-solid fa-vial"></i>
-            </div>
-            <div class="exam-info">
-              <h3>Ujian Tengah Semester – Biologi X</h3>
-              <p>Sel dan Jaringan Tumbuhan</p>
-              <span class="exam-date"><i class="fa-regular fa-calendar"></i> Mulai : 01 November 2021</span>
-            </div>
-            <div class="exam-actions">
-              <button class="btn-icon edit" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
-              <button class="btn-icon delete" title="Hapus"><i class="fa-solid fa-trash"></i></button>
-            </div>
-          </div>
-
-          <div class="exam-card" data-status="berjalan">
-            <div class="exam-thumb thumb-orange">
-              <i class="fa-solid fa-fire-flame-curved"></i>
-            </div>
-            <div class="exam-info">
-              <h3>Ujian Akhir – Fisika XII</h3>
-              <p>Gelombang Elektromagnetik</p>
-              <span class="exam-date"><i class="fa-regular fa-calendar"></i> Mulai : 05 Mei 2026</span>
-            </div>
-            <div class="exam-actions">
-              <button class="btn-icon edit" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
-              <button class="btn-icon delete" title="Hapus"><i class="fa-solid fa-trash"></i></button>
-            </div>
-          </div>
-
+          <div class="hero-blob"></div>
         </div>
       </section>
 
-      <!-- RIGHT COLUMN -->
-      <aside class="right-col">
-
-        <!-- CREATE NEW EXAM BANNER -->
-        <div class="create-banner">
-          <div class="create-banner-text">
-            <h3>Buat Ujian Baru</h3>
-            <p>Impor soal dari Ms. Word atau buat langsung di EDUVIX</p>
+      <!-- STATS CARDS -->
+      <section class="stats-grid reveal">
+        <div class="stat-card" style="--accent: #3b9eff;">
+          <div class="stat-icon"><i class="fa-solid fa-book-open"></i></div>
+          <div class="stat-info">
+            <span class="stat-value" data-target="12">0</span>
+            <span class="stat-label">Materi Aktif</span>
           </div>
-          <div class="create-banner-icon">
-            <i class="fa-solid fa-wand-magic-sparkles"></i>
-          </div>
-          <button class="btn-create" onclick="handleCreate()">
-            <i class="fa-solid fa-plus"></i> Buat Sekarang
-          </button>
-        </div>
-
-        <!-- SCHEDULE -->
-        <div class="schedule-card">
-          <div class="schedule-header">
-            <h3>Jadwal</h3>
-            <a href="#">Lihat Semua</a>
-          </div>
-
-          <div class="schedule-list">
-            <div class="schedule-item active">
-              <div class="schedule-day">04</div>
-              <div class="schedule-detail">
-                <span class="class-name">Kelas X MIPA 3</span>
-                <span class="class-topic">Hukum-Hukum tentang Gas</span>
-              </div>
-              <div class="schedule-time">08.00 – 09.30 WIB</div>
-            </div>
-
-            <div class="schedule-item">
-              <div class="schedule-day">05</div>
-              <div class="schedule-detail">
-                <span class="class-name">Kelas XII MIPA 3</span>
-                <span class="class-topic">Asam Karboksilat dan Ester</span>
-              </div>
-              <div class="schedule-time">09.30 – 11.00 WIB</div>
-            </div>
-
-            <div class="schedule-item">
-              <div class="schedule-day">06</div>
-              <div class="schedule-detail">
-                <span class="class-name">Kelas XI MIPA 2</span>
-                <span class="class-topic">Makna Hasil Kali Kelarutan</span>
-              </div>
-              <div class="schedule-time">13.00 – 14.30 WIB</div>
-            </div>
+          <div class="stat-chart">
+            <div class="mini-bar" style="height:40%"></div>
+            <div class="mini-bar" style="height:65%"></div>
+            <div class="mini-bar" style="height:50%"></div>
+            <div class="mini-bar" style="height:80%"></div>
+            <div class="mini-bar" style="height:70%"></div>
           </div>
         </div>
+        <div class="stat-card" style="--accent: #f97316;">
+          <div class="stat-icon"><i class="fa-solid fa-clipboard-check"></i></div>
+          <div class="stat-info">
+            <span class="stat-value" data-target="8">0</span>
+            <span class="stat-label">Tugas Selesai</span>
+          </div>
+          <div class="stat-chart">
+            <div class="mini-bar" style="height:55%"></div>
+            <div class="mini-bar" style="height:75%"></div>
+            <div class="mini-bar" style="height:60%"></div>
+            <div class="mini-bar" style="height:90%"></div>
+            <div class="mini-bar" style="height:80%"></div>
+          </div>
+        </div>
+        <div class="stat-card" style="--accent: #22c55e;">
+          <div class="stat-icon"><i class="fa-solid fa-trophy"></i></div>
+          <div class="stat-info">
+            <span class="stat-value" data-target="5">0</span>
+            <span class="stat-label">Pencapaian</span>
+          </div>
+          <div class="stat-chart">
+            <div class="mini-bar" style="height:30%"></div>
+            <div class="mini-bar" style="height:50%"></div>
+            <div class="mini-bar" style="height:45%"></div>
+            <div class="mini-bar" style="height:70%"></div>
+            <div class="mini-bar" style="height:65%"></div>
+          </div>
+        </div>
+        <div class="stat-card" style="--accent: #a855f7;">
+          <div class="stat-icon"><i class="fa-solid fa-calendar-check"></i></div>
+          <div class="stat-info">
+            <span class="stat-value" data-target="3">0</span>
+            <span class="stat-label">Jadwal Hari Ini</span>
+          </div>
+          <div class="stat-chart">
+            <div class="mini-bar" style="height:60%"></div>
+            <div class="mini-bar" style="height:40%"></div>
+            <div class="mini-bar" style="height:75%"></div>
+            <div class="mini-bar" style="height:55%"></div>
+            <div class="mini-bar" style="height:85%"></div>
+          </div>
+        </div>
+      </section>
 
-      </aside>
+      <!-- BOTTOM GRID -->
+      <div class="bottom-grid">
+
+        <!-- MATERI TERBARU -->
+        <section class="section-card materi-section reveal">
+          <div class="section-header">
+            <h2>Materi Terbaru</h2>
+            <a href="#" class="link-see-all">Lihat Semua <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+
+          <div class="materi-list">
+            <div class="materi-item">
+              <div class="materi-icon" style="background:#dcfce7;color:#16a34a;">
+                <i class="fa-solid fa-flask"></i>
+              </div>
+              <div class="materi-info">
+                <h4>Pengantar berpikir kritis</h4>
+                <p><i class="fa-regular fa-calendar"></i> Mulai: 15 November 2021</p>
+              </div>
+              <span class="materi-badge mendatang">Mendatang</span>
+            </div>
+            <div class="materi-item">
+              <div class="materi-icon" style="background:#fce7f3;color:#db2777;">
+                <i class="fa-solid fa-gear"></i>
+              </div>
+              <div class="materi-info">
+                <h4>Identifikasi argumen</h4>
+                <p><i class="fa-regular fa-calendar"></i> Mulai: 16 November 2021</p>
+              </div>
+              <span class="materi-badge mendatang">Mendatang</span>
+            </div>
+            <div class="materi-item">
+              <div class="materi-icon" style="background:#ede9fe;color:#7c3aed;">
+                <i class="fa-solid fa-scale-balanced"></i>
+              </div>
+              <div class="materi-info">
+                <h4>Logical Fallacies</h4>
+                <p><i class="fa-regular fa-calendar"></i> Mulai: 17 November 2021</p>
+              </div>
+              <span class="materi-badge berjalan">Berjalan</span>
+            </div>
+            <div class="materi-item">
+              <div class="materi-icon" style="background:#fef3c7;color:#d97706;">
+                <i class="fa-solid fa-lightbulb"></i>
+              </div>
+              <div class="materi-info">
+                <h4>Dasar Pemrograman</h4>
+                <p><i class="fa-regular fa-calendar"></i> Mulai: 18 November 2021</p>
+              </div>
+              <span class="materi-badge selesai">Selesai</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- RIGHT PANEL -->
+        <div class="right-panel">
+
+          <!-- JADWAL HARI INI -->
+          <section class="section-card jadwal-section reveal">
+            <div class="section-header">
+              <h2>Jadwal Hari Ini</h2>
+              <a href="#" class="link-see-all">Lihat Semua <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+            <div class="jadwal-list">
+              <div class="jadwal-item">
+                <div class="jadwal-date" style="background:#eff6ff;color:#3b9eff;">04</div>
+                <div class="jadwal-info">
+                  <h4>Kelas X MIPA 3</h4>
+                  <p>08.00 – 09.30 WIB</p>
+                </div>
+                <span class="jadwal-dot" style="background:#3b9eff;"></span>
+              </div>
+              <div class="jadwal-item">
+                <div class="jadwal-date" style="background:#fff7ed;color:#f97316;">05</div>
+                <div class="jadwal-info">
+                  <h4>Kelas XII MIPA 3</h4>
+                  <p>09.30 – 11.00 WIB</p>
+                </div>
+                <span class="jadwal-dot" style="background:#f97316;"></span>
+              </div>
+              <div class="jadwal-item">
+                <div class="jadwal-date" style="background:#f0fdf4;color:#22c55e;">06</div>
+                <div class="jadwal-info">
+                  <h4>Kelas XI MIPA 2</h4>
+                  <p>13.00 – 14.30 WIB</p>
+                </div>
+                <span class="jadwal-dot" style="background:#22c55e;"></span>
+              </div>
+            </div>
+          </section>
+
+          <!-- BUAT MATERI BARU -->
+          <section class="section-card buat-materi-card reveal">
+            <div class="buat-bg-blob"></div>
+            <div class="buat-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+            <h3>Buat Materi Baru</h3>
+            <p>Impor materi dari Ms. Word atau buat langsung di EDUVIX</p>
+            <button class="btn-buat" onclick="alert('Fitur membuat materi baru!')">
+              <i class="fa-solid fa-plus"></i> Buat Sekarang
+            </button>
+          </section>
+
+        </div>
+      </div>
+
     </div>
   </main>
 
-  <!-- MODAL: CREATE EXAM -->
-  <div class="modal-overlay" id="modalOverlay">
-    <div class="modal">
-      <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
-      <h2>Buat Ujian Baru</h2>
-      <p>Pilih metode pembuatan soal:</p>
-      <div class="modal-options">
-        <div class="modal-option">
-          <i class="fa-solid fa-file-word"></i>
-          <span>Impor dari Ms. Word</span>
-        </div>
-        <div class="modal-option">
-          <i class="fa-solid fa-pen-nib"></i>
-          <span>Buat Manual</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
+  <script src="beranda.js"></script>
 </body>
 </html>

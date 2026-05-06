@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EDUVIX.ID – belajar</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="script.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <img src="WhatsApp Image 2026-05-05 at 18.33.04.png" alt="EDUVIX.ID Logo" class="logo-img" />
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="nav-item">
+        <i class="fa-solid fa-house"></i>
+        <span>Beranda</span>
+      </a>
+      <a href="materi komunitas.html" class="nav-item active">
+        <i class="fa-solid fa-chalkboard-user"></i>
+        <span>Materi Komunitas</span>
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fa-solid fa-layer-group"></i>
+        <span>Pencapaian</span>
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fa-solid fa-user-graduate"></i>
+        <span>Progress</span>
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fa-solid fa-file-pen"></i>
+        <span>Materi</span>
+      </a>
+    </nav>
+
+    <a href="#" class="logout-btn">
+      <i class="fa-solid fa-right-from-bracket"></i>
+      <span>Log Out</span>
+    </a>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" placeholder="Temukan di sini ..." />
+      </div>
+      <div class="user-profile">
+        <div class="avatar">
+          <i class="fa-solid fa-user"></i>
+        </div>
+        <span class="user-name">User20</span>
+        <i class="fa-solid fa-chevron-down"></i>
+      </div>
+    </header>
+
+    <!-- PAGE CONTENT -->
+    <div class="page-body">
+
+      <!-- LEFT COLUMN -->
+      <section class="left-col">
+        <h1 class="page-title">Materi Komunitas</h1>
+
+        <!-- TABS -->
+        <div class="tabs">
+          <button class="tab" onclick="filterTab(this, 'semua')">Semua</button>
+          <button class="tab active" onclick="filterTab(this, 'mendatang')">Mendatang</button>
+          <button class="tab" onclick="filterTab(this, 'selesai')">Selesai</button>
+          <button class="tab" onclick="filterTab(this, 'berjalan')">Berjalan</button>
+        </div>
+
+        <!-- EXAM LIST -->
+        <div class="exam-list" id="examList">
+
+          <div class="exam-card" data-status="mendatang">
+            <div class="exam-thumb thumb-teal">
+              <i class="fa-solid fa-flask"></i>
+            </div>
+            <div class="exam-info">
+              <h3>Pengantar berpikir kritis </h3>
+              <p></p>
+              <span class="exam-date"><i class="fa-regular fa-calendar"></i> Mulai : 15 November 2021</span>
+            </div>
+            <div class="exam-actions">
+              <button class="btn-icon edit" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+              <button class="btn-icon delete" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
+
+          <div class="exam-card" data-status="mendatang">
+            <div class="exam-thumb thumb-pink">
+              <i class="fa-solid fa-atom"></i>
+            </div>
+            <div class="exam-info">
+              <h3>Identifikasi argumen</h3>
+              <p></p>
+              <span class="exam-date"><i class="fa-regular fa-calendar"></i> Mulai : 16 November 2021</span>
+            </div>
+            <div class="exam-actions">
+              <button class="btn-icon edit" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+              <button class="btn-icon delete" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
+
+          <div class="exam-card" data-status="mendatang">
+            <div class="exam-thumb thumb-purple">
+              <i class="fa-solid fa-microscope"></i>
+            </div>
+            <div class="exam-info">
+              <h3>Logical Fallacies</h3>
+              <p></p>
+              <span class="exam-date"><i class="fa-regular fa-calendar"></i> Mulai : 17 November 2021</span>
+            </div>
+            <div class="exam-actions">
+              <button class="btn-icon edit" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+              <button class="btn-icon delete" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
+
+          <div class="exam-card" data-status="selesai">
+            <div class="exam-thumb thumb-green">
+              <i class="fa-solid fa-vial"></i>
+            </div>
+            <div class="exam-info">
+              <h3>Materi Selesai</h3>
+              <p></p>
+              <span class="exam-date"><i class="fa-regular fa-calendar"></i> Mulai : 20 November 2021</span>
+            </div>
+            <div class="exam-actions">
+              <button class="btn-icon edit" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+              <button class="btn-icon delete" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
+
+          <div class="exam-card" data-status="berjalan">
+            <div class="exam-thumb thumb-orange">
+              <i class="fa-solid fa-fire-flame-curved"></i>
+            </div>
+            <div class="exam-info">
+              <h3>Materi Berjalan</h3>
+              <p></p>
+              <span class="exam-date"><i class="fa-regular fa-calendar"></i> Mulai : 05 Mei 2026</span>
+            </div>
+            <div class="exam-actions">
+              <button class="btn-icon edit" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+              <button class="btn-icon delete" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- RIGHT COLUMN -->
+      <aside class="right-col">
+
+        <!-- CREATE NEW EXAM BANNER -->
+        <div class="create-banner">
+          <div class="create-banner-text">
+            <h3>Buat Materi Baru</h3>
+            <p>Impor materi dari Ms. Word atau buat langsung di EDUVIX</p>
+          </div>
+          <div class="create-banner-icon">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+          </div>
+          <button class="btn-create" onclick="handleCreate()">
+            <i class="fa-solid fa-plus"></i> Buat Sekarang
+          </button>
+        </div>
+
+        <!-- SCHEDULE -->
+        <div class="schedule-card">
+          <div class="schedule-header">
+            <h3>Jadwal</h3>
+            <a href="#">Lihat Semua</a>
+          </div>
+
+          <div class="schedule-list">
+            <div class="schedule-item active">
+              <div class="schedule-day">04</div>
+              <div class="schedule-detail">
+                <span class="class-name">Kelas X MIPA 3</span>
+                <span class="class-topic"></span>
+              </div>
+              <div class="schedule-time">08.00 – 09.30 WIB</div>
+            </div>
+
+            <div class="schedule-item">
+              <div class="schedule-day">05</div>
+              <div class="schedule-detail">
+                <span class="class-name">Kelas XII MIPA 3</span>
+                <span class="class-topic"></span>
+              </div>
+              <div class="schedule-time">09.30 – 11.00 WIB</div>
+            </div>
+
+            <div class="schedule-item">
+              <div class="schedule-day">06</div>
+              <div class="schedule-detail">
+                <span class="class-name">Kelas XI MIPA 2</span>
+                <span class="class-topic"></span>
+              </div>
+              <div class="schedule-time">13.00 – 14.30 WIB</div>
+            </div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+  </main>
+
+  <!-- MODAL: CREATE EXAM -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+      <h2>Buat Materi Baru</h2>
+      <p>Pilih metode pembuatan materi:</p>
+      <div class="modal-options">
+        <div class="modal-option">
+          <i class="fa-solid fa-file-word"></i>
+          <span>Impor dari Ms. Word</span>
+        </div>
+        <div class="modal-option">
+          <i class="fa-solid fa-pen-nib"></i>
+          <span>Buat Manual</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

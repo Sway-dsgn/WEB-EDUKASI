@@ -1,0 +1,731 @@
+/* ==================== CSS Variables ==================== */
+:root {
+    --primary: #2563eb;
+    --secondary: #17a085;
+    --accent: #f59e0b;
+    --danger: #ef4444;
+    --success: #10b981;
+    
+    --bg-light: #f9fafb;
+    --bg-white: #ffffff;
+    --text-primary: #1a1a1a;
+    --text-secondary: #6b7280;
+    --border: #e5e7eb;
+}
+
+/* ==================== Reset & Base ==================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+.logo-img {
+  width: 160px;
+  height: auto;
+  display: block;
+}
+
+/* Fallback teks jika gambar tidak load */
+.logo-img[alt]::after {
+  content: 'EDUVIX.ID';
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  color: white;
+  letter-spacing: -0.5px;
+}
+
+
+
+/* ==================== Header ==================== */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+    padding: 1rem 2rem;
+    
+}
+
+.nav {
+    max-width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo-icon {
+    width: 32px;
+    height: 32px;
+    color: var(--primary);
+}
+
+.brand-text {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--text-primary);
+}
+
+.nav-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+/* ==================== Main Layout ==================== */
+.materi-container {
+    display: flex;
+    margin-top: 80px;
+    min-height: calc(100vh - 80px);
+}
+
+.materi-sidebar {
+    width: 280px;
+    background-color: white;
+    border-right: 1px solid var(--border);
+    padding: 2rem 1rem;
+    position: fixed;
+    left: 0;
+    top: 80px;
+    bottom: 0;
+    overflow-y: auto;
+}
+
+.sidebar-header h2 {
+    font-size: 1.125rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+}
+
+.lessons-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.lesson-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem;
+    border: 1px solid transparent;
+    border-radius: 0.5rem;
+    background-color: transparent;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    text-align: left;
+}
+
+.lesson-nav-item:hover {
+    background-color: var(--bg-light);
+    color: var(--primary);
+}
+
+.lesson-nav-item.active {
+    background-color: rgba(37, 99, 235, 0.1);
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+.lesson-number {
+    font-weight: 700;
+    font-size: 1rem;
+    opacity: 0.5;
+}
+
+.lesson-title {
+    flex: 1;
+}
+
+.level-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.625rem;
+    font-weight: 600;
+    color: white;
+}
+
+.level-1 {
+    background-color: #10b981;
+}
+
+.level-2 {
+    background-color: #f59e0b;
+}
+
+.level-3 {
+    background-color: #8b5cf6;
+}
+
+/* ==================== Main Content ==================== */
+.materi-main {
+    margin-left: 280px;
+    flex: 1;
+    padding: 2rem;
+    max-width: 900px;
+}
+
+.progress-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border);
+}
+
+.progress-bar-container {
+    flex: 1;
+    margin-right: 2rem;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background-color: var(--bg-light);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary) 0%, #1d4ed8 100%);
+    transition: width 0.5s ease;
+}
+
+.progress-text {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.btn-skip {
+    padding: 0.75rem 1.5rem;
+    background-color: transparent;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-skip:hover {
+    border-color: var(--danger);
+    color: var(--danger);
+}
+
+/* ==================== Lesson Content ==================== */
+.lesson-content {
+    display: none;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.lesson-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.lesson-header {
+    margin-bottom: 2rem;
+}
+
+.lesson-header h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.lesson-meta {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.lesson-section {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border);
+}
+
+.lesson-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.lesson-section p {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    line-height: 1.8;
+}
+
+/* ==================== Info Box ==================== */
+.info-box {
+    background-color: rgba(37, 99, 235, 0.05);
+    border-left: 4px solid var(--primary);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin-top: 1.5rem;
+}
+
+.info-box h3 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+.info-box ul {
+    list-style-position: inside;
+    color: var(--text-secondary);
+}
+
+.info-box li {
+    margin-bottom: 0.5rem;
+}
+
+/* ==================== Content Grid ==================== */
+.content-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.content-card {
+    background-color: var(--bg-light);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+}
+
+.content-card:hover {
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+    transform: translateY(-4px);
+}
+
+.content-card h3 {
+    font-size: 1.125rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-primary);
+}
+
+.content-card p {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+/* ==================== Table ==================== */
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
+}
+
+.comparison-table th {
+    background-color: var(--primary);
+    color: white;
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+.comparison-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.comparison-table tr:last-child td {
+    border-bottom: none;
+}
+
+.comparison-table tr:nth-child(even) {
+    background-color: var(--bg-light);
+}
+
+/* ==================== Structure Box ==================== */
+.structure-box {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.structure-item {
+    background-color: var(--bg-light);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    border-left: 4px solid var(--primary);
+}
+
+.structure-item h3 {
+    color: var(--primary);
+    margin-bottom: 0.75rem;
+}
+
+.structure-item p {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.example {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 0.25rem;
+    border-left: 2px solid var(--accent);
+    font-size: 0.875rem;
+    color: var(--text-primary);
+}
+
+/* ==================== Argument Types ==================== */
+.argument-types {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.argument-card {
+    background-color: var(--bg-light);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    border: 2px solid var(--primary);
+}
+
+.argument-card h3 {
+    color: var(--primary);
+    margin-bottom: 0.75rem;
+}
+
+.argument-card p {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.logic-flow {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    font-style: italic;
+}
+
+/* ==================== Fallacy Grid ==================== */
+.fallacy-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.fallacy-card {
+    background-color: var(--bg-light);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    border-left: 4px solid var(--danger);
+}
+
+.fallacy-card h3 {
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+}
+
+.fallacy-card p {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.example-bad {
+    background-color: rgba(239, 68, 68, 0.1);
+    border-left: 2px solid var(--danger);
+    padding: 1rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    color: var(--danger);
+}
+
+/* ==================== Quiz Section ==================== */
+.quiz-section {
+    background-color: rgba(37, 99, 235, 0.05);
+    padding: 2rem;
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(37, 99, 235, 0.2);
+}
+
+.quiz-section h2 {
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+    font-size: 1.25rem;
+}
+
+.quiz-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.quiz-question h3 {
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.quiz-option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background-color: white;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.quiz-option:hover {
+    border-color: var(--primary);
+    background-color: rgba(37, 99, 235, 0.05);
+}
+
+.quiz-option input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--primary);
+}
+
+.quiz-option span {
+    flex: 1;
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+}
+
+.answer-key {
+    padding: 1rem;
+    background-color: rgba(16, 185, 129, 0.1);
+    border-left: 2px solid var(--success);
+    border-radius: 0.25rem;
+    color: var(--success);
+    font-weight: 600;
+    margin-top: 1rem;
+}
+
+.btn-submit-quiz {
+    padding: 0.75rem 2rem;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.btn-submit-quiz:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+/* ==================== Summary Box ==================== */
+.summary-box {
+    background-color: rgba(16, 185, 129, 0.05);
+    border-left: 4px solid var(--success);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.summary-box h3 {
+    color: var(--success);
+    margin-bottom: 1rem;
+}
+
+.summary-box ul {
+    list-style-position: inside;
+    color: var(--text-secondary);
+}
+
+.summary-box li {
+    margin-bottom: 0.75rem;
+    font-size: 0.9375rem;
+}
+
+/* ==================== Navigation ==================== */
+.lesson-navigation {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+}
+
+.btn-nav {
+    flex: 1;
+    padding: 1rem;
+    background-color: white;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--text-primary);
+}
+
+.btn-nav:hover:not(:disabled) {
+    background-color: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.btn-nav:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ==================== Responsive ==================== */
+@media (max-width: 1024px) {
+    .materi-sidebar {
+        width: 220px;
+    }
+
+    .materi-main {
+        margin-left: 220px;
+    }
+
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .structure-box {
+        grid-template-columns: 1fr;
+    }
+
+    .argument-types {
+        grid-template-columns: 1fr;
+    }
+
+    .fallacy-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        padding: 0.75rem 1rem;
+    }
+
+    .materi-container {
+        flex-direction: column;
+        margin-top: 70px;
+    }
+
+    .materi-sidebar {
+        width: 100%;
+        position: static;
+        top: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        height: auto;
+        padding: 1rem;
+        display: none;
+    }
+
+    .materi-main {
+        margin-left: 0;
+        padding: 1rem;
+    }
+
+    .lesson-section {
+        padding: 1.5rem 1rem;
+    }
+
+    .progress-section {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .progress-bar-container {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .lesson-navigation {
+        flex-direction: column;
+    }
+}
