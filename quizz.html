@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EDUVIX.ID – Quiz</title>
+  <link rel="stylesheet" href="materi.css"/>
+  <script src="materi.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+  <!-- BACKGROUND DECORATIONS -->
+  <div class="bg-deco">
+    <div class="deco-circle c1"></div>
+    <div class="deco-circle c2"></div>
+    <div class="deco-circle c3"></div>
+    <div class="deco-dots dots-tl"></div>
+    <div class="deco-dots dots-br"></div>
+    <div class="deco-shape s1"></div>
+    <div class="deco-shape s2"></div>
+    <div class="deco-shape s3"></div>
+    <div class="deco-play play-tl"><i class="fa-solid fa-play"></i></div>
+    <div class="deco-play play-br"><i class="fa-solid fa-play"></i></div>
+  </div>
+
+  <!-- TOP FLOATING BAR -->
+  <div class="top-bar">
+    <a href="dashboard.html" class="back-btn" title="Kembali ke Dashboard">
+      <i class="fa-solid fa-arrow-left"></i>
+      <span>Dashboard</span>
+    </a>
+    <div class="topbar-logo">
+      <img src="WhatsApp Image 2026-05-05 at 18.33.04.png" alt="EDUVIX.ID Logo" class="logo-img"/>
+    </div>
+    <button class="add-soal-btn" id="addSoalBtn">
+      <i class="fa-solid fa-plus"></i>
+      <span>Tambah Soal</span>
+    </button>
+  </div>
+
+  <!-- QUIZ CONTAINER -->
+  <div class="quiz-wrap" id="quizWrap">
+
+    <!-- HEADER -->
+    <div class="quiz-header">
+      <div class="qh-left">
+        <div class="quiz-brand">
+          <img src="WhatsApp Image 2026-05-05 at 18.33.04.png" alt="EDUVIX.ID" class="brand-logo"/>
+          <div>
+            <div class="brand-name">EDUVIX<span>.ID</span></div>
+            <div class="brand-session" id="sessionLabel">Session 1</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="qh-center">
+        <div class="progress-info">
+          <span class="progress-pct" id="progressPct">10%</span>
+          <span class="progress-count" id="progressCount">1 / 10</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-actions">
+          <button class="pill-btn review-btn" id="reviewBtn">
+            <i class="fa-solid fa-map"></i> Peta Soal
+          </button>
+          <button class="pill-btn mark-btn" id="markBtn">
+            <i class="fa-regular fa-bookmark"></i> Mark as review
+          </button>
+        </div>
+      </div>
+
+      <div class="qh-right">
+        <div class="timer-box" id="timerBox">
+          <i class="fa-regular fa-clock"></i>
+          <div>
+            <div class="timer-val" id="timerVal">20:00</div>
+            <div class="timer-label">Time Left</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUESTION AREA -->
+    <div class="question-area" id="questionArea">
+      <div class="question-meta" id="questionMeta">Question 1</div>
+      <div class="question-text" id="questionText">Loading...</div>
+    </div>
+
+    <!-- OPTIONS -->
+    <div class="options-list" id="optionsList"></div>
+
+    <!-- FOOTER -->
+    <div class="quiz-footer">
+      <div class="qf-left">
+        <button class="nav-btn prev-btn" id="prevBtn">
+          <i class="fa-solid fa-arrow-left"></i> Previous
+        </button>
+        <button class="nav-btn next-btn" id="nextBtn">
+          Next <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+      <button class="finish-btn" id="finishBtn">Finish</button>
+    </div>
+
+  </div>
+
+  <!-- QUESTION MAP PANEL -->
+  <div class="qmap-overlay" id="qmapOverlay">
+    <div class="qmap-panel">
+      <div class="qmap-head">
+        <h3><i class="fa-solid fa-map"></i> Peta Soal</h3>
+        <button class="icon-close" id="qmapClose"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="qmap-legend">
+        <span class="leg answered">Dijawab</span>
+        <span class="leg marked">Ditandai</span>
+        <span class="leg current">Aktif</span>
+        <span class="leg empty">Belum</span>
+      </div>
+      <div class="qmap-grid" id="qmapGrid"></div>
+      <div class="qmap-summary" id="qmapSummary"></div>
+      <button class="finish-btn qmap-finish" id="qmapFinish">
+        <i class="fa-solid fa-flag-checkered"></i> Finish Quiz
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL TAMBAH SOAL -->
+  <div class="modal-overlay" id="addSoalOverlay">
+    <div class="modal-panel">
+      <div class="modal-head">
+        <div class="modal-title">
+          <div class="modal-icon"><i class="fa-solid fa-circle-plus"></i></div>
+          <h3>Tambah Soal Baru</h3>
+        </div>
+        <button class="icon-close" id="addSoalClose"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Pertanyaan <span class="req">*</span></label>
+          <textarea id="inputQuestion" placeholder="Tulis pertanyaan di sini..." rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Pilihan Jawaban <span class="req">*</span> — klik <i class="fa-regular fa-circle-check"></i> untuk jawaban benar</label>
+          <div class="options-input" id="optionsInput">
+            <div class="opt-row" data-idx="0">
+              <div class="opt-label">A</div>
+              <input type="text" placeholder="Pilihan A..." class="opt-field"/>
+              <button class="opt-correct-toggle" data-idx="0"><i class="fa-regular fa-circle-check"></i></button>
+            </div>
+            <div class="opt-row" data-idx="1">
+              <div class="opt-label">B</div>
+              <input type="text" placeholder="Pilihan B..." class="opt-field"/>
+              <button class="opt-correct-toggle" data-idx="1"><i class="fa-regular fa-circle-check"></i></button>
+            </div>
+            <div class="opt-row" data-idx="2">
+              <div class="opt-label">C</div>
+              <input type="text" placeholder="Pilihan C..." class="opt-field"/>
+              <button class="opt-correct-toggle" data-idx="2"><i class="fa-regular fa-circle-check"></i></button>
+            </div>
+            <div class="opt-row" data-idx="3">
+              <div class="opt-label">D</div>
+              <input type="text" placeholder="Pilihan D..." class="opt-field"/>
+              <button class="opt-correct-toggle" data-idx="3"><i class="fa-regular fa-circle-check"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="nav-btn" id="addSoalCancel">Batal</button>
+        <button class="finish-btn" id="addSoalSave">
+          <i class="fa-solid fa-floppy-disk"></i> Simpan Soal
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div class="result-screen" id="resultScreen">
+    <div class="result-card">
+      <img src="logo-eduvix.png" alt="EDUVIX.ID" class="result-logo-img"/>
+      <div class="result-icon"><i class="fa-solid fa-circle-check"></i></div>
+      <h2>Quiz Selesai!</h2>
+      <p class="result-sub">Berikut hasil kamu:</p>
+      <div class="result-stats">
+        <div class="rs-item" style="--rc:#6c4de6">
+          <div class="rs-val" id="rsScore">0</div>
+          <div class="rs-label">Skor</div>
+        </div>
+        <div class="rs-item" style="--rc:#22c55e">
+          <div class="rs-val" id="rsCorrect">0</div>
+          <div class="rs-label">Benar</div>
+        </div>
+        <div class="rs-item" style="--rc:#ef4444">
+          <div class="rs-val" id="rsWrong">0</div>
+          <div class="rs-label">Salah</div>
+        </div>
+        <div class="rs-item" style="--rc:#f97316">
+          <div class="rs-val" id="rsUnanswered">0</div>
+          <div class="rs-label">Kosong</div>
+        </div>
+      </div>
+      <div class="score-bar-wrap">
+        <div class="score-bar-track">
+          <div class="score-bar-fill" id="scoreBarFill"></div>
+        </div>
+        <span class="score-bar-label" id="scoreBarLabel">0%</span>
+      </div>
+      <div class="result-actions">
+        <a href="dashboard.html" class="nav-btn">
+          <i class="fa-solid fa-house"></i> Dashboard
+        </a>
+        <button class="nav-btn" id="reviewResultBtn">
+          <i class="fa-solid fa-eye"></i> Review
+        </button>
+        <button class="finish-btn" id="retryBtn">
+          <i class="fa-solid fa-rotate-right"></i> Ulangi
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script src="quiz.js"></script>
+</body>
+</html>

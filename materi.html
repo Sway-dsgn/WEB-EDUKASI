@@ -1,458 +1,461 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Materi Pembelajaran - Pikir Kritis</title>
-    <link rel="stylesheet" href="materi.css">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EDUVIX.ID — Pikir Kritis</title>
+  <link rel="stylesheet" href="materi.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@500;600;700&family=Cabinet+Grotesk:wght@400;500;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 </head>
 <body>
-    <header class="header">
-        <nav class="nav">
-            <div class="nav-brand">
-                    <g stroke="#2563eb" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="70" cy="50" r="15"/>
-                        <circle cx="110" cy="50" r="15"/>
-                        <path d="M60 70 Q70 90 70 110 Q70 130 85 140 Q100 150 115 140 Q130 130 130 110 Q130 90 140 70"/>
-                        <path d="M85 110 L85 140"/>
-                        <path d="M115 110 L115 140"/>
-                        <path d="M95 100 L105 100"/>
-                        <path d="M100 95 L100 105"/>
-                    </g>
-                <div class="sidebar-logo">
-                    <img src="WhatsApp Image 2026-05-05 at 18.33.04.png" alt="EDUVIX.ID Logo" class="logo-img" />
-                </div>
-            </div>
-            <div class="nav-actions">
-                <a href="dashboard.html" class="btn btn-secondary">Kembali ke Dashboard</a>
-            </div>
-        </nav>
-    </header>
 
-    <main class="materi-container">
-        <!-- Sidebar Navigation -->
-        <aside class="materi-sidebar">
-            <div class="sidebar-header">
-                <h2>Materi Pembelajaran</h2>
-            </div>
-            <nav class="lessons-nav">
-                <button class="lesson-nav-item active" data-lesson="1">
-                    <span class="lesson-number">01</span>
-                    <span class="lesson-title">Pengantar</span>
-                    <span class="level-badge level-1">Dasar</span>
-                </button>
-                <button class="lesson-nav-item" data-lesson="2">
-                    <span class="lesson-number">02</span>
-                    <span class="lesson-title">Identifikasi Argumen</span>
-                    <span class="level-badge level-2">Menengah</span>
-                </button>
-                <button class="lesson-nav-item" data-lesson="3">
-                    <span class="lesson-number">03</span>
-                    <span class="lesson-title">Logical Fallacies</span>
-                    <span class="level-badge level-2">Menengah</span>
-                </button>
-                <button class="lesson-nav-item" data-lesson="4">
-                    <span class="lesson-number">04</span>
-                    <span class="lesson-title">Cognitive Biases</span>
-                    <span class="level-badge level-2">Menengah</span>
-                </button>
-                <button class="lesson-nav-item" data-lesson="5">
-                    <span class="lesson-number">05</span>
-                    <span class="lesson-title">Evaluasi Sumber</span>
-                    <span class="level-badge level-3">Lanjut</span>
-                </button>
-                <button class="lesson-nav-item" data-lesson="6">
-                    <span class="lesson-number">06</span>
-                    <span class="lesson-title">Keputusan Rasional</span>
-                    <span class="level-badge level-3">Lanjut</span>
-                </button>
-            </nav>
-        </aside>
+<!-- ░░ CURSOR GLOW ░░ -->
+<div class="cursor-glow" id="cursorGlow"></div>
 
-        <!-- Main Content Area -->
-        <div class="materi-main">
-            <!-- Progress Bar -->
-            <div class="progress-section">
-                <div class="progress-bar-container">
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 0%"></div>
-                    </div>
-                    <span class="progress-text">0% Selesai</span>
-                </div>
-                <button class="btn-skip">Lewati Materi</button>
-            </div>
+<!-- ░░ SIDEBAR ░░ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sb-logo">
+    <a href="dashboard.html" class="sb-back"><i class="fa-solid fa-arrow-left"></i></a>
+    <img src="logo-eduvix.png" alt="EDUVIX" class="sb-logo-img" onerror="this.style.display='none'"/>
+    <span class="sb-logo-text">EDUVIX<em>.ID</em></span>
+  </div>
 
-            <!-- Lesson 1: Pengantar Berpikir Kritis -->
-            <article class="lesson-content active" id="lesson-1">
-                <div class="lesson-header">
-                    <h1>Pengantar Berpikir Kritis</h1>
-                    <div class="lesson-meta">
-                        <span class="level-badge level-1">Level 1: Dasar</span>
-                        <span class="duration">⏱️ 45 menit</span>
-                    </div>
-                </div>
+  <!-- XP & Level -->
+  <div class="sb-player">
+    <div class="sb-avatar"><i class="fa-solid fa-user-graduate"></i></div>
+    <div class="sb-player-info">
+      <div class="sb-username">User20</div>
+      <div class="sb-level-row">
+        <span class="sb-level-tag" id="sbLevel">Lv.1</span>
+        <div class="sb-xp-bar"><div class="sb-xp-fill" id="sbXpFill"></div></div>
+        <span class="sb-xp-num" id="sbXpNum">0 XP</span>
+      </div>
+    </div>
+  </div>
 
-                <!-- Lesson Content -->
-                <section class="lesson-section">
-                    <h2>Apa itu Berpikir Kritis?</h2>
-                    <p>Berpikir kritis adalah kemampuan untuk menganalisis, mengevaluasi, dan membuat keputusan berdasarkan logika dan bukti, bukan hanya emosi atau opini.</p>
-                    
-                    <div class="info-box">
-                        <h3>🎯 Tujuan Pembelajaran</h3>
-                        <ul>
-                            <li>Memahami definisi berpikir kritis</li>
-                            <li>Mengenali perbedaan opini dan fakta</li>
-                            <li>Mengidentifikasi elemen-elemen berpikir kritis</li>
-                            <li>Menerapkan dalam kehidupan sehari-hari</li>
-                        </ul>
-                    </div>
-                </section>
+  <!-- Streak -->
+  <div class="sb-streak">
+    <i class="fa-solid fa-fire"></i>
+    <span id="sbStreak">0</span> hari streak
+  </div>
 
-                <section class="lesson-section">
-                    <h2>Elemen Utama Berpikir Kritis</h2>
-                    <div class="content-grid">
-                        <div class="content-card">
-                            <h3>🔍 Observasi</h3>
-                            <p>Memperhatikan detail dan informasi dengan seksama</p>
-                        </div>
-                        <div class="content-card">
-                            <h3>❓ Pertanyaan</h3>
-                            <p>Mengajukan pertanyaan "mengapa" dan "bagaimana"</p>
-                        </div>
-                        <div class="content-card">
-                            <h3>📊 Analisis</h3>
-                            <p>Memecah informasi menjadi bagian-bagian kecil</p>
-                        </div>
-                        <div class="content-card">
-                            <h3>⚖️ Evaluasi</h3>
-                            <p>Menilai kualitas dan kredibilitas informasi</p>
-                        </div>
-                    </div>
-                </section>
+  <!-- Lessons -->
+  <nav class="sb-nav">
+    <div class="sb-nav-title">Materi Pembelajaran</div>
 
-                <section class="lesson-section">
-                    <h2>Opini vs Fakta</h2>
-                    <table class="comparison-table">
-                        <thead>
-                            <tr>
-                                <th>Opini</th>
-                                <th>Fakta</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Berdasarkan keyakinan pribadi</td>
-                                <td>Dapat dibuktikan dengan bukti</td>
-                            </tr>
-                            <tr>
-                                <td>Bisa berbeda antar orang</td>
-                                <td>Sama untuk semua orang</td>
-                            </tr>
-                            <tr>
-                                <td>"Saya pikir..."</td>
-                                <td>"Penelitian menunjukkan..."</td>
-                            </tr>
-                            <tr>
-                                <td>Tidak perlu bukti</td>
-                                <td>Memerlukan bukti ilmiah</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </section>
-
-                <!-- Quiz Section -->
-                <section class="quiz-section">
-                    <h2>🎯 Kuis Interaktif</h2>
-                    <div class="quiz-container">
-                        <div class="quiz-question">
-                            <h3>Pertanyaan 1: Apa definisi berpikir kritis?</h3>
-                            <div class="quiz-options">
-                                <label class="quiz-option">
-                                    <input type="radio" name="q1" value="a">
-                                    <span>A. Mengkritik segala sesuatu tanpa dasar</span>
-                                </label>
-                                <label class="quiz-option">
-                                    <input type="radio" name="q1" value="b">
-                                    <span>B. Menganalisis dan mengevaluasi berdasarkan logika dan bukti</span>
-                                </label>
-                                <label class="quiz-option">
-                                    <input type="radio" name="q1" value="c">
-                                    <span>C. Hanya menerima apa yang dikatakan ahli</span>
-                                </label>
-                                <label class="quiz-option">
-                                    <input type="radio" name="q1" value="d">
-                                    <span>D. Mengikuti opini mayoritas</span>
-                                </label>
-                            </div>
-                            <p class="answer-key" style="display: none;">✓ Jawaban benar: B</p>
-                        </div>
-
-                        <div class="quiz-question">
-                            <h3>Pertanyaan 2: Mana yang termasuk FAKTA?</h3>
-                            <div class="quiz-options">
-                                <label class="quiz-option">
-                                    <input type="radio" name="q2" value="a">
-                                    <span>A. Saya percaya bahwa coklat adalah warna terbaik</span>
-                                </label>
-                                <label class="quiz-option">
-                                    <input type="radio" name="q2" value="b">
-                                    <span>B. Air mendidih pada suhu 100°C pada tekanan normal</span>
-                                </label>
-                                <label class="quiz-option">
-                                    <input type="radio" name="q2" value="c">
-                                    <span>C. Menurut pendapat saya, ini sangat menarik</span>
-                                </label>
-                                <label class="quiz-option">
-                                    <input type="radio" name="q2" value="d">
-                                    <span>D. Semua orang harus menyukai musik klasik</span>
-                                </label>
-                            </div>
-                            <p class="answer-key" style="display: none;">✓ Jawaban benar: B</p>
-                        </div>
-                    </div>
-                    <button class="btn-submit-quiz">Cek Jawaban</button>
-                </section>
-
-                <!-- Summary Box -->
-                <section class="summary-box">
-                    <h3>📌 Ringkasan</h3>
-                    <ul>
-                        <li>Berpikir kritis = analisis berdasarkan logika dan bukti</li>
-                        <li>Perbedaan opini (subjektif) dan fakta (objektif)</li>
-                        <li>4 elemen utama: observasi, pertanyaan, analisis, evaluasi</li>
-                        <li>Skill ini penting untuk pengambilan keputusan yang baik</li>
-                    </ul>
-                </section>
-
-                <!-- Navigation -->
-                <div class="lesson-navigation">
-                    <button class="btn-nav prev" disabled>← Sebelumnya</button>
-                    <button class="btn-nav next">Materi Berikutnya →</button>
-                </div>
-            </article>
-
-            <!-- Lesson 2: Identifikasi Argumen -->
-            <article class="lesson-content" id="lesson-2">
-                <div class="lesson-header">
-                    <h1>Identifikasi Argumen</h1>
-                    <div class="lesson-meta">
-                        <span class="level-badge level-2">Level 2: Menengah</span>
-                        <span class="duration">⏱️ 60 menit</span>
-                    </div>
-                </div>
-
-                <section class="lesson-section">
-                    <h2>Struktur Argumen</h2>
-                    <p>Setiap argumen terdiri dari:</p>
-                    
-                    <div class="structure-box">
-                        <div class="structure-item">
-                            <h3>1. Premis</h3>
-                            <p>Pernyataan yang dianggap benar sebagai dasar argumen</p>
-                            <div class="example">
-                                <strong>Contoh:</strong> "Semua manusia adalah makhluk yang hidup"
-                            </div>
-                        </div>
-                        <div class="structure-item">
-                            <h3>2. Kesimpulan</h3>
-                            <p>Pernyataan yang disimpulkan dari premis</p>
-                            <div class="example">
-                                <strong>Contoh:</strong> "Oleh karena itu, Budi adalah makhluk yang hidup"
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="lesson-section">
-                    <h2>Jenis-Jenis Argumen</h2>
-                    <div class="argument-types">
-                        <div class="argument-card">
-                            <h3>Argumen Deduktif</h3>
-                            <p>Dari umum ke khusus</p>
-                            <div class="logic-flow">
-                                <p>Semua kucing adalah hewan → Mittens adalah kucing → Mittens adalah hewan</p>
-                            </div>
-                        </div>
-                        <div class="argument-card">
-                            <h3>Argumen Induktif</h3>
-                            <p>Dari khusus ke umum</p>
-                            <div class="logic-flow">
-                                <p>Ayam X bertelur → Ayam Y bertelur → Semua ayam bertelur</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Quiz for Lesson 2 -->
-                <section class="quiz-section">
-                    <h2>🎯 Kuis Interaktif</h2>
-                    <div class="quiz-container">
-                        <div class="quiz-question">
-                            <h3>Pertanyaan 1: Apa premis dalam argumen ini?</h3>
-                            <p><em>"Semua logam dapat menghantarkan listrik. Tembaga adalah logam. Oleh karena itu, tembaga dapat menghantarkan listrik."</em></p>
-                            <div class="quiz-options">
-                                <label class="quiz-option">
-                                    <input type="radio" name="q3" value="a">
-                                    <span>A. Tembaga dapat menghantarkan listrik</span>
-                                </label>
-                                <label class="quiz-option">
-                                    <input type="radio" name="q3" value="b">
-                                    <span>B. Semua logam dapat menghantarkan listrik</span>
-                                </label>
-                                <label class="quiz-option">
-                                    <input type="radio" name="q3" value="c">
-                                    <span>C. Tembaga adalah logam</span>
-                                </label>
-                                <label class="quiz-option">
-                                    <input type="radio" name="q3" value="d">
-                                    <span>D. B dan C keduanya</span>
-                                </label>
-                            </div>
-                            <p class="answer-key" style="display: none;">✓ Jawaban benar: D</p>
-                        </div>
-                    </div>
-                    <button class="btn-submit-quiz">Cek Jawaban</button>
-                </section>
-
-                <div class="lesson-navigation">
-                    <button class="btn-nav prev">← Sebelumnya</button>
-                    <button class="btn-nav next">Materi Berikutnya →</button>
-                </div>
-            </article>
-
-            <!-- Lesson 3: Logical Fallacies -->
-            <article class="lesson-content" id="lesson-3">
-                <div class="lesson-header">
-                    <h1>Logical Fallacies (Kesalahan Logika)</h1>
-                    <div class="lesson-meta">
-                        <span class="level-badge level-2">Level 2: Menengah</span>
-                        <span class="duration">⏱️ 55 menit</span>
-                    </div>
-                </div>
-
-                <section class="lesson-section">
-                    <h2>Jenis-Jenis Fallacy</h2>
-                    
-                    <div class="fallacy-grid">
-                        <div class="fallacy-card">
-                            <h3>Ad Hominem</h3>
-                            <p>Menyerang karakter orang, bukan argumennya</p>
-                            <div class="example-bad">
-                                ❌ "Dia jelek, jadi pendapatnya pasti salah"
-                            </div>
-                        </div>
-                        
-                        <div class="fallacy-card">
-                            <h3>Strawman</h3>
-                            <p>Mengubah argumen lawan menjadi bentuk yang mudah diserang</p>
-                            <div class="example-bad">
-                                ❌ A: "Kami perlu lebih hati-hati dengan penggunaan media sosial"<br>
-                                B: "Jadi Anda ingin ban media sosial sepenuhnya?"
-                            </div>
-                        </div>
-
-                        <div class="fallacy-card">
-                            <h3>Hasty Generalization</h3>
-                            <p>Menyimpulkan umum dari contoh yang sedikit</p>
-                            <div class="example-bad">
-                                ❌ "Saya bertemu 2 orang Indonesia yang ramah, berarti semua orang Indonesia ramah"
-                            </div>
-                        </div>
-
-                        <div class="fallacy-card">
-                            <h3>False Dilemma</h3>
-                            <p>Hanya menawarkan dua pilihan padahal ada lebih banyak</p>
-                            <div class="example-bad">
-                                ❌ "Anda harus setuju denganku atau Anda musuh saya"
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Quiz for Lesson 3 -->
-                <section class="quiz-section">
-                    <h2>🎯 Kuis Interaktif</h2>
-                    <div class="quiz-container">
-                        <div class="quiz-question">
-                            <h3>Pertanyaan 1: Mana yang termasuk Ad Hominem?</h3>
-                            <div class="quiz-options">
-                                <label class="quiz-option">
-                                    <input type="radio" name="q4" value="a">
-                                    <span>A. "Pakaianmu tidak bagus, jadi resepmu tidak lezat"</span>
-                                </label>
-                                <label class="quiz-option">
-                                    <input type="radio" name="q4" value="b">
-                                    <span>B. "Bukti menunjukkan metode ini tidak efektif"</span>
-                                </label>
-                                <label class="quiz-option">
-                                    <input type="radio" name="q4" value="c">
-                                    <span>C. "Berdasarkan penelitian, ini adalah pilihan terbaik"</span>
-                                </label>
-                                <label class="quiz-option">
-                                    <input type="radio" name="q4" value="d">
-                                    <span>D. "Semua penelitian setuju dengan pendapat ini"</span>
-                                </label>
-                            </div>
-                            <p class="answer-key" style="display: none;">✓ Jawaban benar: A</p>
-                        </div>
-                    </div>
-                    <button class="btn-submit-quiz">Cek Jawaban</button>
-                </section>
-
-                <div class="lesson-navigation">
-                    <button class="btn-nav prev">← Sebelumnya</button>
-                    <button class="btn-nav next">Materi Berikutnya →</button>
-                </div>
-            </article>
-
-            <!-- Lesson 4, 5, 6 placeholder for brevity -->
-            <article class="lesson-content" id="lesson-4">
-                <div class="lesson-header">
-                    <h1>Cognitive Biases (Bias Kognitif)</h1>
-                    <div class="lesson-meta">
-                        <span class="level-badge level-2">Level 2: Menengah</span>
-                        <span class="duration">⏱️ 50 menit</span>
-                    </div>
-                </div>
-                <p>Materi akan dimulai...</p>
-                <div class="lesson-navigation">
-                    <button class="btn-nav prev">← Sebelumnya</button>
-                    <button class="btn-nav next">Materi Berikutnya →</button>
-                </div>
-            </article>
-
-            <article class="lesson-content" id="lesson-5">
-                <div class="lesson-header">
-                    <h1>Evaluasi Sumber Informasi</h1>
-                    <div class="lesson-meta">
-                        <span class="level-badge level-3">Level 3: Lanjut</span>
-                        <span class="duration">⏱️ 65 menit</span>
-                    </div>
-                </div>
-                <p>Materi akan dimulai...</p>
-                <div class="lesson-navigation">
-                    <button class="btn-nav prev">← Sebelumnya</button>
-                    <button class="btn-nav next">Materi Berikutnya →</button>
-                </div>
-            </article>
-
-            <article class="lesson-content" id="lesson-6">
-                <div class="lesson-header">
-                    <h1>Pengambilan Keputusan Rasional</h1>
-                    <div class="lesson-meta">
-                        <span class="level-badge level-3">Level 3: Lanjut</span>
-                        <span class="duration">⏱️ 70 menit</span>
-                    </div>
-                </div>
-                <p>Materi akan dimulai...</p>
-                <div class="lesson-navigation">
-                    <button class="btn-nav prev">← Sebelumnya</button>
-                    <button class="btn-nav next" disabled>Selesai ✓</button>
-                </div>
-            </article>
+    <button class="sb-lesson active unlocked" data-lesson="1">
+      <div class="sbl-num">01</div>
+      <div class="sbl-body">
+        <div class="sbl-title">Pengantar Berpikir Kritis</div>
+        <div class="sbl-meta">
+          <span class="sbl-diff easy">Mudah</span>
+          <span class="sbl-time"><i class="fa-regular fa-clock"></i> 45 min</span>
         </div>
-    </main>
+      </div>
+      <div class="sbl-xp">+50</div>
+      <div class="sbl-lock-icon"><i class="fa-solid fa-check-circle"></i></div>
+    </button>
 
-    <script src="materi-new.js"></script>
+    <button class="sb-lesson locked" data-lesson="2">
+      <div class="sbl-num">02</div>
+      <div class="sbl-body">
+        <div class="sbl-title">Identifikasi Argumen</div>
+        <div class="sbl-meta">
+          <span class="sbl-diff medium">Sedang</span>
+          <span class="sbl-time"><i class="fa-regular fa-clock"></i> 60 min</span>
+        </div>
+      </div>
+      <div class="sbl-xp">+75</div>
+      <div class="sbl-lock-icon"><i class="fa-solid fa-lock"></i></div>
+    </button>
+
+    <button class="sb-lesson locked" data-lesson="3">
+      <div class="sbl-num">03</div>
+      <div class="sbl-body">
+        <div class="sbl-title">Logical Fallacies</div>
+        <div class="sbl-meta">
+          <span class="sbl-diff medium">Sedang</span>
+          <span class="sbl-time"><i class="fa-regular fa-clock"></i> 55 min</span>
+        </div>
+      </div>
+      <div class="sbl-xp">+100</div>
+      <div class="sbl-lock-icon"><i class="fa-solid fa-lock"></i></div>
+    </button>
+
+    <button class="sb-lesson locked" data-lesson="4">
+      <div class="sbl-num">04</div>
+      <div class="sbl-body">
+        <div class="sbl-title">Cognitive Biases</div>
+        <div class="sbl-meta">
+          <span class="sbl-diff hard">Sulit</span>
+          <span class="sbl-time"><i class="fa-regular fa-clock"></i> 50 min</span>
+        </div>
+      </div>
+      <div class="sbl-xp">+125</div>
+      <div class="sbl-lock-icon"><i class="fa-solid fa-lock"></i></div>
+    </button>
+
+    <button class="sb-lesson locked" data-lesson="5">
+      <div class="sbl-num">05</div>
+      <div class="sbl-body">
+        <div class="sbl-title">Evaluasi Sumber</div>
+        <div class="sbl-meta">
+          <span class="sbl-diff hard">Sulit</span>
+          <span class="sbl-time"><i class="fa-regular fa-clock"></i> 65 min</span>
+        </div>
+      </div>
+      <div class="sbl-xp">+150</div>
+      <div class="sbl-lock-icon"><i class="fa-solid fa-lock"></i></div>
+    </button>
+
+    <button class="sb-lesson locked" data-lesson="6">
+      <div class="sbl-num">06</div>
+      <div class="sbl-body">
+        <div class="sbl-title">Keputusan Rasional</div>
+        <div class="sbl-meta">
+          <span class="sbl-diff expert">Expert</span>
+          <span class="sbl-time"><i class="fa-regular fa-clock"></i> 70 min</span>
+        </div>
+      </div>
+      <div class="sbl-xp">+200</div>
+      <div class="sbl-lock-icon"><i class="fa-solid fa-lock"></i></div>
+    </button>
+  </nav>
+</aside>
+
+<!-- ░░ MOBILE MENU ░░ -->
+<button class="mob-menu-btn" id="mobMenuBtn"><i class="fa-solid fa-bars"></i></button>
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+<!-- ░░ TOPBAR ░░ -->
+<header class="topbar">
+  <div class="tb-left">
+    <div class="tb-breadcrumb">
+      <a href="dashboard.html"><i class="fa-solid fa-house-chimney"></i></a>
+      <i class="fa-solid fa-chevron-right"></i>
+      <span>Materi</span>
+      <i class="fa-solid fa-chevron-right"></i>
+      <span class="tb-current" id="tbCurrent">Pengantar Berpikir Kritis</span>
+    </div>
+  </div>
+  <div class="tb-right">
+    <div class="tb-xp"><i class="fa-solid fa-star"></i> <span id="tbXp">0 XP</span></div>
+    <div class="tb-streak"><i class="fa-solid fa-fire"></i> <span id="tbStreak">0</span></div>
+    <div class="tb-read-ring">
+      <svg width="36" height="36"><circle cx="18" cy="18" r="14" fill="none" stroke="#e2e8f0" stroke-width="3"/><circle cx="18" cy="18" r="14" fill="none" stroke="var(--accent)" stroke-width="3" stroke-dasharray="88" stroke-dashoffset="88" id="tbReadRing" stroke-linecap="round" transform="rotate(-90 18 18)"/></svg>
+      <i class="fa-solid fa-book-open tb-book-icon"></i>
+    </div>
+  </div>
+</header>
+
+<!-- ░░ MAIN ░░ -->
+<main class="main-content">
+
+  <!-- ============================
+       LESSON 1
+       ============================ -->
+  <section class="lesson-page active" id="page-1">
+
+    <!-- Hero -->
+    <div class="lesson-hero">
+      <div class="lh-badge"><i class="fa-solid fa-gauge-simple-high"></i> Mudah · 45 menit</div>
+      <h1 class="lh-title">Pengantar<br/><span>Berpikir Kritis</span></h1>
+      <p class="lh-sub">Jadi pemikir tajam yang tidak mudah ditipu informasi palsu.</p>
+      <div class="lh-chips">
+        <div class="lh-chip"><i class="fa-solid fa-magnifying-glass"></i> Analitis</div>
+        <div class="lh-chip"><i class="fa-solid fa-scale-balanced"></i> Objektif</div>
+        <div class="lh-chip"><i class="fa-solid fa-shield-halved"></i> Anti-Hoax</div>
+      </div>
+      <div class="lh-deco-circle"></div>
+      <div class="lh-deco-dots"></div>
+    </div>
+
+    <!-- Welcome Banner -->
+    <div class="info-banner reveal">
+      <div class="ib-icon"><i class="fa-solid fa-rocket"></i></div>
+      <div class="ib-body">
+        <h3>Selamat Datang, Calon Critical Thinker!</h3>
+        <p>Kamu akan belajar skill yang sangat penting: <strong>Berpikir Kritis</strong> — kemampuan yang akan membantumu membuat keputusan lebih baik dalam hidup nyata.</p>
+      </div>
+    </div>
+
+    <!-- Objectives -->
+    <div class="card-section reveal">
+      <div class="cs-label"><i class="fa-solid fa-list-check"></i> Yang Akan Kamu Pelajari</div>
+      <div class="obj-grid">
+        <div class="obj-item"><div class="obj-num">01</div><p>Apa itu berpikir kritis</p></div>
+        <div class="obj-item"><div class="obj-num">02</div><p>Bedanya opini vs fakta</p></div>
+        <div class="obj-item"><div class="obj-num">03</div><p>4 elemen berpikir kritis</p></div>
+        <div class="obj-item"><div class="obj-num">04</div><p>Praktik di kehidupan nyata</p></div>
+      </div>
+    </div>
+
+    <!-- Definisi -->
+    <div class="card-section reveal">
+      <div class="cs-label"><i class="fa-solid fa-lightbulb"></i> Apa Itu Berpikir Kritis?</div>
+      <p class="cs-body">Berpikir kritis adalah kemampuan untuk <mark>menganalisis informasi dengan logika dan bukti</mark>, bukan hanya percaya begitu saja. Kamu seperti detektif yang selalu mencari fakta sebelum mengambil kesimpulan.</p>
+      <div class="callout">
+        <div class="callout-icon"><i class="fa-solid fa-user-secret"></i></div>
+        <div class="callout-body">
+          <div class="callout-label">Contoh Nyata</div>
+          <div class="callout-dialogue">
+            <div class="cd-row teman"><i class="fa-solid fa-comment"></i><p><strong>Teman:</strong> "Semua orang bilang restoran itu jelek!"</p></div>
+            <div class="cd-row kamu"><i class="fa-solid fa-comment-dots"></i><p><strong>Kamu:</strong> "Siapa yang bilang? Berapa orang? Alasannya apa? Aku butuh bukti!"</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 Elemen -->
+    <div class="card-section reveal">
+      <div class="cs-label"><i class="fa-solid fa-shapes"></i> 4 Elemen Berpikir Kritis</div>
+      <div class="elemen-grid">
+        <div class="elemen-card" style="--ec:#2563eb;--ecl:#dbeafe">
+          <div class="ec-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+          <div class="ec-num">01</div>
+          <h4>Observasi</h4>
+          <p>Perhatikan detail dengan cermat sebelum bereaksi.</p>
+          <div class="ec-tip"><i class="fa-solid fa-arrow-right"></i> Lihat bukan cuma harga, tapi kualitasnya</div>
+        </div>
+        <div class="elemen-card" style="--ec:#7c3aed;--ecl:#ede9fe">
+          <div class="ec-icon"><i class="fa-solid fa-circle-question"></i></div>
+          <div class="ec-num">02</div>
+          <h4>Pertanyaan</h4>
+          <p>Selalu tanya "Mengapa?" dan "Siapa yang berkata?"</p>
+          <div class="ec-tip"><i class="fa-solid fa-arrow-right"></i> Jangan diam saat ada yang aneh</div>
+        </div>
+        <div class="elemen-card" style="--ec:#059669;--ecl:#d1fae5">
+          <div class="ec-icon"><i class="fa-solid fa-chart-bar"></i></div>
+          <div class="ec-num">03</div>
+          <h4>Analisis</h4>
+          <p>Pecah masalah jadi bagian kecil, periksa satu-satu.</p>
+          <div class="ec-tip"><i class="fa-solid fa-arrow-right"></i> Cek setiap klaim, bandingkan data</div>
+        </div>
+        <div class="elemen-card" style="--ec:#d97706;--ecl:#fef3c7">
+          <div class="ec-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+          <div class="ec-num">04</div>
+          <h4>Evaluasi</h4>
+          <p>Timbang mana yang masuk akal, mana yang tidak.</p>
+          <div class="ec-tip"><i class="fa-solid fa-arrow-right"></i> Apakah sumber ini benar-benar kredibel?</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Opini vs Fakta -->
+    <div class="card-section reveal">
+      <div class="cs-label"><i class="fa-solid fa-code-compare"></i> Opini vs Fakta</div>
+      <div class="versus-wrap">
+        <div class="versus-card opini">
+          <div class="vc-header"><i class="fa-solid fa-brain"></i><span>OPINI</span></div>
+          <ul class="vc-list">
+            <li><i class="fa-solid fa-xmark"></i> Pendapat pribadi</li>
+            <li><i class="fa-solid fa-xmark"></i> Bisa berbeda antar orang</li>
+            <li><i class="fa-solid fa-xmark"></i> Tidak butuh bukti</li>
+            <li><i class="fa-solid fa-xmark"></i> Subjektif</li>
+          </ul>
+          <div class="vc-example">"Pizza adalah makanan terenak di dunia!"</div>
+        </div>
+        <div class="versus-divider"><span>VS</span></div>
+        <div class="versus-card fakta">
+          <div class="vc-header"><i class="fa-solid fa-database"></i><span>FAKTA</span></div>
+          <ul class="vc-list">
+            <li><i class="fa-solid fa-check"></i> Dapat dibuktikan</li>
+            <li><i class="fa-solid fa-check"></i> Sama untuk semua orang</li>
+            <li><i class="fa-solid fa-check"></i> Ada data/bukti ilmiah</li>
+            <li><i class="fa-solid fa-check"></i> Objektif</li>
+          </ul>
+          <div class="vc-example">"Air mendidih pada 100°C di tekanan normal."</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Drag & Drop Mini Game -->
+    <div class="card-section reveal">
+      <div class="cs-label"><i class="fa-solid fa-hand-pointer"></i> Mini Game: Opini atau Fakta?</div>
+      <p class="cs-body" style="margin-bottom:1.2rem">Klik kartu di bawah, lalu letakkan ke kolom yang benar!</p>
+      <div class="drag-game" id="dragGame">
+        <div class="dg-cards" id="dgCards">
+          <div class="dg-card" draggable="true" data-type="fakta" data-id="1">
+            <i class="fa-solid fa-grip-vertical"></i>
+            Matahari terbit dari timur
+          </div>
+          <div class="dg-card" draggable="true" data-type="opini" data-id="2">
+            <i class="fa-solid fa-grip-vertical"></i>
+            Film horor itu menakutkan
+          </div>
+          <div class="dg-card" draggable="true" data-type="fakta" data-id="3">
+            <i class="fa-solid fa-grip-vertical"></i>
+            Jakarta adalah ibukota Indonesia
+          </div>
+          <div class="dg-card" draggable="true" data-type="opini" data-id="4">
+            <i class="fa-solid fa-grip-vertical"></i>
+            Matematika itu membosankan
+          </div>
+        </div>
+        <div class="dg-zones">
+          <div class="dg-zone" id="zone-opini" data-accept="opini">
+            <div class="dz-header" style="--zc:#f97316"><i class="fa-solid fa-brain"></i> OPINI</div>
+            <div class="dz-drop" id="drop-opini"></div>
+          </div>
+          <div class="dg-zone" id="zone-fakta" data-accept="fakta">
+            <div class="dz-header" style="--zc:#10b981"><i class="fa-solid fa-database"></i> FAKTA</div>
+            <div class="dz-drop" id="drop-fakta"></div>
+          </div>
+        </div>
+      </div>
+      <button class="btn-check" id="btnCheckDrag" style="display:none">
+        <i class="fa-solid fa-check-double"></i> Cek Jawabanku
+      </button>
+      <div class="drag-feedback" id="dragFeedback"></div>
+    </div>
+
+    <!-- Quiz CTA -->
+    <div class="quiz-cta reveal">
+      <div class="qcta-bg"></div>
+      <div class="qcta-left">
+        <div class="qcta-tag"><i class="fa-solid fa-gamepad"></i> Quiz Time</div>
+        <h3>Siap Uji Kemampuanmu?</h3>
+        <p>3 soal interaktif · Dapatkan XP & badge!</p>
+      </div>
+      <button class="qcta-btn" id="openQuizBtn">
+        <i class="fa-solid fa-play"></i>
+        Mulai Quiz
+        <span class="qcta-xp">+50 XP</span>
+      </button>
+    </div>
+
+    <!-- Summary -->
+    <div class="summary-section reveal">
+      <div class="cs-label"><i class="fa-solid fa-clipboard-check"></i> Ringkasan</div>
+      <div class="summary-grid">
+        <div class="sum-item"><div class="sum-icon"><i class="fa-solid fa-1"></i></div><p>Berpikir kritis = analisis pakai logika &amp; bukti</p></div>
+        <div class="sum-item"><div class="sum-icon"><i class="fa-solid fa-2"></i></div><p>Opini subjektif, fakta objektif &amp; dapat dibuktikan</p></div>
+        <div class="sum-item"><div class="sum-icon"><i class="fa-solid fa-3"></i></div><p>4 elemen: Observasi · Pertanyaan · Analisis · Evaluasi</p></div>
+        <div class="sum-item"><div class="sum-icon"><i class="fa-solid fa-4"></i></div><p>Selalu cari bukti sebelum percaya informasi apapun!</p></div>
+      </div>
+    </div>
+
+    <!-- Lesson Nav -->
+    <div class="lesson-nav reveal">
+      <button class="ln-btn prev" disabled><i class="fa-solid fa-arrow-left"></i> Sebelumnya</button>
+      <div class="ln-dots">
+        <span class="ln-dot active"></span><span class="ln-dot"></span><span class="ln-dot"></span>
+        <span class="ln-dot"></span><span class="ln-dot"></span><span class="ln-dot"></span>
+      </div>
+      <button class="ln-btn next" data-next="2">Materi 2 <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+
+  </section><!-- /page-1 -->
+
+  <!-- ============================
+       LESSON 2 (placeholder)
+       ============================ -->
+  <section class="lesson-page" id="page-2">
+    <div class="coming-soon-page">
+      <div class="csp-icon"><i class="fa-solid fa-lock-open"></i></div>
+      <h2>Identifikasi Argumen</h2>
+      <p>Selamat! Materi ini berhasil dibuka.<br/>Konten sedang disiapkan oleh tim EDUVIX.ID.</p>
+      <div class="lesson-nav">
+        <button class="ln-btn prev" data-prev="1"><i class="fa-solid fa-arrow-left"></i> Kembali</button>
+        <button class="ln-btn next" data-next="3">Materi 3 <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ░░ QUIZ MODAL ░░ -->
+<div class="quiz-modal" id="quizModal">
+  <div class="qm-panel">
+    <div class="qm-header">
+      <div class="qm-title"><i class="fa-solid fa-gamepad"></i> Quiz · Pengantar Berpikir Kritis</div>
+      <button class="qm-close" id="closeQuizBtn"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="qm-prog-wrap">
+      <div class="qm-prog-bar"><div class="qm-prog-fill" id="qmProgFill"></div></div>
+      <span class="qm-prog-label" id="qmProgLabel">1 / 3</span>
+    </div>
+
+    <div class="qm-body" id="qmBody">
+      <!-- Q1 -->
+      <div class="qm-question active" data-q="1">
+        <div class="qm-q-num"><i class="fa-solid fa-circle-question"></i> Soal 1 dari 3</div>
+        <h3>Mana yang <u>BUKAN</u> termasuk elemen berpikir kritis?</h3>
+        <div class="qm-options">
+          <button class="qm-opt" data-ans="wrong"><span class="qm-letter">A</span><span>Observasi</span><i class="qm-opt-icon"></i></button>
+          <button class="qm-opt" data-ans="wrong"><span class="qm-letter">B</span><span>Analisis</span><i class="qm-opt-icon"></i></button>
+          <button class="qm-opt" data-ans="correct"><span class="qm-letter">C</span><span>Ikut-ikutan mayoritas</span><i class="qm-opt-icon"></i></button>
+          <button class="qm-opt" data-ans="wrong"><span class="qm-letter">D</span><span>Evaluasi</span><i class="qm-opt-icon"></i></button>
+        </div>
+        <div class="qm-feedback" id="qfb-1"></div>
+      </div>
+      <!-- Q2 -->
+      <div class="qm-question" data-q="2">
+        <div class="qm-q-num"><i class="fa-solid fa-circle-question"></i> Soal 2 dari 3</div>
+        <h3>Mana pernyataan yang termasuk <u>FAKTA</u>?</h3>
+        <div class="qm-options">
+          <button class="qm-opt" data-ans="wrong"><span class="qm-letter">A</span><span>Menurutku, film ini membosankan</span><i class="qm-opt-icon"></i></button>
+          <button class="qm-opt" data-ans="correct"><span class="qm-letter">B</span><span>Bumi berbentuk bulat</span><i class="qm-opt-icon"></i></button>
+          <button class="qm-opt" data-ans="wrong"><span class="qm-letter">C</span><span>Coklat adalah rasa es krim terbaik</span><i class="qm-opt-icon"></i></button>
+          <button class="qm-opt" data-ans="wrong"><span class="qm-letter">D</span><span>Semua orang harus suka matematika</span><i class="qm-opt-icon"></i></button>
+        </div>
+        <div class="qm-feedback" id="qfb-2"></div>
+      </div>
+      <!-- Q3 -->
+      <div class="qm-question" data-q="3">
+        <div class="qm-q-num"><i class="fa-solid fa-circle-question"></i> Soal 3 dari 3</div>
+        <h3>Sikap seorang critical thinker yang <u>BENAR</u> adalah:</h3>
+        <div class="qm-options">
+          <button class="qm-opt" data-ans="wrong"><span class="qm-letter">A</span><span>Percaya semua yang dikatakan ahli</span><i class="qm-opt-icon"></i></button>
+          <button class="qm-opt" data-ans="wrong"><span class="qm-letter">B</span><span>Mengkritik tanpa alasan</span><i class="qm-opt-icon"></i></button>
+          <button class="qm-opt" data-ans="correct"><span class="qm-letter">C</span><span>Mencari bukti sebelum mempercayai informasi</span><i class="qm-opt-icon"></i></button>
+          <button class="qm-opt" data-ans="wrong"><span class="qm-letter">D</span><span>Mengikuti opini mayoritas</span><i class="qm-opt-icon"></i></button>
+        </div>
+        <div class="qm-feedback" id="qfb-3"></div>
+      </div>
+    </div>
+
+    <div class="qm-footer">
+      <button class="qm-nav prev" id="qmPrev" style="display:none"><i class="fa-solid fa-arrow-left"></i> Kembali</button>
+      <div class="qm-live-score" id="qmLiveScore"></div>
+      <button class="qm-nav next" id="qmNext" disabled>Lanjut <i class="fa-solid fa-arrow-right"></i></button>
+      <button class="qm-finish" id="qmFinish" style="display:none"><i class="fa-solid fa-flag-checkered"></i> Selesai!</button>
+    </div>
+  </div>
+</div>
+
+<!-- ░░ RESULT MODAL ░░ -->
+<div class="result-modal" id="resultModal">
+  <div class="rm-panel">
+    <div class="rm-confetti" id="rmConfetti"></div>
+    <div class="rm-trophy"><i class="fa-solid fa-trophy"></i></div>
+    <h2 id="rmTitle">Luar Biasa!</h2>
+    <p id="rmSub">Kamu berhasil menyelesaikan quiz!</p>
+    <div class="rm-stars" id="rmStars"></div>
+    <div class="rm-stats">
+      <div class="rm-stat" style="--rsc:#6c4de6"><div class="rm-val" id="rmScore">0</div><div class="rm-lbl">Skor</div></div>
+      <div class="rm-stat" style="--rsc:#10b981"><div class="rm-val" id="rmCorrect">0/3</div><div class="rm-lbl">Benar</div></div>
+      <div class="rm-stat" style="--rsc:#f59e0b"><div class="rm-val" id="rmXp">+50</div><div class="rm-lbl">XP</div></div>
+    </div>
+    <div class="rm-bar-wrap">
+      <div class="rm-bar-track"><div class="rm-bar-fill" id="rmBarFill"></div></div>
+      <span id="rmBarPct">0%</span>
+    </div>
+    <div class="rm-actions">
+      <a href="dashboard.html" class="rm-btn secondary"><i class="fa-solid fa-house"></i> Dashboard</a>
+      <button class="rm-btn primary" id="rmContinue">Lanjut Belajar <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+  </div>
+</div>
+
+<!-- ░░ XP POPUP ░░ -->
+<div class="xp-popup" id="xpPopup"><i class="fa-solid fa-star"></i> +<span id="xpPopupVal">50</span> XP!</div>
+
+<!-- ░░ TOAST ░░ -->
+<div class="toast" id="toast"></div>
+
+<script src="materi-fun.js"></script>
 </body>
 </html>
