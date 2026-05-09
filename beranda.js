@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry, i) => {
       if (entry.isIntersecting) {
-        // Delay tiap elemen sedikit agar ada efek stagger
         setTimeout(() => {
           entry.target.classList.add('visible');
         }, i * 80);
@@ -43,11 +42,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }, { threshold: 0.5 });
 
+  // ---- 3.5 SYNC DASHBOARD PROGRESS ----
+  const syncDashProgress = () => {
+    const user = typeof eduvixGetUser === 'function' ? eduvixGetUser() : null;
+    const progressEl = document.getElementById('dashProgressValue');
+    if (user && progressEl) {
+      const totalMateri = 6;
+      const selesai = (user.materiSelesai || []).length;
+      const pct = Math.round((selesai / totalMateri) * 100);
+      progressEl.setAttribute('data-target', pct);
+    }
+  };
+  syncDashProgress();
+
   counterEls.forEach(el => countObserver.observe(el));
 
   function animateCounter(el) {
     const target = parseInt(el.getAttribute('data-target'), 10);
-    const duration = 1200; // ms
+    const duration = 1200;
     const step = Math.ceil(duration / target);
     let current = 0;
 
@@ -68,7 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (searchInput) {
     searchInput.addEventListener('input', function () {
       const query = this.value.toLowerCase().trim();
-
       materiItems.forEach(item => {
         const title = item.querySelector('h4')?.textContent.toLowerCase() || '';
         const match = title.includes(query);
@@ -89,8 +100,6 @@ document.addEventListener('DOMContentLoaded', () => {
     greetingSub.textContent = waktu;
   }
 
-
-
   // ---- 8. JADWAL HOVER RIPPLE ----
   const jadwalItems = document.querySelectorAll('.jadwal-item');
   jadwalItems.forEach(item => {
@@ -104,7 +113,6 @@ document.addEventListener('DOMContentLoaded', () => {
   materiItems.forEach(item => {
     item.addEventListener('click', function () {
       const h4 = this.querySelector('h4')?.textContent || '';
-      // Ganti dengan navigasi sebenarnya jika diperlukan
       console.log('Membuka materi:', h4);
     });
   });
@@ -117,26 +125,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const markAllRead = document.getElementById('markAllRead');
 
   if (notifBtn && notifDropdown) {
-    // Toggle dropdown
     notifBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       notifDropdown.classList.toggle('show');
       renderNotifications();
     });
 
-    // Close when clicking outside
     document.addEventListener('click', (e) => {
       if (!notifDropdown.contains(e.target) && !notifBtn.contains(e.target)) {
         notifDropdown.classList.remove('show');
       }
     });
 
-    // Prevent closing when clicking inside
     notifDropdown.addEventListener('click', (e) => {
       e.stopPropagation();
     });
 
-    // Mark all as read
     if (markAllRead) {
       markAllRead.addEventListener('click', () => {
         let notifs = getNotifs();
@@ -146,14 +150,12 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Function to get notifications from localStorage
     function getNotifs() {
       try {
         const raw = localStorage.getItem('eduvix_notifs');
         if (raw) return JSON.parse(raw);
       } catch (e) { }
 
-      // Default dummy notifs if empty
       const defaultNotifs = [
         { id: 1, type: 'streak', title: 'Streak Dipertahankan!', desc: 'Kamu telah belajar 3 hari berturut-turut. Lanjutkan!', time: 'Baru saja', unread: true },
         { id: 2, type: 'level', title: 'Level Up!', desc: 'Selamat! Kamu telah mencapai Level 2.', time: '2 jam lalu', unread: true },
@@ -209,7 +211,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       notifBody.innerHTML = html;
 
-      // Add click listener to mark single notif as read
       notifBody.querySelectorAll('.notif-item').forEach(item => {
         item.addEventListener('click', function () {
           const id = parseInt(this.getAttribute('data-id'));
@@ -224,8 +225,34 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Initial badge update
     updateBadge(getNotifs());
   }
+
+  // ---- 11. LEADERBOARD RENDERING ----
+  function renderLeaderboard() {
+    const listEl = document.getElementById('leaderboardList');
+    if (!listEl) return;
+
+    if (typeof eduvixGetLeaderboard === 'function') {
+      const data = eduvixGetLeaderboard();
+      let html = '';
+      data.forEach((u, i) => {
+        html += `
+          <div class="leader-item ${u.isMe ? 'is-me' : ''}">
+            <div class="leader-rank">${i + 1}</div>
+            <div class="leader-avatar">${u.nama.charAt(0).toUpperCase()}</div>
+            <div class="leader-info">
+              <div class="leader-name">${u.nama} ${u.isMe ? '(Kamu)' : ''}</div>
+              <div class="leader-level">Level ${u.level}</div>
+            </div>
+            <div class="leader-xp">${u.xp} XP</div>
+          </div>
+        `;
+      });
+      listEl.innerHTML = html;
+    }
+  }
+
+  renderLeaderboard();
 
 });

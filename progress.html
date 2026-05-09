@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Belajar - EDUVIX.ID</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="beranda.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="jalan.js"></script>
+    <script src="progress.js" defer></script>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <img src="WhatsApp Image 2026-05-05 at 18.33.04.png" alt="EDUVIX.ID Logo" class="logo-img">
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Beranda</span>
+                </a>
+                <a href="materi komunitas.html" class="nav-item">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                    <span>Materi Komunitas</span>
+                </a>
+                <a href="progress.html" class="nav-item active">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Progress</span>
+                </a>
+                <a href="pencapaian.html" class="nav-item">
+                    <i class="fa-solid fa-trophy"></i>
+                    <span>Pencapaian</span>
+                </a>
+                <a href="materi.html" class="nav-item">
+                    <i class="fa-solid fa-file-pen"></i>
+                    <span>Materi</span>
+                </a>
+                <a href="store.html" class="nav-item">
+                    <i class="fa-solid fa-store"></i>
+                    <span>Store</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="login.html" class="nav-item logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Keluar</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <header class="topbar">
+                <div class="topbar-left">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" placeholder="Cari statistik...">
+                    </div>
+                </div>
+                <div class="topbar-right">
+                    <div class="coin-display" id="coinDisplay">
+                        <div class="coin-icon">
+                            <i class="fa-solid fa-coins"></i>
+                        </div>
+                        <span data-user-coins class="stat-value">0</span>
+                    </div>
+
+                    <div class="user-profile" id="userProfile">
+                        <div class="avatar" id="userAvatarContainer"
+                            style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#7c3aed,#3b9eff);color:#fff;font-weight:800;font-size:14px;">
+                            <span data-user-avatar>U</span>
+                        </div>
+                        <span data-user-name>User</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                </div>
+            </header>
+
+            <div class="page-body">
+                <div class="section-header">
+                    <h1 class="page-title">Progress Belajar</h1>
+                    <p class="page-subtitle">Pantau kemajuan belajarmu secara mendetail.</p>
+                </div>
+
+                <!-- PROGRESS OVERVIEW CARDS -->
+                <div class="stats-grid reveal">
+                    <div class="stat-card" style="--accent: #7c3aed;">
+                        <div class="stat-icon"><i class="fa-solid fa-bullseye"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="overallPercent">0</span><span class="stat-unit">%</span>
+                            <span class="stat-label">Total Progress</span>
+                        </div>
+                        <div class="stat-progress-bg">
+                            <div class="stat-progress-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="stat-card" style="--accent: #f97316;">
+                        <div class="stat-icon"><i class="fa-solid fa-fire"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-value" data-streak>0</span>
+                            <span class="stat-label">Day Streak</span>
+                        </div>
+                        <p class="stat-note">Belajar tiap hari!</p>
+                    </div>
+                    <div class="stat-card" style="--accent: #3b82f6;">
+                        <div class="stat-icon"><i class="fa-solid fa-clock"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-value">0</span><span class="stat-unit">jam</span>
+                            <span class="stat-label">Waktu Belajar</span>
+                        </div>
+                        <p class="stat-note">Total waktu di platform</p>
+                    </div>
+                </div>
+
+                <!-- FULL WIDTH LESSON PROGRESS -->
+                <section class="section-card reveal full-width-card">
+                    <div class="section-header">
+                        <h2>Detail Kemajuan Materi</h2>
+                        <div class="filter-pills">
+                            <button class="pill active">Semua</button>
+                            <button class="pill">Selesai</button>
+                            <button class="pill">Terkunci</button>
+                        </div>
+                    </div>
+                    <div class="lesson-table">
+                        <div class="lesson-row header-row">
+                            <span>Materi</span>
+                            <span>Kemajuan</span>
+                            <span>Status</span>
+                        </div>
+                        <div class="lesson-row">
+                            <div class="l-name">
+                                <div class="l-icon"><i class="fa-solid fa-book"></i></div>
+                                <div>
+                                    <h4>Pengantar Berpikir Kritis</h4>
+                                    <p>Dasar-dasar logika</p>
+                                </div>
+                            </div>
+                            <div class="l-progress">
+                                <div class="progress-bar-wide">
+                                    <div class="fill" style="width: 100%"></div>
+                                </div>
+                                <span>100%</span>
+                            </div>
+                            <div class="l-status">
+                                <span class="status-badge success">Selesai</span>
+                            </div>
+                        </div>
+                        <div class="lesson-row">
+                            <div class="l-name">
+                                <div class="l-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+                                <div>
+                                    <h4>Identifikasi Argumen</h4>
+                                    <p>Mencari premis & konklusi</p>
+                                </div>
+                            </div>
+                            <div class="l-progress">
+                                <div class="progress-bar-wide">
+                                    <div class="fill" style="width: 40%"></div>
+                                </div>
+                                <span>40%</span>
+                            </div>
+                            <div class="l-status">
+                                <span class="status-badge warning">Sedang Dipelajari</span>
+                            </div>
+                        </div>
+                        <div class="lesson-row">
+                            <div class="l-name">
+                                <div class="l-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+                                <div>
+                                    <h4>Logical Fallacies</h4>
+                                    <p>Kesalahan berpikir umum</p>
+                                </div>
+                            </div>
+                            <div class="l-progress">
+                                <div class="progress-bar-wide">
+                                    <div class="fill" style="width: 0%"></div>
+                                </div>
+                                <span>0%</span>
+                            </div>
+                            <div class="l-status">
+                                <span class="status-badge locked"><i class="fa-solid fa-lock"></i> Terkunci</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <style>
+        .page-body {
+            padding: 20px 0;
+            width: 100%;
+            margin: 0;
+        }
+
+        .main-content {
+            padding: 0 40px 40px !important;
+        }
+
+        .full-width-card {
+            margin-top: 30px;
+            width: 100%;
+        }
+
+        .stat-progress-bg {
+            width: 100%;
+            height: 6px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .stat-progress-fill {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 10px;
+        }
+
+        .stat-note {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-top: 10px;
+        }
+
+        .filter-pills {
+            display: flex;
+            gap: 10px;
+        }
+
+        .pill {
+            background: var(--bg-body);
+            border: none;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-mid);
+            transition: var(--tr);
+        }
+
+        .pill.active {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        /* Table Style */
+        .lesson-table {
+            margin-top: 20px;
+        }
+
+        .lesson-row {
+            display: grid;
+            grid-template-columns: 2fr 2fr 1fr;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            transition: var(--tr);
+        }
+
+        .lesson-row:not(.header-row):hover {
+            background: var(--bg-body);
+            border-radius: 12px;
+            transform: scale(1.01);
+        }
+
+        .header-row {
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--text-light);
+            border-bottom: 2px solid var(--border);
+        }
+
+        .l-name {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .l-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: var(--primary);
+            border: 1px solid var(--border);
+        }
+
+        .l-name h4 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .l-name p {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .l-progress {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .progress-bar-wide {
+            flex: 1;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-wide .fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
+        .l-progress span {
+            font-size: 13px;
+            font-weight: 800;
+            min-width: 40px;
+        }
+
+        .status-badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 20px;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .status-badge.success {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .status-badge.warning {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-badge.locked {
+            background: #f1f5f9;
+            color: #94a3b8;
+        }
+
+        @media (max-width: 992px) {
+            .lesson-row {
+                grid-template-columns: 1.5fr 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-row {
+                display: none;
+            }
+
+            .lesson-row {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .l-name {
+                flex-direction: column;
+            }
+
+            .l-progress {
+                width: 100%;
+            }
+        }
+    </style>
+</body>
+
+</html>

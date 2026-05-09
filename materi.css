@@ -6,24 +6,79 @@
 
 /* ─── VARIABLES ─────────────────────────────── */
 :root {
-  --blue: #3b9eff;
-  --blue-dark: #1a6fd4;
-  --sidebar-bg: #1e80e8;
-  --sidebar-w: 240px;
+  /* --- 1. BRAND COLORS (PRIMARY BLUES) --- */
+  --primary: #1BAAED;
+  --primary-dark: #0d8fc9;
+  --primary-light: #e6f6fd;
+  --primary-gradient: linear-gradient(135deg, #1BAAED 0%, #0b7fc2 100%);
+  --sidebar-gradient: linear-gradient(175deg, #1BAAED 0%, #0b7fc2 100%);
+
+  /* --- 2. NEUTRAL COLORS (GREYS & WHITE) --- */
   --white: #ffffff;
-  --body-bg: #f0f5ff;
-  --card-bg: #ffffff;
+  --bg-body: #eaf4fb;
+  --bg-card: #ffffff;
+  --border: #d6e8f5;
+  
+  /* --- 3. TYPOGRAPHY (TEXT COLORS) --- */
   --text-dark: #1a2340;
-  --text-mid: #4b5675;
-  --text-light: #9ba8be;
-  --border: #e4eaf6;
-  --radius-lg: 18px;
-  --radius-md: 12px;
-  --radius-sm: 8px;
-  --shadow: 0 4px 24px rgba(59, 158, 255, .10);
-  --shadow-md: 0 8px 32px rgba(59, 158, 255, .15);
-  --transition: all 0.28s cubic-bezier(.4, 0, .2, 1);
-  font-family: 'DM Sans', system-ui, sans-serif;
+  --text-mid: #5c6b8a;
+  --text-light: #9ba8bb;
+
+  /* --- 4. SEMANTIC COLORS (STATUS) --- */
+  --success: #2e7d32;
+  --success-soft: #e8f5e9;
+  --warning: #f59e0b;
+  --warning-soft: #fff8e1;
+  --danger: #ef4444;
+  --danger-soft: #fff0f0;
+  --info: #3b9eff;
+  --info-soft: #f0f5ff;
+
+  /* --- 5. ACCENT PALETTE --- */
+  --pink: #e91e63;
+  --pink-soft: #fce4ec;
+  --pink-border: #f48fb1;
+  --teal: #00897b;
+  --teal-soft: #e0f7f4;
+  --purple: #7b1fa2;
+  --purple-soft: #ede7f6;
+  --green-soft: #e8f5e9;
+  --orange: #e65100;
+  --orange-soft: #fff3e0;
+  --yellow-border: #ffd54f;
+
+  /* --- 6. UI TOKENS --- */
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-sm: 10px;
+  --shadow-sm: 0 4px 12px rgba(27, 170, 237, 0.06);
+  --shadow-md: 0 4px 20px rgba(27, 170, 237, 0.08);
+  --shadow-lg: 0 8px 32px rgba(27, 170, 237, 0.18);
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --sidebar-width: 240px;
+
+  /* --- 7. ALIASES (Compatibility) --- */
+  --blue-main: var(--primary);
+  --blue-dark: var(--primary-dark);
+  --blue-light: var(--primary-light);
+  --bg: var(--bg-body);
+  --card-shadow: var(--shadow-md);
+  --card-shadow-hover: var(--shadow-lg);
+  --radius: var(--radius-md);
+  --sidebar-w: var(--sidebar-width);
+  --body-bg: var(--bg-body);
+  --card-bg: var(--bg-card);
+  --shadow: var(--shadow-sm);
+  --blue: var(--info);
+  --sb-w: var(--sidebar-width);
+  --tr: var(--transition);
+  --r-md: var(--radius-md);
+  --r-xl: var(--radius-lg);
+  --tb-h: 70px;
+
+  /* --- 8. FONTS --- */
+  --font-main: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-main);
 }
 
 

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDUVIX.ID – Store</title>
+    <link rel="stylesheet" href="beranda.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="jalan.js"></script>
+    <script src="beranda.js" defer></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .store-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .store-card {
+            background: var(--white);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            border: 1.5px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .store-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .item-preview {
+            height: 160px;
+            background: var(--bg-body);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: var(--primary);
+            position: relative;
+        }
+
+        .item-tag {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: var(--primary);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .item-info h3 {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .item-info p {
+            font-size: 13px;
+            color: var(--text-mid);
+            line-height: 1.5;
+        }
+
+        .item-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+            padding-top: 16px;
+            border-top: 1.5px solid var(--border);
+        }
+
+        .item-price {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 850;
+            font-size: 16px;
+            color: #b45309;
+        }
+
+        .item-price i {
+            color: #ff8f00;
+            filter: drop-shadow(0 2px 4px rgba(255, 143, 0, 0.4));
+        }
+
+        .btn-buy {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: var(--radius-sm);
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-buy:hover {
+            box-shadow: 0 4px 12px rgba(27, 170, 237, 0.4);
+            transform: scale(1.05);
+        }
+
+        .btn-buy.owned {
+            background: var(--success-soft);
+            color: var(--success);
+            cursor: default;
+        }
+
+        .store-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            padding: 40px;
+            border-radius: var(--radius-lg);
+            color: white;
+            margin-bottom: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .store-header h1 {
+            font-size: 32px;
+            font-weight: 900;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .store-header p {
+            color: rgba(255, 255, 255, 0.7);
+            position: relative;
+            z-index: 2;
+        }
+
+        .header-bg-icon {
+            position: absolute;
+            right: -20px;
+            bottom: -20px;
+            font-size: 180px;
+            color: rgba(255, 255, 255, 0.03);
+            transform: rotate(-15deg);
+        }
+    </style>
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <img src="WhatsApp Image 2026-05-05 at 18.33.04.png" alt="Logo" class="logo-img">
+        </div>
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item">
+                <i class="fa-solid fa-house"></i>
+                <span>Beranda</span>
+            </a>
+            <a href="materi komunitas.html" class="nav-item">
+                <i class="fa-solid fa-chalkboard-user"></i>
+                <span>Materi Komunitas</span>
+            </a>
+            <a href="progress.html" class="nav-item">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Progress</span>
+            </a>
+            <a href="pencapaian.html" class="nav-item">
+                <i class="fa-solid fa-trophy"></i>
+                <span>Pencapaian</span>
+            </a>
+            <a href="materi.html" class="nav-item">
+                <i class="fa-solid fa-file-pen"></i>
+                <span>Materi</span>
+            </a>
+            <a href="store.html" class="nav-item active">
+                <i class="fa-solid fa-store"></i>
+                <span>Store</span>
+            </a>
+        </nav>
+        <a href="login.html" class="logout-btn">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Log Out</span>
+        </a>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <div class="topbar-left">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Cari item di store...">
+                </div>
+            </div>
+            <div class="topbar-right">
+                <!-- COIN DISPLAY -->
+                <div class="coin-display" id="coinDisplay">
+                    <div class="coin-icon">
+                        <i class="fa-solid fa-coins"></i>
+                    </div>
+                    <span id="userCoins">0</span>
+                </div>
+
+                <div class="user-profile" id="userProfile">
+                    <div class="avatar"
+                        style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#7c3aed,#3b9eff);color:#fff;font-weight:800;font-size:14px;">
+                        <span data-user-avatar>U</span>
+                    </div>
+                    <span data-user-name>User</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+            </div>
+        </header>
+
+        <div class="page-body">
+            <section class="store-header">
+                <i class="fa-solid fa-cart-shopping header-bg-icon"></i>
+                <h1>EDUVIX Store</h1>
+                <p>Tukarkan koin belajarmu dengan item eksklusif dan booster!</p>
+            </section>
+
+            <div class="store-grid">
+                <!-- Item 1 -->
+                <div class="store-card">
+                    <div class="item-preview">
+                        <span class="item-tag">Avatar</span>
+                        <i class="fa-solid fa-user-ninja"></i>
+                    </div>
+                    <div class="item-info">
+                        <h3>Cyber Ninja</h3>
+                        <p>Dapatkan avatar ninja futuristik yang keren untuk profilmu.</p>
+                    </div>
+                    <div class="item-footer">
+                        <div class="item-price"><i class="fa-solid fa-coins"></i> 200</div>
+                        <button class="btn-buy" onclick="buyItem('Cyber Ninja', 200, this)">Beli</button>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="store-card">
+                    <div class="item-preview" style="color: #7c3aed;">
+                        <span class="item-tag">Booster</span>
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <div class="item-info">
+                        <h3>Double XP (24h)</h3>
+                        <p>Gandakan poin pengalaman yang kamu dapatkan selama 24 jam.</p>
+                    </div>
+                    <div class="item-footer">
+                        <div class="item-price"><i class="fa-solid fa-coins"></i> 450</div>
+                        <button class="btn-buy" onclick="buyItem('Double XP', 450, this)">Beli</button>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="store-card">
+                    <div class="item-preview" style="color: #ef4444;">
+                        <span class="item-tag">Theme</span>
+                        <i class="fa-solid fa-moon"></i>
+                    </div>
+                    <div class="item-info">
+                        <h3>Dark Mode Premium</h3>
+                        <p>Akses tema gelap yang elegan dan nyaman di mata.</p>
+                    </div>
+                    <div class="item-footer">
+                        <div class="item-price"><i class="fa-solid fa-coins"></i> 300</div>
+                        <button class="btn-buy" onclick="buyItem('Dark Theme', 300, this)">Beli</button>
+                    </div>
+                </div>
+
+                <!-- Item 4 -->
+                <div class="store-card">
+                    <div class="item-preview" style="color: #22c55e;">
+                        <span class="item-tag">Badge</span>
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div class="item-info">
+                        <h3>Scholar Guardian</h3>
+                        <p>Badge eksklusif yang menunjukkan dedikasimu dalam belajar.</p>
+                    </div>
+                    <div class="item-footer">
+                        <div class="item-price"><i class="fa-solid fa-coins"></i> 150</div>
+                        <button class="btn-buy" onclick="buyItem('Guardian Badge', 150, this)">Beli</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function buyItem(name, price, btn) {
+            if (window.useCoins && window.useCoins(price)) {
+                btn.textContent = 'Dimiliki';
+                btn.classList.add('owned');
+                btn.onclick = null;
+
+                // Khusus untuk Cyber Ninja
+                if (name === 'Cyber Ninja') {
+                    if (typeof eduvixSetAvatar === 'function') {
+                        eduvixSetAvatar('icon', 'fa-solid fa-user-ninja');
+                    }
+                }
+
+                alert(`Berhasil membeli ${name}!`);
+
+                // Simpan kepemilikan di localStorage
+                let owned = JSON.parse(localStorage.getItem('eduvix_owned_items') || '[]');
+                owned.push(name);
+                localStorage.setItem('eduvix_owned_items', JSON.stringify(owned));
+            } else {
+                alert('Koin tidak cukup! Teruslah belajar untuk mengumpulkan koin.');
+            }
+        }
+
+        // Cek item yang sudah dimiliki saat load
+        document.addEventListener('DOMContentLoaded', () => {
+            let owned = JSON.parse(localStorage.getItem('eduvix_owned_items') || '[]');
+            document.querySelectorAll('.store-card').forEach(card => {
+                let name = card.querySelector('h3').textContent;
+                if (owned.some(o => name.includes(o))) {
+                    let btn = card.querySelector('.btn-buy');
+                    btn.textContent = 'Dimiliki';
+                    btn.classList.add('owned');
+                    btn.onclick = null;
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

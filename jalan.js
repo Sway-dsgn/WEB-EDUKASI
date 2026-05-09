@@ -129,6 +129,62 @@ function eduvixSelesaikanMateri(materiId, xpMateri) {
     user.unlockedLesson = nextLesson;
     eduvixSaveUser(user);
     eduvixTambahXP(xpMateri, `Selesai materi: ${materiId}`);
+    // Bonus koin
+    eduvixTambahKoin(25, `Selesai materi: ${materiId}`);
+}
+
+// ── Tambah Koin ───────────────────────────
+function eduvixTambahKoin(jumlah, alasan) {
+    const user = eduvixGetUser();
+    if (!user) return;
+    const koinLama = user.coins || 0;
+    user.coins = koinLama + jumlah;
+    eduvixSaveUser(user);
+    eduvixUpdateUI();
+
+    if (alasan) console.log(`[EDUVIX] +${jumlah} Koin — ${alasan}`);
+}
+
+// ── Gunakan Koin ──────────────────────────
+function eduvixGunakanKoin(jumlah, alasan) {
+    const user = eduvixGetUser();
+    if (!user) return false;
+    const koinLama = user.coins || 0;
+    if (koinLama < jumlah) return false;
+
+    user.coins = koinLama - jumlah;
+    eduvixSaveUser(user);
+    eduvixUpdateUI();
+
+    if (alasan) console.log(`[EDUVIX] -${jumlah} Koin — ${alasan}`);
+    return true;
+}
+
+// ── Set Avatar ────────────────────────────
+function eduvixSetAvatar(type, value) {
+    const user = eduvixGetUser();
+    if (!user) return;
+    user.avatarType = type; // 'icon' atau 'image'
+    user.avatarValue = value; // class font-awesome atau URL
+    eduvixSaveUser(user);
+    eduvixUpdateUI();
+}
+
+// ── Leaderboard Data (DUMMY) ──────────────
+function eduvixGetLeaderboard() {
+    const current = eduvixGetUser();
+    const allUsers = eduvixGetAllUsers();
+
+    // Format data agar konsisten
+    const leaderboardData = allUsers.map(u => ({
+        nama: u.nama || u.username,
+        username: u.username,
+        xp: u.xp || 0,
+        level: eduvixHitungLevel(u.xp || 0),
+        isMe: current && u.username === current.username
+    }));
+
+    return leaderboardData.sort((a, b) => b.xp - a.xp).slice(0, 10);
 }
 
 // ── Logout ────────────────────────────────
@@ -189,7 +245,20 @@ function eduvixUpdateUI() {
     setAll('data-xp-bar', el => el.style.width = xpPct + '%');
     setAll('data-streak', el => el.textContent = streak);
     setAll('data-streak-label', el => el.textContent = streak + ' hari');
-    setAll('data-user-avatar', el => el.textContent = nama.charAt(0).toUpperCase());
+    setAll('data-user-avatar', el => {
+        if (user.avatarType === 'icon') {
+            el.innerHTML = `<i class="${user.avatarValue}"></i>`;
+            el.parentElement.style.background = 'linear-gradient(135deg, #1BAAED, #7c3aed)';
+        } else {
+            el.textContent = nama.charAt(0).toUpperCase();
+        }
+    });
+
+    // Koin
+    const koin = user.coins || 0;
+    setAll('data-user-coins', el => el.textContent = koin);
+    const userCoinsEl = document.getElementById('userCoins');
+    if (userCoinsEl) userCoinsEl.textContent = koin;
 
     // Streak icon color
     setAll('data-streak-icon', el => {
@@ -380,3 +449,9 @@ window.eduvixUpdateUI = eduvixUpdateUI;
 window.eduvixHitungLevel = eduvixHitungLevel;
 window.eduvixXpPct = eduvixXpPct;
 window.eduvixShowToast = eduvixShowToast;
+window.eduvixTambahKoin = eduvixTambahKoin;
+window.eduvixGunakanKoin = eduvixGunakanKoin;
+window.useCoins = eduvixGunakanKoin; // Alias for store.html
+window.addCoins = eduvixTambahKoin; // Alias for compatibility
+window.eduvixSetAvatar = eduvixSetAvatar;
+window.eduvixGetLeaderboard = eduvixGetLeaderboard;

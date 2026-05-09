@@ -31,17 +31,21 @@
         <i class="fa-solid fa-chalkboard-user"></i>
         <span>Materi Komunitas</span>
       </a>
-      <a href="pencapaian.html" class="nav-item">
-        <i class="fa-solid fa-layer-group"></i>
-        <span>Pencapaian</span>
-      </a>
-      <a href="#" class="nav-item">
-        <i class="fa-solid fa-user-graduate"></i>
+      <a href="progress.html" class="nav-item">
+        <i class="fa-solid fa-chart-line"></i>
         <span>Progress</span>
+      </a>
+      <a href="pencapaian.html" class="nav-item">
+        <i class="fa-solid fa-trophy"></i>
+        <span>Pencapaian</span>
       </a>
       <a href="materi.html" class="nav-item">
         <i class="fa-solid fa-file-pen"></i>
         <span>Materi</span>
+      </a>
+      <a href="store.html" class="nav-item" id="storeNavItem">
+        <i class="fa-solid fa-store"></i>
+        <span>Store</span>
       </a>
     </nav>
 
@@ -66,6 +70,14 @@
         </div>
       </div>
       <div class="topbar-right">
+        <!-- COIN DISPLAY -->
+        <div class="coin-display" id="coinDisplay">
+          <div class="coin-icon">
+            <i class="fa-solid fa-coins"></i>
+          </div>
+          <span id="userCoins">0</span>
+        </div>
+
         <div class="notif-wrapper" style="position: relative;">
           <button class="notif-btn" id="notifBtn">
             <i class="fa-solid fa-bell"></i>
@@ -151,10 +163,10 @@
           </div>
         </div>
         <div class="stat-card" style="--accent: #22c55e;">
-          <div class="stat-icon"><i class="fa-solid fa-trophy"></i></div>
+          <div class="stat-icon"><i class="fa-solid fa-chart-pie"></i></div>
           <div class="stat-info">
-            <span class="stat-value" data-target="5">0</span>
-            <span class="stat-label">Pencapaian</span>
+            <span class="stat-value" data-target="0" id="dashProgressValue">0</span><span class="stat-unit">%</span>
+            <span class="stat-label">Progress Belajar</span>
           </div>
           <div class="stat-chart">
             <div class="mini-bar" style="height:30%"></div>
@@ -268,6 +280,17 @@
                 </div>
                 <span class="jadwal-dot" style="background:#22c55e;"></span>
               </div>
+            </div>
+          </section>
+
+          <!-- PERINGKAT (LEADERBOARD) -->
+          <section class="section-card leaderboard-section reveal">
+            <div class="section-header">
+              <h2>Peringkat Global</h2>
+              <i class="fa-solid fa-ranking-star" style="color: var(--warning);"></i>
+            </div>
+            <div class="leaderboard-list" id="leaderboardList">
+              <!-- Rendered by beranda.js -->
             </div>
           </section>
 

@@ -596,6 +596,12 @@ function finishQuiz() {
   // Give XP
   addXP(xpEarned);
 
+  // Give Coins
+  const coinsEarned = correct * 5; // 5 coins per correct answer
+  if (typeof eduvixTambahKoin === 'function') {
+    eduvixTambahKoin(coinsEarned, `Quiz Materi ${State.currentLesson} — ${correct} benar`);
+  }
+
   // Close quiz
   closeQuiz();
 
