@@ -1,0 +1,280 @@
+/* ============================================
+   EDUVIX.ID — Login Page CSS
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #0b0d17;
+  --surface:  rgba(255,255,255,0.05);
+  --border:   rgba(255,255,255,0.10);
+  --text:     #e2e8f0;
+  --muted:    #64748b;
+  --accent:   #7c3aed;
+  --accent2:  #3b9eff;
+  --green:    #10b981;
+  --red:      #ef4444;
+  --radius:   16px;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── Background blobs ── */
+.bg-blob {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.35;
+}
+.bg-blob.b1 { width: 500px; height: 500px; background: #7c3aed; top: -150px; left: -150px; }
+.bg-blob.b2 { width: 400px; height: 400px; background: #3b9eff; bottom: -100px; right: -100px; }
+.bg-blob.b3 { width: 300px; height: 300px; background: #10b981; bottom: 20%; left: 30%; }
+
+/* ── Particle canvas ── */
+canvas#loginCanvas {
+  position: fixed; inset: 0; pointer-events: none; z-index: 1;
+}
+
+/* ── Card wrapper ── */
+.login-wrapper {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 440px;
+  padding: 0 16px;
+}
+
+.login-card {
+  background: rgba(15, 17, 30, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 40px 36px;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04);
+  animation: cardIn 0.5s cubic-bezier(.34,1.56,.64,1);
+}
+
+@keyframes cardIn {
+  from { opacity:0; transform:translateY(28px) scale(0.97); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
+}
+
+/* ── Logo ── */
+.login-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+  justify-content: center;
+}
+.logo-icon-wrap {
+  width: 42px; height: 42px;
+  background: linear-gradient(135deg, #7c3aed, #3b9eff);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+}
+.login-logo .brand { font-size: 22px; font-weight: 800; letter-spacing: -.5px; }
+.login-logo .brand em { font-style: normal; color: var(--accent2); }
+
+/* ── Tabs ── */
+.auth-tabs {
+  display: flex;
+  background: rgba(255,255,255,0.04);
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 28px;
+  gap: 4px;
+}
+.auth-tab {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 9px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--muted);
+  background: transparent;
+  transition: all .25s;
+}
+.auth-tab.active {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(124,58,237,.35);
+}
+
+/* ── Forms ── */
+.auth-form { display: none; }
+.auth-form.active { display: block; animation: fadeIn .3s ease; }
+
+@keyframes fadeIn { from{opacity:0; transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+.form-group { margin-bottom: 18px; }
+
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 7px;
+  letter-spacing: .3px;
+}
+
+.input-wrap {
+  position: relative;
+}
+.input-icon {
+  position: absolute;
+  left: 14px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  pointer-events: none;
+}
+.input-wrap input {
+  width: 100%;
+  padding: 13px 14px 13px 42px;
+  background: rgba(255,255,255,0.05);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 14px;
+  transition: border .2s, box-shadow .2s;
+  outline: none;
+}
+.input-wrap input::placeholder { color: rgba(255,255,255,0.2); }
+.input-wrap input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(124,58,237,.15);
+}
+.input-wrap input.error { border-color: var(--red); }
+
+/* Toggle password */
+.toggle-pw {
+  position: absolute;
+  right: 14px; top: 50%;
+  transform: translateY(-50%);
+  background: none; border: none;
+  cursor: pointer; color: var(--muted);
+  padding: 4px;
+  transition: color .2s;
+}
+.toggle-pw:hover { color: var(--text); }
+
+/* ── Error msg ── */
+.field-error {
+  font-size: 12px;
+  color: var(--red);
+  margin-top: 5px;
+  display: none;
+}
+.field-error.show { display: block; }
+
+/* ── Submit button ── */
+.btn-auth {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #7c3aed, #5b21b6);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: all .25s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  box-shadow: 0 6px 20px rgba(124,58,237,.35);
+  position: relative; overflow: hidden;
+}
+.btn-auth:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(124,58,237,.45);
+}
+.btn-auth:active { transform: translateY(0); }
+.btn-auth:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+/* Spinner */
+.btn-auth .spinner {
+  display: none;
+  width: 18px; height: 18px;
+  border: 2.5px solid rgba(255,255,255,.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+.btn-auth.loading .spinner { display: block; }
+.btn-auth.loading .btn-text { opacity: 0.5; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Divider ── */
+.divider {
+  display: flex; align-items: center; gap: 12px;
+  margin: 20px 0; color: var(--muted); font-size: 12px;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1;
+  height: 1px; background: var(--border);
+}
+
+/* ── Alert ── */
+.auth-alert {
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 18px;
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+.auth-alert.show { display: flex; animation: fadeIn .25s ease; }
+.auth-alert.error { background: rgba(239,68,68,.12); border: 1px solid rgba(239,68,68,.25); color: #fca5a5; }
+.auth-alert.success { background: rgba(16,185,129,.12); border: 1px solid rgba(16,185,129,.25); color: #6ee7b7; }
+
+/* ── Footer ── */
+.login-footer {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ── Demo chip ── */
+.demo-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 14px;
+  background: rgba(59,158,255,.1);
+  border: 1px solid rgba(59,158,255,.2);
+  border-radius: 8px;
+  font-size: 12px; color: var(--accent2);
+  cursor: pointer; margin-top: 12px;
+  width: 100%; justify-content: center;
+  transition: all .2s;
+}
+.demo-chip:hover { background: rgba(59,158,255,.18); }
+
+/* ── Password strength ── */
+.pw-strength { margin-top: 8px; display: none; }
+.pw-strength.show { display: block; }
+.strength-bars { display: flex; gap: 4px; margin-bottom: 4px; }
+.strength-bar { flex: 1; height: 3px; border-radius: 4px; background: var(--border); transition: background .3s; }
+.strength-label { font-size: 11px; color: var(--muted); }

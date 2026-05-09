@@ -4,34 +4,53 @@
 
 // ─── STATE ────────────────────────────────────
 const State = {
-  xp:           0,
-  streak:       0,
+  xp: 0,
+  streak: 0,
   currentLesson: 1,
-  unlockedUp:   1,          // highest unlocked lesson
+  unlockedUp: 1,          // highest unlocked lesson
   readProgress: 0,
-  quizOpen:     false,
-  quizCurrent:  1,
-  quizTotal:    3,
-  quizAnswers:  {},         // { 1: 'correct'|'wrong', ... }
-  dragItems:    {},         // placed drag items { id: zone }
+  quizOpen: false,
+  quizCurrent: 1,
+  quizTotal: 3,
+  quizAnswers: {},         // { 1: 'correct'|'wrong', ... }
+  dragItems: {},         // placed drag items { id: zone }
 
   get xpForNextLevel() { return (this.level) * 100; },
   get level() { return Math.floor(this.xp / 100) + 1; },
-  get xpPct()  { return ((this.xp % 100) / 100) * 100; },
+  get xpPct() { return ((this.xp % 100) / 100) * 100; },
 };
 
-// Load from localStorage
+// Load from localStorage via jalan.js if available
 function loadState() {
+  if (typeof eduvixGetUser === 'function') {
+    const user = eduvixGetUser();
+    if (user) {
+      State.xp = user.xp || 0;
+      State.streak = user.streak || 0;
+      State.unlockedUp = user.unlockedLesson || 1;
+      return;
+    }
+  }
+  // Fallback
   const saved = localStorage.getItem('eduvix_materi_state');
   if (!saved) return;
   try {
     const d = JSON.parse(saved);
-    State.xp       = d.xp       || 0;
-    State.streak   = d.streak   || 0;
+    State.xp = d.xp || 0;
+    State.streak = d.streak || 0;
     State.unlockedUp = d.unlockedUp || 1;
-  } catch(e) {}
+  } catch (e) { }
 }
 function saveState() {
+  if (typeof eduvixGetUser === 'function') {
+    const user = eduvixGetUser();
+    if (user) {
+      user.unlockedLesson = Math.max(user.unlockedLesson || 1, State.unlockedUp);
+      // Let jalan.js handle xp/streak via its own functions to avoid overrides
+      eduvixSaveUser(user);
+    }
+  }
+  // Local fallback
   localStorage.setItem('eduvix_materi_state', JSON.stringify({
     xp: State.xp, streak: State.streak, unlockedUp: State.unlockedUp
   }));
@@ -61,18 +80,18 @@ function init() {
 function refreshUI() {
   // Sidebar
   const sbXpFill = $('sbXpFill');
-  const sbXpNum  = $('sbXpNum');
-  const sbLevel  = $('sbLevel');
+  const sbXpNum = $('sbXpNum');
+  const sbLevel = $('sbLevel');
   const sbStreak = $('sbStreak');
   if (sbXpFill) sbXpFill.style.width = State.xpPct + '%';
-  if (sbXpNum)  sbXpNum.textContent  = State.xp + ' XP';
-  if (sbLevel)  sbLevel.textContent  = 'Lv.' + State.level;
+  if (sbXpNum) sbXpNum.textContent = State.xp + ' XP';
+  if (sbLevel) sbLevel.textContent = 'Lv.' + State.level;
   if (sbStreak) sbStreak.textContent = State.streak;
 
   // Topbar
-  const tbXp     = $('tbXp');
+  const tbXp = $('tbXp');
   const tbStreak = $('tbStreak');
-  if (tbXp)     tbXp.textContent     = State.xp + ' XP';
+  if (tbXp) tbXp.textContent = State.xp + ' XP';
   if (tbStreak) tbStreak.textContent = State.streak;
 
   // Unlock lessons in sidebar
@@ -96,14 +115,14 @@ function initCursorGlow() {
   if (!glow) return;
   document.addEventListener('mousemove', e => {
     glow.style.left = e.clientX + 'px';
-    glow.style.top  = e.clientY + 'px';
+    glow.style.top = e.clientY + 'px';
   });
 }
 
 // ─── SIDEBAR ──────────────────────────────────
 function initSidebar() {
-  const sidebar  = $('sidebar');
-  const mobBtn   = $('mobMenuBtn');
+  const sidebar = $('sidebar');
+  const mobBtn = $('mobMenuBtn');
   const backdrop = $('sidebarBackdrop');
 
   // Lesson click
@@ -130,9 +149,11 @@ function initSidebar() {
 }
 
 function switchLesson(n) {
+  // Auto-unlock up to n so navigation always works
   if (n > State.unlockedUp) {
-    showToast('Selesaikan materi sebelumnya dulu!', 'e');
-    return;
+    State.unlockedUp = n;
+    saveState();
+    refreshUI();
   }
   State.currentLesson = n;
 
@@ -193,9 +214,9 @@ function initReadProgress() {
   const circumference = 88; // 2 * pi * r(14)
 
   window.addEventListener('scroll', () => {
-    const doc  = document.documentElement;
+    const doc = document.documentElement;
     const scrolled = doc.scrollTop;
-    const total    = doc.scrollHeight - doc.clientHeight;
+    const total = doc.scrollHeight - doc.clientHeight;
     const pct = total > 0 ? scrolled / total : 0;
 
     if (ring) {
@@ -242,6 +263,18 @@ function updateLnDots(n) {
 function unlockLesson(n) {
   if (n <= State.unlockedUp) return;
   State.unlockedUp = n;
+  // Also unlock all in between
+  for (let i = 2; i <= n; i++) {
+    const btn = document.querySelector(`.sb-lesson[data-lesson="${i}"]`);
+    if (btn) {
+      btn.classList.remove('locked');
+      btn.classList.add('unlocked');
+      if (!btn._bound) {
+        btn.addEventListener('click', () => switchLesson(i));
+        btn._bound = true;
+      }
+    }
+  }
   saveState();
   refreshUI();
 
@@ -260,29 +293,36 @@ function unlockLesson(n) {
 
 // ─── ADD XP ───────────────────────────────────
 function addXP(amount) {
-  const oldLevel = State.level;
-  State.xp += amount;
-  saveState();
-  refreshUI();
+  if (typeof eduvixTambahXP === 'function') {
+    eduvixTambahXP(amount, 'Materi activity');
+    loadState(); // Refresh local unlockedUp
+  } else {
+    // Fallback
+    const oldLevel = State.level;
+    State.xp += amount;
+    saveState();
+    refreshUI();
 
-  // Popup
-  const popup = $('xpPopup');
-  const val   = $('xpPopupVal');
-  if (popup && val) {
-    val.textContent = amount;
-    popup.classList.add('show');
-    setTimeout(() => popup.classList.remove('show'), 2500);
-  }
-
-  // Level up?
-  if (State.level > oldLevel) {
-    setTimeout(() => showToast(`⭐ Level Up! Kamu sekarang Level ${State.level}`, 'i', 3500), 600);
+    const popup = $('xpPopup');
+    const val = $('xpPopupVal');
+    if (popup && val) {
+      val.textContent = amount;
+      popup.classList.add('show');
+      setTimeout(() => popup.classList.remove('show'), 2500);
+    }
+    if (State.level > oldLevel) {
+      setTimeout(() => showToast(`⭐ Level Up! Kamu sekarang Level ${State.level}`, 'i', 3500), 600);
+    }
   }
 }
 
 // ─── STREAK ───────────────────────────────────
 function updateStreakDaily() {
-  const today    = new Date().toDateString();
+  if (typeof eduvixGetUser === 'function') {
+    // jalan.js already handles streak globally on load
+    return;
+  }
+  const today = new Date().toDateString();
   const lastVisit = localStorage.getItem('eduvix_last_visit');
   const yesterday = new Date(Date.now() - 86400000).toDateString();
 
@@ -297,11 +337,11 @@ function updateStreakDaily() {
 
 // ─── DRAG & DROP GAME ─────────────────────────
 function initDragGame() {
-  const cards   = $$('.dg-card');
-  const zones   = $$('.dg-zone');
+  const cards = $$('.dg-card');
+  const zones = $$('.dg-zone');
   const checkBtn = $('btnCheckDrag');
   const feedback = $('dragFeedback');
-  let dragging  = null;
+  let dragging = null;
 
   cards.forEach(card => {
     card.addEventListener('dragstart', e => {
@@ -366,9 +406,9 @@ function initDragGame() {
     checkBtn.addEventListener('click', () => {
       let correct = 0;
       $$('.dg-card').forEach(card => {
-        const id       = card.dataset.id;
+        const id = card.dataset.id;
         const expected = card.dataset.type;
-        const placed   = State.dragItems[id];
+        const placed = State.dragItems[id];
         if (placed === expected) {
           card.classList.add('correct');
           card.classList.remove('wrong');
@@ -396,17 +436,17 @@ function initDragGame() {
 
 // ─── QUIZ ─────────────────────────────────────
 function initQuiz() {
-  const openBtn   = $('openQuizBtn');
-  const modal     = $('quizModal');
-  const closeBtn  = $('closeQuizBtn');
-  const nextBtn   = $('qmNext');
-  const prevBtn   = $('qmPrev');
+  const openBtn = $('openQuizBtn');
+  const modal = $('quizModal');
+  const closeBtn = $('closeQuizBtn');
+  const nextBtn = $('qmNext');
+  const prevBtn = $('qmPrev');
   const finishBtn = $('qmFinish');
 
   if (openBtn) openBtn.addEventListener('click', openQuiz);
   if (closeBtn) closeBtn.addEventListener('click', closeQuiz);
-  if (nextBtn)  nextBtn.addEventListener('click', quizNext);
-  if (prevBtn)  prevBtn.addEventListener('click', quizPrev);
+  if (nextBtn) nextBtn.addEventListener('click', quizNext);
+  if (prevBtn) prevBtn.addEventListener('click', quizPrev);
   if (finishBtn) finishBtn.addEventListener('click', finishQuiz);
 
   // Close on backdrop click
@@ -439,7 +479,7 @@ function resetQuizUI() {
   $$('.qm-question').forEach(q => {
     q.classList.remove('active');
     q.querySelectorAll('.qm-opt').forEach(o => {
-      o.classList.remove('selected','correct','wrong');
+      o.classList.remove('selected', 'correct', 'wrong');
       o.disabled = false;
       const icon = o.querySelector('.qm-opt-icon');
       if (icon) icon.className = 'qm-opt-icon';
@@ -453,7 +493,7 @@ function resetQuizUI() {
 
 function renderQuizState() {
   const total = State.quizTotal;
-  const cur   = State.quizCurrent;
+  const cur = State.quizCurrent;
 
   // Show current question
   $$('.qm-question').forEach(q => q.classList.remove('active'));
@@ -462,14 +502,14 @@ function renderQuizState() {
 
   // Progress bar
   const pct = ((cur - 1) / total) * 100;
-  const fill  = $('qmProgFill');
+  const fill = $('qmProgFill');
   const label = $('qmProgLabel');
   if (fill) fill.style.width = pct + '%';
   if (label) label.textContent = `${cur} / ${total}`;
 
   // Buttons
-  const prevBtn   = $('qmPrev');
-  const nextBtn   = $('qmNext');
+  const prevBtn = $('qmPrev');
+  const nextBtn = $('qmNext');
   const finishBtn = $('qmFinish');
 
   if (prevBtn) prevBtn.style.display = cur > 1 ? 'flex' : 'none';
@@ -488,13 +528,13 @@ function renderQuizState() {
   const liveScore = $('qmLiveScore');
   if (liveScore) {
     const correct = Object.values(State.quizAnswers).filter(v => v === 'correct').length;
-    const done    = Object.keys(State.quizAnswers).length;
+    const done = Object.keys(State.quizAnswers).length;
     liveScore.textContent = done > 0 ? `${correct}/${done} benar` : '';
   }
 }
 
 function handleOptionClick(opt) {
-  const qEl  = opt.closest('.qm-question');
+  const qEl = opt.closest('.qm-question');
   const qNum = parseInt(qEl.dataset.q);
 
   if (State.quizAnswers[qNum] !== undefined) return; // already answered
@@ -524,7 +564,7 @@ function handleOptionClick(opt) {
     if (isCorrect) {
       fb.className = 'qm-feedback correct';
       const msgs = ['Benar! Kamu hebat!', 'Tepat sekali!', 'Luar biasa! Jawaban sempurna!'];
-      fb.innerHTML = `<i class="fa-solid fa-party-horn"></i> ${msgs[Math.floor(Math.random()*msgs.length)]}`;
+      fb.innerHTML = `<i class="fa-solid fa-party-horn"></i> ${msgs[Math.floor(Math.random() * msgs.length)]}`;
     } else {
       fb.className = 'qm-feedback wrong';
       fb.innerHTML = `<i class="fa-solid fa-face-frown"></i> Kurang tepat. Perhatikan jawaban yang benar ya!`;
@@ -548,10 +588,10 @@ function quizPrev() {
 }
 
 function finishQuiz() {
-  const correct    = Object.values(State.quizAnswers).filter(v => v === 'correct').length;
-  const total      = State.quizTotal;
-  const score      = Math.round((correct / total) * 100);
-  const xpEarned   = correct * 20;
+  const correct = Object.values(State.quizAnswers).filter(v => v === 'correct').length;
+  const total = State.quizTotal;
+  const score = Math.round((correct / total) * 100);
+  const xpEarned = correct * 20;
 
   // Give XP
   addXP(xpEarned);
@@ -593,8 +633,8 @@ function openResult(correct, total, score, xp) {
   const stars = $('rmStars');
   if (stars) {
     const starCount = score === 100 ? 3 : score >= 66 ? 2 : score >= 33 ? 1 : 0;
-    stars.innerHTML = [1,2,3].map(i =>
-      `<span style="transition:transform .3s ease ${i*.15}s;display:inline-block;${i<=starCount?'color:#fbbf24;filter:drop-shadow(0 0 6px rgba(251,191,36,.6))':'color:#e2e8f6'}">
+    stars.innerHTML = [1, 2, 3].map(i =>
+      `<span style="transition:transform .3s ease ${i * .15}s;display:inline-block;${i <= starCount ? 'color:#fbbf24;filter:drop-shadow(0 0 6px rgba(251,191,36,.6))' : 'color:#e2e8f6'}">
         <i class="fa-solid fa-star"></i>
       </span>`
     ).join('');
@@ -603,21 +643,21 @@ function openResult(correct, total, score, xp) {
 
   // Title & sub
   const title = $('rmTitle');
-  const sub   = $('rmSub');
+  const sub = $('rmSub');
   if (title) title.textContent = score === 100 ? 'Sempurna! 🏆' : score >= 66 ? 'Bagus Sekali!' : score >= 33 ? 'Lumayan! Terus berlatih!' : 'Jangan menyerah ya!';
   if (sub) sub.textContent = `${correct} dari ${total} soal benar — terus semangat!`;
 
   // Stats with counter animation
-  animateValue($('rmScore'),    0, score,   1000);
-  animateValue($('rmCorrect'),  0, correct, 800, `/${total}`);
-  animateValue($('rmXp'),       0, xp,      1200, '', '+');
+  animateValue($('rmScore'), 0, score, 1000);
+  animateValue($('rmCorrect'), 0, correct, 800, `/${total}`);
+  animateValue($('rmXp'), 0, xp, 1200, '', '+');
 
   // Bar
   setTimeout(() => {
     const fill = $('rmBarFill');
-    const pct  = $('rmBarPct');
+    const pct = $('rmBarPct');
     if (fill) fill.style.width = score + '%';
-    if (pct)  pct.textContent  = score + '%';
+    if (pct) pct.textContent = score + '%';
   }, 400);
 
   // Confetti
@@ -641,19 +681,19 @@ function animateValue(el, from, to, duration, suffix = '', prefix = '') {
 function launchConfetti() {
   const wrap = $('rmConfetti');
   if (!wrap) return;
-  const colors = ['#2563eb','#7c3aed','#10b981','#f59e0b','#ec4899','#06b6d4'];
+  const colors = ['#2563eb', '#7c3aed', '#10b981', '#f59e0b', '#ec4899', '#06b6d4'];
   for (let i = 0; i < 50; i++) {
     const el = document.createElement('div');
     el.className = 'confetti-piece';
     el.style.cssText = `
-      left: ${Math.random()*100}%;
+      left: ${Math.random() * 100}%;
       top: -10px;
-      background: ${colors[Math.floor(Math.random()*colors.length)]};
-      width: ${Math.random()*10+5}px;
-      height: ${Math.random()*10+5}px;
-      border-radius: ${Math.random()>.5 ? '50%' : '2px'};
-      animation-duration: ${Math.random()*2+1.5}s;
-      animation-delay: ${Math.random()*1}s;
+      background: ${colors[Math.floor(Math.random() * colors.length)]};
+      width: ${Math.random() * 10 + 5}px;
+      height: ${Math.random() * 10 + 5}px;
+      border-radius: ${Math.random() > .5 ? '50%' : '2px'};
+      animation-duration: ${Math.random() * 2 + 1.5}s;
+      animation-delay: ${Math.random() * 1}s;
     `;
     wrap.appendChild(el);
     setTimeout(() => el.remove(), 4000);
@@ -672,7 +712,7 @@ function showToast(msg, type = '', duration = 2200) {
 
 // ─── KEYBOARD SHORTCUTS ───────────────────────
 document.addEventListener('keydown', e => {
-  if (['INPUT','TEXTAREA'].includes(e.target.tagName)) return;
+  if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
   if (e.key === 'Escape') {
     $('quizModal')?.classList.remove('open');
     $('resultModal')?.classList.remove('open');
@@ -693,9 +733,9 @@ function initTilt() {
   $$('[data-tilt]').forEach(card => {
     card.addEventListener('mousemove', e => {
       const rect = card.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width  - 0.5;
-      const y = (e.clientY - rect.top)  / rect.height - 0.5;
-      card.style.transform = `perspective(600px) rotateX(${-y*10}deg) rotateY(${x*10}deg) translateY(-4px)`;
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      card.style.transform = `perspective(600px) rotateX(${-y * 10}deg) rotateY(${x * 10}deg) translateY(-4px)`;
     });
     card.addEventListener('mouseleave', () => {
       card.style.transform = '';

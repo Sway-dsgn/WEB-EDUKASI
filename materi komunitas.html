@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>EDUVIX.ID – belajar</title>
   <link rel="stylesheet" href="style.css" />
   <script src="script.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="jalan.js"></script>
 </head>
-<body>
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
+<body>
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
       <img src="WhatsApp Image 2026-05-05 at 18.33.04.png" alt="EDUVIX.ID Logo" class="logo-img" />
     </div>
@@ -34,7 +39,7 @@
         <i class="fa-solid fa-user-graduate"></i>
         <span>Progress</span>
       </a>
-      <a href="#" class="nav-item">
+      <a href="materi.html" class="nav-item">
         <i class="fa-solid fa-file-pen"></i>
         <span>Materi</span>
       </a>
@@ -51,16 +56,23 @@
 
     <!-- TOP BAR -->
     <header class="topbar">
-      <div class="search-box">
-        <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" placeholder="Temukan di sini ..." />
-      </div>
-      <div class="user-profile">
-        <div class="avatar">
-          <i class="fa-solid fa-user"></i>
+      <div class="topbar-left" style="display: flex; align-items: center; gap: 16px;">
+        <button class="menu-toggle" id="menuToggle">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="Temukan di sini ..." />
         </div>
-        <span class="user-name">User20</span>
-        <i class="fa-solid fa-chevron-down"></i>
+      </div>
+      <div class="topbar-right" style="display: flex; align-items: center; gap: 16px;">
+        <div class="user-profile">
+          <div class="avatar">
+            <i class="fa-solid fa-user" data-user-avatar></i>
+          </div>
+          <span class="user-name" data-user-name>User</span>
+          <i class="fa-solid fa-chevron-down"></i>
+        </div>
       </div>
     </header>
 
@@ -239,4 +251,5 @@
 
   <script src="script.js"></script>
 </body>
+
 </html>

@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EDUVIX.ID — Login</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=DM+Sans:wght@400;500;600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="jalan.js"></script>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    :root {
+      --blue: #2563eb;
+      --blue-d: #1d4ed8;
+      --purple: #7c3aed;
+      --green: #22c55e;
+      --red: #ef4444;
+      --bg: #f0f5ff;
+      --card: #fff;
+      --text: #0f172a;
+      --mid: #475569;
+      --soft: #94a3b8;
+      --border: #e2e8f0;
+      --r: 16px;
+      --tr: all .22s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    /* BG deco */
+    .bg-blob {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .blob1 {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(37, 99, 235, .12), transparent 70%);
+      top: -100px;
+      right: -100px;
+    }
+
+    .blob2 {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(124, 58, 237, .10), transparent 70%);
+      bottom: -80px;
+      left: -80px;
+    }
+
+    /* CARD */
+    .auth-card {
+      position: relative;
+      z-index: 1;
+      background: var(--card);
+      border-radius: 24px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 20px 60px rgba(37, 99, 235, .12);
+      overflow: hidden;
+      animation: slideUp .4s ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    /* HEADER */
+    .card-header {
+      background: linear-gradient(135deg, #1e40af, #7c3aed);
+      padding: 36px 36px 30px;
+      text-align: center;
+    }
+
+    .card-header .brand {
+      font-family: 'Outfit', sans-serif;
+      font-size: 32px;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 6px;
+      letter-spacing: -1px;
+    }
+
+    .card-header .brand em {
+      font-style: normal;
+      opacity: .65;
+      color: #93c5fd;
+    }
+
+    .card-header p {
+      font-size: 14px;
+      color: rgba(255, 255, 255, .75);
+    }
+
+    /* FORM */
+    .form-wrap {
+      padding: 32px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--mid);
+      margin-bottom: 8px;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-wrap i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--soft);
+      font-size: 15px;
+      pointer-events: none;
+    }
+
+    .input-wrap input {
+      width: 100%;
+      padding: 14px 14px 14px 42px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--r);
+      font-family: inherit;
+      font-size: 15px;
+      color: var(--text);
+      background: #fff;
+      outline: none;
+      transition: var(--tr);
+    }
+
+    .input-wrap input:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, .1);
+    }
+
+    .input-wrap input.error {
+      border-color: var(--red);
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, .1);
+    }
+
+    .input-wrap .eye-btn {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--soft);
+      cursor: pointer;
+      font-size: 15px;
+      padding: 4px;
+      transition: color .2s;
+    }
+
+    .input-wrap .eye-btn:hover {
+      color: var(--blue);
+    }
+
+    .field-error {
+      font-size: 12px;
+      color: var(--red);
+      margin-top: 6px;
+      display: none;
+      align-items: center;
+      gap: 5px;
+      font-weight: 500;
+    }
+
+    .field-error.show {
+      display: flex;
+      animation: shake .3s ease;
+    }
+
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      25% {
+        transform: translateX(-4px);
+      }
+
+      75% {
+        transform: translateX(4px);
+      }
+    }
+
+    /* Submit button */
+    .btn-submit {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: var(--r);
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      color: #fff;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: var(--tr);
+      box-shadow: 0 6px 20px rgba(37, 99, 235, .3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(37, 99, 235, .4);
+    }
+
+    .btn-submit:active {
+      transform: translateY(0);
+    }
+
+    .btn-submit:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-submit .spinner {
+      width: 20px;
+      height: 20px;
+      border: 2.5px solid rgba(255, 255, 255, .3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      display: none;
+    }
+
+    .btn-submit.loading .spinner {
+      display: block;
+    }
+
+    .btn-submit.loading .btn-text {
+      display: none;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    /* Footer note */
+    .card-footer {
+      text-align: center;
+      padding: 0 32px 24px;
+      font-size: 13px;
+      color: var(--soft);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      z-index: 999;
+      padding: 14px 24px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, var(--green), #16a34a);
+      box-shadow: 0 8px 24px rgba(34, 197, 94, .3);
+      opacity: 0;
+      transition: var(--tr);
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media(max-width:480px) {
+      .card-header {
+        padding: 28px 24px 24px;
+      }
+
+      .form-wrap {
+        padding: 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="bg-blob blob1"></div>
+  <div class="bg-blob blob2"></div>
+
+  <div class="auth-card">
+    <!-- Header -->
+    <div class="card-header">
+      <div class="brand">EDUVIX<em>.ID</em></div>
+      <p>Mari mulai perjalanan belajarmu!</p>
+    </div>
+
+    <div class="form-wrap">
+      <!-- ── FORM LOGIN (HANYA INI SAJA) ── -->
+      <div class="form-group">
+        <label>Username</label>
+        <div class="input-wrap">
+          <i class="fa-solid fa-user"></i>
+          <input type="text" id="loginUsername" placeholder="Masukkan username" autocomplete="off" />
+        </div>
+        <div class="field-error" id="errUsername">
+          <i class="fa-solid fa-circle-exclamation"></i><span>Username wajib diisi</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <div class="input-wrap">
+          <i class="fa-solid fa-lock"></i>
+          <input type="password" id="loginPassword" placeholder="Masukkan password" autocomplete="off" />
+          <button class="eye-btn" onclick="togglePw('loginPassword',this)" type="button">
+            <i class="fa-solid fa-eye"></i>
+          </button>
+        </div>
+        <div class="field-error" id="errPassword">
+          <i class="fa-solid fa-circle-exclamation"></i><span>Password wajib diisi</span>
+        </div>
+      </div>
+
+      <button class="btn-submit" id="btnLogin">
+        <div class="spinner"></div>
+        <span class="btn-text">Masuk Sekarang <i class="fa-solid fa-arrow-right"></i></span>
+      </button>
+    </div>
+
+    <div class="card-footer">
+      Selamat datang di platform belajar berpikir kritis interaktif!
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // Toggle Password
+    function togglePw(id, btn) {
+      const inp = document.getElementById(id);
+      const icon = btn.querySelector('i');
+      if (inp.type === 'password') {
+        inp.type = 'text';
+        icon.className = 'fa-solid fa-eye-slash';
+      } else {
+        inp.type = 'password';
+        icon.className = 'fa-solid fa-eye';
+      }
+    }
+
+    // Show Toast
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2000);
+    }
+
+    // Validation Error
+    function showError(id, inpId) {
+      document.getElementById(id).classList.add('show');
+      document.getElementById(inpId).classList.add('error');
+    }
+    function clearErrors() {
+      document.querySelectorAll('.field-error').forEach(e => e.classList.remove('show'));
+      document.querySelectorAll('input').forEach(e => e.classList.remove('error'));
+    }
+
+    // Remove errors on typing
+    document.getElementById('loginUsername').addEventListener('input', clearErrors);
+    document.getElementById('loginPassword').addEventListener('input', clearErrors);
+
+    // Login Logic
+    document.getElementById('btnLogin').addEventListener('click', () => {
+      clearErrors();
+      const uname = document.getElementById('loginUsername').value.trim();
+      const pw = document.getElementById('loginPassword').value;
+      let valid = true;
+
+      if (!uname) { showError('errUsername', 'loginUsername'); valid = false; }
+      if (!pw) { showError('errPassword', 'loginPassword'); valid = false; }
+
+      if (!valid) return;
+
+      // Interaktif Loading State
+      const btn = document.getElementById('btnLogin');
+      btn.classList.add('loading');
+      btn.disabled = true;
+
+      // Proses simulasi login (karena tidak pakai database/firebase lagi)
+      setTimeout(() => {
+        // Cek apakah user sudah ada di localStorage, jika tidak, kita buat baru aja
+        const users = typeof eduvixGetAllUsers === 'function' ? eduvixGetAllUsers() : [];
+        let found = users.find(u => u.username === uname);
+
+        if (!found) {
+          // Auto-register secara halus untuk memudahkan tanpa form pendaftaran
+          found = {
+            nama: uname,
+            username: uname,
+            password: pw,
+            xp: 0,
+            level: 1,
+            streak: 1,
+            lastLogin: new Date().toDateString(),
+            quizHistory: [],
+            materiSelesai: [],
+            unlockedLesson: 1
+          };
+          users.push(found);
+          if (typeof eduvixSaveAllUsers === 'function') eduvixSaveAllUsers(users);
+        } else {
+          // Jika password salah (simulasi)
+          if (found.password !== pw) {
+            btn.classList.remove('loading');
+            btn.disabled = false;
+            showError('errPassword', 'loginPassword');
+            document.querySelector('#errPassword span').textContent = "Password salah!";
+            return;
+          }
+        }
+
+        // Login Berhasil!
+        if (typeof eduvixSaveUser === 'function') {
+          eduvixSaveUser(found);
+        } else {
+          localStorage.setItem('eduvix_user', JSON.stringify(found));
+        }
+
+        showToast('Login berhasil! Mengalihkan...');
+
+        // Redirect ke dashboard
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 1000);
+
+      }, 800);
+    });
+
+    // Enter key login support
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        document.getElementById('btnLogin').click();
+      }
+    });
+  </script>
+</body>
+
+</html>

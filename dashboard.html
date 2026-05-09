@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>EDUVIX.ID – Beranda</title>
   <link rel="stylesheet" href="beranda.css" />
+  <script src="jalan.js"></script>
   <script src="beranda.js" defer></script>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@400;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@400;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
-<body>
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
+<body>
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
       <img src="WhatsApp Image 2026-05-05 at 18.33.04.png" alt="EDUVIX.ID Logo" class="logo-img" />
     </div>
@@ -40,7 +45,7 @@
       </a>
     </nav>
 
-    <a href="#" class="logout-btn">
+    <a href="login.html" class="logout-btn" data-logout>
       <i class="fa-solid fa-right-from-bracket"></i>
       <span>Log Out</span>
     </a>
@@ -61,15 +66,32 @@
         </div>
       </div>
       <div class="topbar-right">
-        <button class="notif-btn">
-          <i class="fa-solid fa-bell"></i>
-          <span class="badge">3</span>
-        </button>
-        <div class="user-profile" id="userProfile">
-          <div class="avatar">
-            <i class="fa-solid fa-user"></i>
+        <div class="notif-wrapper" style="position: relative;">
+          <button class="notif-btn" id="notifBtn">
+            <i class="fa-solid fa-bell"></i>
+            <span class="badge" id="notifBadge">3</span>
+          </button>
+
+          <div class="notif-dropdown" id="notifDropdown">
+            <div class="notif-header">
+              <h3>Notifikasi</h3>
+              <button id="markAllRead" class="btn-text">Tandai sudah dibaca</button>
+            </div>
+            <div class="notif-body" id="notifBody">
+              <!-- Dynamically populated -->
+            </div>
+            <div class="notif-footer">
+              <a href="#">Lihat semua notifikasi</a>
+            </div>
           </div>
-          <span>User20</span>
+        </div>
+
+        <div class="user-profile" id="userProfile">
+          <div class="avatar"
+            style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#7c3aed,#3b9eff);color:#fff;font-weight:800;font-size:16px;">
+            <span data-user-avatar>U</span>
+          </div>
+          <span data-user-name>User</span>
           <i class="fa-solid fa-chevron-down"></i>
         </div>
       </div>
@@ -81,18 +103,18 @@
       <!-- HERO GREETING -->
       <section class="hero-greeting reveal">
         <div class="greeting-text">
-          <p class="greeting-sub">Selamat datang kembali 👋</p>
-          <h1 class="greeting-name">Halo, <span>User20!</span></h1>
+          <p class="greeting-sub" id="greetingSub">Selamat datang kembali 👋</p>
+          <h1 class="greeting-name">Halo, <span data-user-name>User</span>!</h1>
           <p class="greeting-desc">Lanjutkan belajarmu hari ini dan raih pencapaian baru.</p>
         </div>
         <div class="greeting-visual">
           <div class="floating-card fc1" style="--accent: #ab4d0a;">
-            <i class="fa-solid fa-fire" style="--accent: #ab4d0a;"></i>
-            <span>0 Hari Streak</span>
+            <i class="fa-solid fa-fire" style="--accent: #ab4d0a;" data-streak-icon></i>
+            <span><span data-streak>0</span> Hari Streak</span>
           </div>
           <div class="floating-card fc2" style="--accent: #3b9eff;">
             <i class="fa-solid fa-star"></i>
-            <span>Level 1</span>
+            <span data-user-level>Level 1</span>
           </div>
           <div class="hero-blob"></div>
         </div>
@@ -265,7 +287,6 @@
 
     </div>
   </main>
-
-  <script src="beranda.js"></script>
 </body>
+
 </html>

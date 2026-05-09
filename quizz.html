@@ -1,232 +1,298 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>EDUVIX.ID – Quiz</title>
-  <link rel="stylesheet" href="materi.css"/>
-  <script src="materi.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz · Berpikir Kritis — EDUVIX.ID</title>
+    <meta name="description" content="Uji pemahamanmu tentang Berpikir Kritis dengan quiz interaktif di EDUVIX.ID">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="quizz.css">
+    <script src="jalan.js"></script>
 </head>
+
 <body>
 
-  <!-- BACKGROUND DECORATIONS -->
-  <div class="bg-deco">
-    <div class="deco-circle c1"></div>
-    <div class="deco-circle c2"></div>
-    <div class="deco-circle c3"></div>
-    <div class="deco-dots dots-tl"></div>
-    <div class="deco-dots dots-br"></div>
-    <div class="deco-shape s1"></div>
-    <div class="deco-shape s2"></div>
-    <div class="deco-shape s3"></div>
-    <div class="deco-play play-tl"><i class="fa-solid fa-play"></i></div>
-    <div class="deco-play play-br"><i class="fa-solid fa-play"></i></div>
-  </div>
+    <!-- ░░ PARTICLE CANVAS ░░ -->
+    <canvas id="particleCanvas"></canvas>
 
-  <!-- TOP FLOATING BAR -->
-  <div class="top-bar">
-    <a href="dashboard.html" class="back-btn" title="Kembali ke Dashboard">
-      <i class="fa-solid fa-arrow-left"></i>
-      <span>Dashboard</span>
-    </a>
-    <div class="topbar-logo">
-      <img src="WhatsApp Image 2026-05-05 at 18.33.04.png" alt="EDUVIX.ID Logo" class="logo-img"/>
-    </div>
-    <button class="add-soal-btn" id="addSoalBtn">
-      <i class="fa-solid fa-plus"></i>
-      <span>Tambah Soal</span>
-    </button>
-  </div>
+    <!-- ░░ HEADER ░░ -->
+    <header class="qz-header" id="qzHeader">
+        <button class="qz-back" onclick="window.location.href='materi.html'" id="btn-go-back">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H5M5 12L12 19M5 12L12 5" />
+            </svg>
+            <span>Kembali</span>
+        </button>
 
-  <!-- QUIZ CONTAINER -->
-  <div class="quiz-wrap" id="quizWrap">
-
-    <!-- HEADER -->
-    <div class="quiz-header">
-      <div class="qh-left">
-        <div class="quiz-brand">
-          <img src="WhatsApp Image 2026-05-05 at 18.33.04.png" alt="EDUVIX.ID" class="brand-logo"/>
-          <div>
-            <div class="brand-name">EDUVIX<span>.ID</span></div>
-            <div class="brand-session" id="sessionLabel">Session 1</div>
-          </div>
+        <div class="qz-header-center">
+            <div class="qz-logo-text">EDUVIX<em>.ID</em></div>
+            <div class="qz-session-pill">
+                <span class="session-dot"></span>
+                Sesi Aktif
+            </div>
         </div>
-      </div>
 
-      <div class="qh-center">
-        <div class="progress-info">
-          <span class="progress-pct" id="progressPct">10%</span>
-          <span class="progress-count" id="progressCount">1 / 10</span>
+        <!-- Timer -->
+        <div class="qz-timer" id="qzTimer">
+            <svg class="timer-ring-svg" width="52" height="52" viewBox="0 0 52 52">
+                <circle class="timer-ring-bg" cx="26" cy="26" r="22" fill="none" stroke-width="3" />
+                <circle class="timer-ring-fill" id="timerRingFill" cx="26" cy="26" r="22" fill="none" stroke-width="3"
+                    stroke-dasharray="138.2" stroke-dashoffset="0" stroke-linecap="round"
+                    transform="rotate(-90 26 26)" />
+            </svg>
+            <div class="timer-inner">
+                <div class="timer-value" id="timerValue">20:00</div>
+                <div class="timer-label">sisa</div>
+            </div>
         </div>
+    </header>
+
+    <!-- ░░ PROGRESS STRIP ░░ -->
+    <div class="progress-strip">
         <div class="progress-track">
-          <div class="progress-fill" id="progressFill"></div>
+            <div class="progress-fill" id="progressFill" style="width:10%"></div>
         </div>
-        <div class="progress-actions">
-          <button class="pill-btn review-btn" id="reviewBtn">
-            <i class="fa-solid fa-map"></i> Peta Soal
-          </button>
-          <button class="pill-btn mark-btn" id="markBtn">
-            <i class="fa-regular fa-bookmark"></i> Mark as review
-          </button>
+        <div class="progress-meta">
+            <span class="progress-pct" id="progressPct">10%</span>
+            <span class="progress-counter" id="progressCounter">1 / 10</span>
         </div>
-      </div>
-
-      <div class="qh-right">
-        <div class="timer-box" id="timerBox">
-          <i class="fa-regular fa-clock"></i>
-          <div>
-            <div class="timer-val" id="timerVal">20:00</div>
-            <div class="timer-label">Time Left</div>
-          </div>
-        </div>
-      </div>
     </div>
 
-    <!-- QUESTION AREA -->
-    <div class="question-area" id="questionArea">
-      <div class="question-meta" id="questionMeta">Question 1</div>
-      <div class="question-text" id="questionText">Loading...</div>
-    </div>
+    <!-- ░░ MAIN ░░ -->
+    <main class="qz-main">
 
-    <!-- OPTIONS -->
-    <div class="options-list" id="optionsList"></div>
-
-    <!-- FOOTER -->
-    <div class="quiz-footer">
-      <div class="qf-left">
-        <button class="nav-btn prev-btn" id="prevBtn">
-          <i class="fa-solid fa-arrow-left"></i> Previous
-        </button>
-        <button class="nav-btn next-btn" id="nextBtn">
-          Next <i class="fa-solid fa-arrow-right"></i>
-        </button>
-      </div>
-      <button class="finish-btn" id="finishBtn">Finish</button>
-    </div>
-
-  </div>
-
-  <!-- QUESTION MAP PANEL -->
-  <div class="qmap-overlay" id="qmapOverlay">
-    <div class="qmap-panel">
-      <div class="qmap-head">
-        <h3><i class="fa-solid fa-map"></i> Peta Soal</h3>
-        <button class="icon-close" id="qmapClose"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div class="qmap-legend">
-        <span class="leg answered">Dijawab</span>
-        <span class="leg marked">Ditandai</span>
-        <span class="leg current">Aktif</span>
-        <span class="leg empty">Belum</span>
-      </div>
-      <div class="qmap-grid" id="qmapGrid"></div>
-      <div class="qmap-summary" id="qmapSummary"></div>
-      <button class="finish-btn qmap-finish" id="qmapFinish">
-        <i class="fa-solid fa-flag-checkered"></i> Finish Quiz
-      </button>
-    </div>
-  </div>
-
-  <!-- MODAL TAMBAH SOAL -->
-  <div class="modal-overlay" id="addSoalOverlay">
-    <div class="modal-panel">
-      <div class="modal-head">
-        <div class="modal-title">
-          <div class="modal-icon"><i class="fa-solid fa-circle-plus"></i></div>
-          <h3>Tambah Soal Baru</h3>
-        </div>
-        <button class="icon-close" id="addSoalClose"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label>Pertanyaan <span class="req">*</span></label>
-          <textarea id="inputQuestion" placeholder="Tulis pertanyaan di sini..." rows="3"></textarea>
-        </div>
-        <div class="form-group">
-          <label>Pilihan Jawaban <span class="req">*</span> — klik <i class="fa-regular fa-circle-check"></i> untuk jawaban benar</label>
-          <div class="options-input" id="optionsInput">
-            <div class="opt-row" data-idx="0">
-              <div class="opt-label">A</div>
-              <input type="text" placeholder="Pilihan A..." class="opt-field"/>
-              <button class="opt-correct-toggle" data-idx="0"><i class="fa-regular fa-circle-check"></i></button>
+        <!-- Question Map Panel -->
+        <aside class="qmap-panel" id="qmapPanel">
+            <div class="qmap-header">
+                <span>Peta Soal</span>
+                <button class="qmap-close" id="qmapClose">✕</button>
             </div>
-            <div class="opt-row" data-idx="1">
-              <div class="opt-label">B</div>
-              <input type="text" placeholder="Pilihan B..." class="opt-field"/>
-              <button class="opt-correct-toggle" data-idx="1"><i class="fa-regular fa-circle-check"></i></button>
+            <div class="qmap-grid" id="qmapGrid">
+                <!-- JS fills this -->
             </div>
-            <div class="opt-row" data-idx="2">
-              <div class="opt-label">C</div>
-              <input type="text" placeholder="Pilihan C..." class="opt-field"/>
-              <button class="opt-correct-toggle" data-idx="2"><i class="fa-regular fa-circle-check"></i></button>
+            <div class="qmap-legend">
+                <span class="ql-dot answered"></span>Dijawab
+                <span class="ql-dot current"></span>Saat ini
+                <span class="ql-dot unanswered"></span>Belum
             </div>
-            <div class="opt-row" data-idx="3">
-              <div class="opt-label">D</div>
-              <input type="text" placeholder="Pilihan D..." class="opt-field"/>
-              <button class="opt-correct-toggle" data-idx="3"><i class="fa-regular fa-circle-check"></i></button>
+        </aside>
+        <div class="qmap-backdrop" id="qmapBackdrop"></div>
+
+        <!-- Quiz Card -->
+        <div class="qz-card" id="qzCard">
+
+            <!-- Card Top Bar -->
+            <div class="qz-card-topbar">
+                <div class="qtag">
+                    <span class="qtag-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z" />
+                            <path
+                                d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z" />
+                        </svg></span>
+                    <span id="questionLabel">Soal 1</span>
+                </div>
+                <div class="qtop-actions">
+                    <button class="qtop-btn" id="btnMap" title="Peta Soal">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7" />
+                            <rect x="14" y="3" width="7" height="7" />
+                            <rect x="14" y="14" width="7" height="7" />
+                            <rect x="3" y="14" width="7" height="7" />
+                        </svg>
+                        Peta Soal
+                    </button>
+                    <button class="qtop-btn review-btn" id="btnMark" title="Tandai untuk review">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" />
+                        </svg>
+                        Tandai
+                    </button>
+                </div>
             </div>
-          </div>
+
+            <!-- XP Streak Bar -->
+            <div class="streak-bar" id="streakBar">
+                <span class="streak-fire"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
+                    </svg></span>
+                <span class="streak-label" id="streakLabel">Streak: 0</span>
+                <div class="streak-dots" id="streakDots">
+                    <span class="sd"></span><span class="sd"></span><span class="sd"></span>
+                    <span class="sd"></span><span class="sd"></span>
+                </div>
+                <span class="xp-badge" id="xpBadge">+0 XP</span>
+            </div>
+
+            <!-- Question Body -->
+            <div class="qz-body">
+                <p class="question-text" id="question-text">Apa yang dimaksud dengan berpikir kritis?</p>
+
+                <!-- Options -->
+                <div class="answer-options" id="answer-options">
+                    <!-- Rendered by JS -->
+                </div>
+
+                <!-- Explanation -->
+                <div class="explanation" id="explanation" style="display:none">
+                    <div class="exp-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" />
+                            <path d="M9 18h6" />
+                            <path d="M10 22h4" />
+                        </svg></div>
+                    <div class="exp-body">
+                        <div class="exp-title">Penjelasan</div>
+                        <p id="explanation-text"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="qz-nav">
+                <button class="qnav-btn prev" id="btn-previous" disabled>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round">
+                        <path d="M19 12H5M5 12L12 19M5 12L12 5" />
+                    </svg>
+                    Sebelumnya
+                </button>
+                <div class="qnav-dots" id="qnavDots">
+                    <!-- JS fills this -->
+                </div>
+                <button class="qnav-btn next" id="btn-next">
+                    Selanjutnya
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </button>
+                <button class="qnav-btn finish" id="btn-finish" style="display:none">
+                    Selesai
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round">
+                        <path d="M5 13l4 4L19 7" />
+                    </svg>
+                </button>
+            </div>
+
+        </div><!-- /qz-card -->
+
+        <!-- Keyboard hints -->
+        <div class="kb-hints">
+            <span><kbd>1</kbd>–<kbd>4</kbd> Pilih jawaban</span>
+            <span><kbd>←</kbd><kbd>→</kbd> Navigasi</span>
         </div>
-      </div>
-      <div class="modal-foot">
-        <button class="nav-btn" id="addSoalCancel">Batal</button>
-        <button class="finish-btn" id="addSoalSave">
-          <i class="fa-solid fa-floppy-disk"></i> Simpan Soal
-        </button>
-      </div>
+
+    </main>
+
+    <!-- ░░ RESULT MODAL ░░ -->
+    <div class="result-modal" id="result-modal">
+        <div class="rm-card">
+            <div class="rm-confetti" id="rmConfetti"></div>
+
+            <div class="rm-trophy" id="rmTrophy"><svg width="48" height="48" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+                    <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+                    <path d="M4 22h16" />
+                    <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
+                    <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+                    <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
+                </svg></div>
+            <h2 class="rm-title" id="rmTitle">Quiz Selesai!</h2>
+            <p class="rm-sub" id="rmSub">Kamu telah menyelesaikan semua soal.</p>
+
+            <!-- Score ring -->
+            <div class="rm-score-ring">
+                <svg width="120" height="120" viewBox="0 0 120 120">
+                    <circle cx="60" cy="60" r="50" fill="none" stroke="#e5e7eb" stroke-width="8" />
+                    <circle cx="60" cy="60" r="50" fill="none" stroke="url(#scoreGrad)" stroke-width="8"
+                        stroke-dasharray="314.16" stroke-dashoffset="314.16" stroke-linecap="round"
+                        transform="rotate(-90 60 60)" id="scoreRingFill" />
+                    <defs>
+                        <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#7c3aed" />
+                            <stop offset="100%" stop-color="#10b981" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <div class="rm-score-inner">
+                    <span class="rm-score-val" id="score-percentage">0%</span>
+                    <span class="rm-score-lbl">Skor</span>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="rm-stats">
+                <div class="rm-stat correct-stat">
+                    <div class="rms-val" id="correct-count">0</div>
+                    <div class="rms-lbl"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#059669"
+                            stroke-width="3" stroke-linecap="round">
+                            <path d="M5 13l4 4L19 7" />
+                        </svg> Benar</div>
+                </div>
+                <div class="rm-stat wrong-stat">
+                    <div class="rms-val" id="wrong-count">0</div>
+                    <div class="rms-lbl"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#dc2626"
+                            stroke-width="3" stroke-linecap="round">
+                            <path d="M18 6L6 18M6 6l12 12" />
+                        </svg> Salah</div>
+                </div>
+                <div class="rm-stat xp-stat">
+                    <div class="rms-val" id="xp-earned">0</div>
+                    <div class="rms-lbl"><svg width="13" height="13" viewBox="0 0 24 24" fill="#d97706" stroke="none">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z" />
+                        </svg> XP</div>
+                </div>
+            </div>
+
+            <!-- Stars -->
+            <div class="rm-stars" id="rmStars"><svg width="24" height="24" viewBox="0 0 24 24" fill="#f59e0b"
+                    stroke="none">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z" />
+                </svg><svg width="24" height="24" viewBox="0 0 24 24" fill="#f59e0b" stroke="none">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z" />
+                </svg><svg width="24" height="24" viewBox="0 0 24 24" fill="#f59e0b" stroke="none">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z" />
+                </svg></div>
+
+            <!-- Actions -->
+            <div class="rm-actions">
+                <button class="rm-btn secondary btn-review-answers"><svg width="15" height="15" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                        <circle cx="11" cy="11" r="8" />
+                        <path d="m21 21-4.35-4.35" />
+                    </svg> Review Jawaban</button>
+                <button class="rm-btn primary btn-back-dashboard"><svg width="15" height="15" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                        <polyline points="9 22 9 12 15 12 15 22" />
+                    </svg> Ke Dashboard</button>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- RESULT SCREEN -->
-  <div class="result-screen" id="resultScreen">
-    <div class="result-card">
-      <img src="logo-eduvix.png" alt="EDUVIX.ID" class="result-logo-img"/>
-      <div class="result-icon"><i class="fa-solid fa-circle-check"></i></div>
-      <h2>Quiz Selesai!</h2>
-      <p class="result-sub">Berikut hasil kamu:</p>
-      <div class="result-stats">
-        <div class="rs-item" style="--rc:#6c4de6">
-          <div class="rs-val" id="rsScore">0</div>
-          <div class="rs-label">Skor</div>
-        </div>
-        <div class="rs-item" style="--rc:#22c55e">
-          <div class="rs-val" id="rsCorrect">0</div>
-          <div class="rs-label">Benar</div>
-        </div>
-        <div class="rs-item" style="--rc:#ef4444">
-          <div class="rs-val" id="rsWrong">0</div>
-          <div class="rs-label">Salah</div>
-        </div>
-        <div class="rs-item" style="--rc:#f97316">
-          <div class="rs-val" id="rsUnanswered">0</div>
-          <div class="rs-label">Kosong</div>
-        </div>
-      </div>
-      <div class="score-bar-wrap">
-        <div class="score-bar-track">
-          <div class="score-bar-fill" id="scoreBarFill"></div>
-        </div>
-        <span class="score-bar-label" id="scoreBarLabel">0%</span>
-      </div>
-      <div class="result-actions">
-        <a href="dashboard.html" class="nav-btn">
-          <i class="fa-solid fa-house"></i> Dashboard
-        </a>
-        <button class="nav-btn" id="reviewResultBtn">
-          <i class="fa-solid fa-eye"></i> Review
-        </button>
-        <button class="finish-btn" id="retryBtn">
-          <i class="fa-solid fa-rotate-right"></i> Ulangi
-        </button>
-      </div>
-    </div>
-  </div>
+    <!-- ░░ XP POP ░░ -->
+    <div class="xp-pop" id="xpPop">+10 XP <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" stroke="none">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z" />
+        </svg></div>
 
-  <!-- TOAST -->
-  <div class="toast" id="toast"></div>
-
-  <script src="quiz.js"></script>
+    <script src="quizz.js"></script>
 </body>
+
 </html>

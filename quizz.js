@@ -1,531 +1,530 @@
-// ===========================
-// EDUVIX.ID — Quiz JS v2
-// ===========================
-
-// ========== DEFAULT SOAL ==========
-const DEFAULT_QUESTIONS = [
+// ==================== Quiz Data ====================
+const quizData = [
   {
-    id: 1,
-    text: "Pengantar berpikir kritis adalah kemampuan untuk menganalisis informasi secara objektif. Manakah yang BUKAN merupakan ciri berpikir kritis?",
-    options: ["Menganalisis argumen secara logis", "Mengevaluasi bukti secara objektif", "Menerima semua informasi tanpa pertanyaan", "Menarik kesimpulan berdasarkan data"],
-    answer: 2
+    question: "Apa yang dimaksud dengan berpikir kritis?",
+    options: ["Kemampuan untuk mengkritik orang lain tanpa dasar", "Kemampuan menganalisis informasi secara logis dan objektif", "Hanya menerima informasi dari sumber yang terpercaya", "Mengikuti pendapat mayoritas dalam sebuah diskusi"],
+    correct: 1,
+    explanation: "Berpikir kritis adalah kemampuan untuk menganalisis dan mengevaluasi informasi secara logis dan objektif, bukan hanya menerima informasi begitu saja atau mengikuti pendapat orang lain."
   },
   {
-    id: 2,
-    text: "Identifikasi argumen merupakan langkah pertama dalam berpikir kritis. Sebuah argumen yang valid harus memiliki...",
-    options: ["Premis yang mendukung kesimpulan", "Emosi yang kuat dari penulis", "Banyak data tanpa kesimpulan", "Pernyataan yang tidak dapat dibuktikan"],
-    answer: 0
+    question: "Mana yang termasuk contoh FAKTA?",
+    options: ["Menurutku, coklat adalah rasa terbaik", "Air mendidih pada suhu 100°C (tekanan normal)", "Film ini sangat membosankan", "Semua orang seharusnya suka matematika"],
+    correct: 1,
+    explanation: "Fakta adalah sesuatu yang dapat dibuktikan dengan data atau bukti ilmiah. Air mendidih pada 100°C adalah fakta yang dapat diverifikasi."
   },
   {
-    id: 3,
-    text: "Logical Fallacy (kekeliruan logis) adalah kesalahan dalam penalaran. Contoh fallacy 'Ad Hominem' adalah...",
-    options: ["Menyerang karakter seseorang daripada argumennya", "Menarik kesimpulan terlalu luas dari satu kasus", "Menganggap sesuatu benar karena banyak yang percaya", "Menggunakan bukti yang tidak relevan"],
-    answer: 0
+    question: "Apa yang BUKAN termasuk elemen berpikir kritis?",
+    options: ["Observasi yang detail", "Mengajukan pertanyaan kritis", "Mengikuti pendapat mayoritas", "Mengevaluasi informasi dengan logika"],
+    correct: 2,
+    explanation: "Mengikuti pendapat mayoritas bukan bagian dari berpikir kritis. Berpikir kritis memerlukan analisis independen, bukan hanya mengikuti apa yang orang lain katakan."
   },
   {
-    id: 4,
-    text: "Dalam logika, pernyataan 'Semua manusia adalah makhluk hidup, Soni adalah manusia, maka Soni adalah makhluk hidup' disebut...",
-    options: ["Induksi", "Deduksi (Silogisme)", "Analogi", "Abduktif"],
-    answer: 1
+    question: "Logical Fallacy 'Ad Hominem' adalah:",
+    options: ["Mengubah argumen lawan menjadi versi yang lebih lemah", "Menyerang karakter orang, bukan argumennya", "Menyimpulkan dari sampel yang terlalu kecil", "Hanya memberikan dua pilihan ekstrem"],
+    correct: 1,
+    explanation: "Ad Hominem adalah kesalahan logika dimana seseorang menyerang karakter atau pribadi lawan debat, bukan menyerang argumennya."
   },
   {
-    id: 5,
-    text: "Straw Man fallacy terjadi ketika seseorang...",
-    options: ["Memberikan bukti yang kuat", "Memalsukan atau melebih-lebihkan argumen lawan untuk memudahkan serangan", "Menggunakan otoritas yang tepat sebagai referensi", "Menarik kesimpulan dari banyak premis"],
-    answer: 1
+    question: "Apa itu Confirmation Bias?",
+    options: ["Kecenderungan percaya informasi pertama yang diterima", "Kecenderungan mencari informasi yang mendukung keyakinan kita", "Kecenderungan mengikuti keputusan mayoritas", "Kecenderungan menghindari informasi baru"],
+    correct: 1,
+    explanation: "Confirmation Bias adalah kecenderungan untuk mencari, menginterpretasi, dan mengingat informasi yang mengkonfirmasi keyakinan atau hipotesis kita yang sudah ada."
   },
   {
-    id: 6,
-    text: "Manakah contoh argumen induktif yang tepat?",
-    options: ["Semua X adalah Y, Z adalah X, maka Z adalah Y", "Matahari terbit setiap hari selama ribuan tahun, maka besok matahari pasti terbit", "Jika hujan, maka jalan basah. Jalan basah, maka hujan", "P atau Q, bukan P, maka Q"],
-    answer: 1
+    question: "Kriteria CRAAP untuk evaluasi sumber informasi mencakup:",
+    options: ["Cost, Relevance, Authority, Accuracy, Purpose", "Currency, Relevance, Authority, Accuracy, Purpose", "Current, Review, Author, Accuracy, Publish", "Content, Reference, Author, Access, Purpose"],
+    correct: 1,
+    explanation: "CRAAP adalah singkatan dari Currency (kemutakhiran), Relevance (relevansi), Authority (otoritas), Accuracy (akurasi), dan Purpose (tujuan)."
   },
   {
-    id: 7,
-    text: "False Dichotomy adalah jenis logical fallacy yang...",
-    options: ["Menyerang pribadi lawan", "Membuat pilihan seolah hanya ada dua opsi padahal lebih banyak", "Menggunakan banyak data statistik palsu", "Menarik simpati audiens lewat emosi"],
-    answer: 1
+    question: "Dalam pengambilan keputusan rasional, langkah pertama adalah:",
+    options: ["Mengumpulkan opini dari banyak orang", "Mengidentifikasi masalah dengan jelas", "Langsung memilih solusi terbaik", "Mengevaluasi konsekuensi"],
+    correct: 1,
+    explanation: "Langkah pertama dalam pengambilan keputusan rasional adalah mengidentifikasi dan mendefinisikan masalah dengan jelas sebelum mencari solusi."
   },
   {
-    id: 8,
-    text: "Evaluasi sumber informasi yang baik meliputi hal berikut, KECUALI...",
-    options: ["Kredibilitas penulis atau lembaga", "Tanggal publikasi", "Jumlah like di media sosial", "Metodologi penelitian yang digunakan"],
-    answer: 2
+    question: "Mana yang termasuk 'Hasty Generalization'?",
+    options: ["Semua kucing adalah hewan, jadi hewan peliharaan saya adalah kucing", "Saya bertemu 2 orang kasar dari kota X, jadi semua orang dari kota X kasar", "Jika hujan, jalanan basah. Jalanan basah, jadi pasti hujan", "Kamu salah, jadi saya benar"],
+    correct: 1,
+    explanation: "Hasty Generalization adalah kesimpulan yang dibuat berdasarkan sampel yang terlalu kecil atau tidak representatif."
   },
   {
-    id: 9,
-    text: "Bias konfirmasi (confirmation bias) adalah kecenderungan...",
-    options: ["Mencari informasi yang bertentangan dengan keyakinan kita", "Hanya mencari dan menerima informasi yang mendukung keyakinan kita", "Selalu meragukan setiap informasi yang diterima", "Menggunakan logika deduktif secara ketat"],
-    answer: 1
+    question: "Apa perbedaan argumen DEDUKTIF dan INDUKTIF?",
+    options: ["Deduktif: khusus ke umum, Induktif: umum ke khusus", "Deduktif: umum ke khusus, Induktif: khusus ke umum", "Keduanya sama saja", "Deduktif untuk sains, Induktif untuk matematika"],
+    correct: 1,
+    explanation: "Argumen deduktif bergerak dari premis umum ke kesimpulan khusus, sedangkan induktif dari observasi khusus ke kesimpulan umum."
   },
   {
-    id: 10,
-    text: "Dalam debat, teknik Socratic Questioning digunakan untuk...",
-    options: ["Memenangkan argumen dengan emosi", "Mengajukan pertanyaan mendalam untuk mengungkap asumsi tersembunyi", "Menyerang karakter lawan bicara", "Mengabaikan bukti yang berlawanan"],
-    answer: 1
+    question: "Sikap yang BENAR dalam berpikir kritis adalah:",
+    options: ["Percaya semua yang dikatakan para ahli", "Selalu skeptis dan tidak percaya apapun", "Terbuka terhadap bukti baru dan siap mengubah pendapat", "Mempertahankan pendapat awal apapun yang terjadi"],
+    correct: 2,
+    explanation: "Pemikir kritis harus terbuka terhadap bukti dan informasi baru, serta bersedia mengubah pendapat jika ada bukti yang lebih kuat."
   }
 ];
 
-const QUIZ_CONFIG = {
-  title:    "MCT Mock Tests",
-  session:  "Session 1",
-  duration: 20 * 60  // detik
-};
+// ==================== State ====================
+let currentQuestion = 0;
+let userAnswers = new Array(quizData.length).fill(undefined);
+let markedQuestions = new Set();
+let streak = 0;
+let totalXP = 0;
+let timeLeft = 1200;
+let timerInterval;
+const MAX_TIME = 1200;
 
-// ========== LOAD SOAL dari localStorage atau default ==========
-function loadQuestions() {
-  const saved = localStorage.getItem('eduvix_custom_questions');
-  if (saved) {
-    try {
-      const custom = JSON.parse(saved);
-      if (Array.isArray(custom) && custom.length > 0) return custom;
-    } catch(e) {}
+// ==================== DOM ====================
+const questionText = document.getElementById('question-text');
+const answerOptions = document.getElementById('answer-options');
+const explanationBox = document.getElementById('explanation');
+const explanationTxt = document.getElementById('explanation-text');
+const progressFill = document.getElementById('progressFill');
+const progressPct = document.getElementById('progressPct');
+const progressCounter = document.getElementById('progressCounter');
+const timerValue = document.getElementById('timerValue');
+const timerRing = document.getElementById('timerRingFill');
+const btnPrev = document.getElementById('btn-previous');
+const btnNext = document.getElementById('btn-next');
+const btnFinish = document.getElementById('btn-finish');
+const questionLabel = document.getElementById('questionLabel');
+const streakLabel = document.getElementById('streakLabel');
+const streakDots = document.getElementById('streakDots');
+const xpBadge = document.getElementById('xpBadge');
+const xpPop = document.getElementById('xpPop');
+const qmapPanel = document.getElementById('qmapPanel');
+const qmapBackdrop = document.getElementById('qmapBackdrop');
+const qmapGrid = document.getElementById('qmapGrid');
+const qnavDots = document.getElementById('qnavDots');
+const btnMap = document.getElementById('btnMap');
+const btnMark = document.getElementById('btnMark');
+
+// ==================== PARTICLES ====================
+(function initParticles() {
+  const canvas = document.getElementById('particleCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  for (let i = 0; i < 55; i++) {
+    particles.push({
+      x: Math.random() * W, y: Math.random() * H,
+      r: Math.random() * 1.8 + .5, dx: (Math.random() - .5) * .4, dy: (Math.random() - .5) * .4,
+      a: Math.random()
+    });
   }
-  return [...DEFAULT_QUESTIONS];
-}
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => {
+      p.x += p.dx; p.y += p.dy;
+      if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(129,140,248,${p.a * .6})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
 
-function saveQuestions(qs) {
-  localStorage.setItem('eduvix_custom_questions', JSON.stringify(qs));
-}
-
-let QUESTIONS = loadQuestions();
-
-// ========== STATE ==========
-const state = {
-  current:  0,
-  answers:  {},
-  marked:   new Set(),
-  timer:    QUIZ_CONFIG.duration,
-  timerInt: null,
-  review:   false,
-  done:     false,
-  correctAnswer: null  // tambah soal: index jawaban benar
-};
-
-// ========== DOM ==========
-const $ = id => document.getElementById(id);
-const dom = {
-  progressPct:   $('progressPct'),
-  progressCount: $('progressCount'),
-  progressFill:  $('progressFill'),
-  sessionLabel:  $('sessionLabel'),
-  questionMeta:  $('questionMeta'),
-  questionText:  $('questionText'),
-  optionsList:   $('optionsList'),
-  prevBtn:       $('prevBtn'),
-  nextBtn:       $('nextBtn'),
-  finishBtn:     $('finishBtn'),
-  reviewBtn:     $('reviewBtn'),
-  markBtn:       $('markBtn'),
-  timerVal:      $('timerVal'),
-  timerBox:      $('timerBox'),
-  // Map
-  qmapOverlay:   $('qmapOverlay'),
-  qmapGrid:      $('qmapGrid'),
-  qmapClose:     $('qmapClose'),
-  qmapFinish:    $('qmapFinish'),
-  qmapSummary:   $('qmapSummary'),
-  // Modal tambah soal
-  addSoalBtn:    $('addSoalBtn'),
-  addSoalOverlay:$('addSoalOverlay'),
-  addSoalClose:  $('addSoalClose'),
-  addSoalCancel: $('addSoalCancel'),
-  addSoalSave:   $('addSoalSave'),
-  inputQuestion: $('inputQuestion'),
-  optionsInput:  $('optionsInput'),
-  // Result
-  resultScreen:  $('resultScreen'),
-  rsScore:       $('rsScore'),
-  rsCorrect:     $('rsCorrect'),
-  rsWrong:       $('rsWrong'),
-  rsUnanswered:  $('rsUnanswered'),
-  scoreBarFill:  $('scoreBarFill'),
-  scoreBarLabel: $('scoreBarLabel'),
-  reviewResultBtn: $('reviewResultBtn'),
-  retryBtn:      $('retryBtn'),
-  // Toast
-  toast:         $('toast'),
-};
-
-// ========== INIT ==========
+// ==================== INIT ====================
 function init() {
-  loadState();
-  dom.sessionLabel.textContent = QUIZ_CONFIG.session;
-  renderQuestion();
+  buildQmap();
+  buildNavDots();
+  loadQuestion();
   startTimer();
-  buildQMap();
-  bindEvents();
+  updateProgress();
+  updateNavButtons();
+  btnPrev.addEventListener('click', prevQ);
+  btnNext.addEventListener('click', nextQ);
+  btnFinish.addEventListener('click', finishQuiz);
+  btnMap.addEventListener('click', openQmap);
+  document.getElementById('qmapClose').addEventListener('click', closeQmap);
+  qmapBackdrop.addEventListener('click', closeQmap);
+  btnMark.addEventListener('click', toggleMark);
+  document.querySelector('.btn-review-answers').addEventListener('click', reviewAnswers);
+  document.querySelector('.btn-back-dashboard').addEventListener('click', () => window.location.href = 'materi.html');
 }
 
-// ========== RENDER SOAL ==========
-function renderQuestion() {
-  const q   = QUESTIONS[state.current];
-  const tot = QUESTIONS.length;
-
-  dom.questionMeta.textContent = `Question ${state.current + 1}`;
-  dom.questionText.textContent = q.text;
-
-  // Progress
-  const pct = Math.round(((state.current + 1) / tot) * 100);
-  dom.progressPct.textContent  = pct + '%';
-  dom.progressCount.textContent = `${state.current + 1} / ${tot}`;
-  dom.progressFill.style.width = pct + '%';
-
-  // Buttons
-  dom.prevBtn.disabled = state.current === 0;
-  dom.nextBtn.disabled = state.current === tot - 1;
-  updateMarkBtn();
-
-  // Animate question
-  const qa = document.querySelector('.question-area');
-  qa.style.opacity = '0'; qa.style.transform = 'translateY(8px)';
-  requestAnimationFrame(() => {
-    qa.style.transition = 'opacity .22s ease, transform .22s ease';
-    qa.style.opacity = '1'; qa.style.transform = 'translateY(0)';
-  });
-
-  renderOptions(q);
-}
-
-function renderOptions(q) {
-  dom.optionsList.innerHTML = '';
-  q.options.forEach((opt, i) => {
-    const el = document.createElement('div');
-    el.className = 'option-item';
-
-    if (state.review) {
-      if (i === q.answer) el.classList.add('correct');
-      else if (state.answers[state.current] === i) el.classList.add('wrong');
-    } else {
-      if (state.answers[state.current] === i) el.classList.add('selected');
-    }
-
-    el.innerHTML = `<span class="opt-text">${opt}</span><div class="opt-radio"></div>`;
-
-    if (!state.review && !state.done) {
-      el.addEventListener('click', () => selectOption(i));
-    }
-
-    el.style.opacity = '0';
-    el.style.transform = 'translateX(-8px)';
-    dom.optionsList.appendChild(el);
-    setTimeout(() => {
-      el.style.transition = 'opacity .2s ease, transform .2s ease, border-color .2s, background .2s, transform .25s cubic-bezier(.4,0,.2,1)';
-      el.style.opacity = '1';
-      el.style.transform = '';
-    }, i * 55 + 40);
-  });
-}
-
-function selectOption(idx) {
-  state.answers[state.current] = idx;
-  saveState();
-  renderOptions(QUESTIONS[state.current]);
-  updateQMap();
-  showToast('✓ Jawaban dipilih', 'success', 1000);
-}
-
-// ========== NAV ==========
-dom.prevBtn.addEventListener('click', () => { state.current--; renderQuestion(); updateQMap(); });
-dom.nextBtn.addEventListener('click', () => { state.current++; renderQuestion(); updateQMap(); });
-
-// ========== MARK ==========
-dom.markBtn.addEventListener('click', () => {
-  if (state.marked.has(state.current)) {
-    state.marked.delete(state.current);
-    showToast('Tanda dihapus');
-  } else {
-    state.marked.add(state.current);
-    showToast('🔖 Soal ditandai', 'info');
-  }
-  updateMarkBtn(); updateQMap(); saveState();
-});
-
-function updateMarkBtn() {
-  const m = state.marked.has(state.current);
-  dom.markBtn.classList.toggle('marked', m);
-  dom.markBtn.innerHTML = m
-    ? '<i class="fa-solid fa-bookmark"></i> Marked'
-    : '<i class="fa-regular fa-bookmark"></i> Mark as review';
-}
-
-// ========== TIMER ==========
+// ==================== TIMER ====================
 function startTimer() {
-  updateTimer();
-  state.timerInt = setInterval(() => {
-    state.timer--;
-    updateTimer();
-    saveState();
-    if (state.timer <= 60) dom.timerBox.classList.add('urgent');
-    if (state.timer <= 0) { clearInterval(state.timerInt); showToast('⏰ Waktu habis!', 'error', 2000); setTimeout(finishQuiz, 2100); }
+  updateTimerDisplay();
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    updateTimerDisplay();
+    if (timeLeft <= 0) { clearInterval(timerInterval); finishQuiz(); }
+    if (timeLeft === 300) showToast('⏰ Waktu tinggal 5 menit!', 'warn');
   }, 1000);
 }
 
-function updateTimer() {
-  const m = String(Math.floor(state.timer / 60)).padStart(2,'0');
-  const s = String(state.timer % 60).padStart(2,'0');
-  dom.timerVal.textContent = `${m}:${s}`;
+function updateTimerDisplay() {
+  const m = Math.floor(timeLeft / 60);
+  const s = timeLeft % 60;
+  timerValue.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  const pct = timeLeft / MAX_TIME;
+  const circ = 138.2;
+  timerRing.style.strokeDashoffset = circ * (1 - pct);
+  const el = document.getElementById('qzTimer');
+  el.classList.toggle('warn', timeLeft < 300 && timeLeft >= 60);
+  el.classList.toggle('danger', timeLeft < 60);
 }
 
-// ========== FINISH ==========
-dom.finishBtn.addEventListener('click', () => {
-  const unanswered = QUESTIONS.length - Object.keys(state.answers).length;
-  if (unanswered > 0) {
-    showToast(`⚠️ Masih ${unanswered} soal belum dijawab!`, 'error', 2800);
-  }
-  setTimeout(finishQuiz, unanswered > 0 ? 2900 : 0);
-});
+// ==================== LOAD QUESTION ====================
+function loadQuestion() {
+  const q = quizData[currentQuestion];
+  questionLabel.textContent = `Soal ${currentQuestion + 1}`;
+  questionText.style.animation = 'none';
+  requestAnimationFrame(() => { questionText.style.animation = 'fadeSlide .4s ease'; });
+  questionText.textContent = q.question;
 
-function finishQuiz() {
-  if (state.done) return;
-  clearInterval(state.timerInt);
-  state.done = true;
-
-  let correct = 0;
-  QUESTIONS.forEach((q, i) => { if (state.answers[i] === q.answer) correct++; });
-  const wrong      = Object.keys(state.answers).length - correct;
-  const unanswered = QUESTIONS.length - Object.keys(state.answers).length;
-  const score      = Math.round((correct / QUESTIONS.length) * 100);
-
-  dom.rsScore.textContent      = score;
-  dom.rsCorrect.textContent    = correct;
-  dom.rsWrong.textContent      = wrong;
-  dom.rsUnanswered.textContent = unanswered;
-
-  dom.resultScreen.classList.add('show');
-
-  // Animate bar
-  setTimeout(() => {
-    dom.scoreBarFill.style.width = score + '%';
-    dom.scoreBarLabel.textContent = score + '%';
-  }, 300);
-
-  // Animate counters
-  animateCounters([
-    {el: dom.rsScore, val: score},
-    {el: dom.rsCorrect, val: correct},
-    {el: dom.rsWrong, val: wrong},
-    {el: dom.rsUnanswered, val: unanswered}
-  ]);
-
-  localStorage.setItem('eduvix_last_result', JSON.stringify({score, correct, wrong, unanswered, date: new Date().toISOString()}));
-  localStorage.removeItem('eduvix_quiz_progress');
-}
-
-function animateCounters(items) {
-  items.forEach(({el, val}) => {
-    let cur = 0;
-    const inc = Math.max(1, Math.ceil(val / 25));
-    const t = setInterval(() => {
-      cur = Math.min(cur + inc, val);
-      el.textContent = cur;
-      if (cur >= val) clearInterval(t);
-    }, 35);
-  });
-}
-
-// ========== REVIEW RESULT ==========
-dom.reviewResultBtn.addEventListener('click', () => {
-  dom.resultScreen.classList.remove('show');
-  state.review = true;
-  state.current = 0;
-  renderQuestion();
-  showToast('👁️ Mode review aktif — jawaban benar ditampilkan', 'info', 3000);
-});
-
-dom.retryBtn.addEventListener('click', () => {
-  localStorage.removeItem('eduvix_quiz_progress');
-  location.reload();
-});
-
-// ========== QUESTION MAP ==========
-dom.reviewBtn.addEventListener('click', openQMap);
-dom.qmapClose.addEventListener('click', closeQMap);
-dom.qmapOverlay.addEventListener('click', e => { if (e.target === dom.qmapOverlay) closeQMap(); });
-dom.qmapFinish.addEventListener('click', () => { closeQMap(); dom.finishBtn.click(); });
-
-function buildQMap() {
-  dom.qmapGrid.innerHTML = '';
-  QUESTIONS.forEach((_, i) => {
+  answerOptions.innerHTML = '';
+  q.options.forEach((opt, i) => {
     const btn = document.createElement('button');
-    btn.className = 'qmap-num';
-    btn.textContent = i + 1;
-    btn.addEventListener('click', () => { state.current = i; renderQuestion(); closeQMap(); });
-    dom.qmapGrid.appendChild(btn);
-  });
-  updateQMap();
-}
-
-function updateQMap() {
-  const btns = dom.qmapGrid.querySelectorAll('.qmap-num');
-  btns.forEach((btn, i) => {
-    btn.className = 'qmap-num';
-    if (i === state.current)               btn.classList.add('current');
-    else if (state.marked.has(i))          btn.classList.add('marked');
-    else if (state.answers[i] !== undefined) btn.classList.add('answered');
+    btn.className = 'option-btn';
+    btn.dataset.index = i;
+    const letters = ['A', 'B', 'C', 'D'];
+    btn.innerHTML = `
+          <span class="option-letter">${letters[i]}</span>
+          <span class="option-text">${opt}</span>
+          <span class="option-check"></span>
+        `;
+    btn.addEventListener('click', () => selectOption(i));
+    answerOptions.appendChild(btn);
   });
 
-  const answered   = Object.keys(state.answers).length;
-  const marked     = state.marked.size;
-  const unanswered = QUESTIONS.length - answered;
-  dom.qmapSummary.innerHTML =
-    `<span>Total: <span>${QUESTIONS.length}</span></span>
-     <span>Dijawab: <span>${answered}</span></span>
-     <span>Ditandai: <span>${marked}</span></span>
-     <span>Belum: <span>${unanswered}</span></span>`;
-}
+  explanationBox.style.display = 'none';
 
-function openQMap()  { dom.qmapOverlay.classList.add('show'); updateQMap(); }
-function closeQMap() { dom.qmapOverlay.classList.remove('show'); }
-
-// ========== TAMBAH SOAL ==========
-let selectedCorrect = null; // index jawaban benar yang dipilih user
-
-dom.addSoalBtn.addEventListener('click', openAddSoal);
-dom.addSoalClose.addEventListener('click', closeAddSoal);
-dom.addSoalCancel.addEventListener('click', closeAddSoal);
-dom.addSoalOverlay.addEventListener('click', e => { if (e.target === dom.addSoalOverlay) closeAddSoal(); });
-
-function openAddSoal() {
-  selectedCorrect = null;
-  dom.inputQuestion.value = '';
-  dom.optionsInput.querySelectorAll('.opt-field').forEach(f => f.value = '');
-  dom.optionsInput.querySelectorAll('.opt-row').forEach(r => r.classList.remove('is-correct'));
-  dom.optionsInput.querySelectorAll('.opt-correct-toggle').forEach(b => {
-    b.innerHTML = '<i class="fa-regular fa-circle-check"></i>';
-  });
-  dom.addSoalOverlay.classList.add('show');
-  setTimeout(() => dom.inputQuestion.focus(), 200);
-}
-
-function closeAddSoal() {
-  dom.addSoalOverlay.classList.remove('show');
-}
-
-// Toggle jawaban benar
-dom.optionsInput.querySelectorAll('.opt-correct-toggle').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const idx = parseInt(btn.dataset.idx, 10);
-    selectedCorrect = idx;
-
-    // Reset semua
-    dom.optionsInput.querySelectorAll('.opt-row').forEach(r => r.classList.remove('is-correct'));
-    dom.optionsInput.querySelectorAll('.opt-correct-toggle').forEach(b => {
-      b.innerHTML = '<i class="fa-regular fa-circle-check"></i>';
-    });
-
-    // Set yang dipilih
-    btn.closest('.opt-row').classList.add('is-correct');
-    btn.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
-    showToast(`✓ Jawaban benar: Pilihan ${'ABCD'[idx]}`, 'success', 1500);
-  });
-});
-
-dom.addSoalSave.addEventListener('click', () => {
-  const questionText = dom.inputQuestion.value.trim();
-  const fields = dom.optionsInput.querySelectorAll('.opt-field');
-  const options = [...fields].map(f => f.value.trim());
-
-  // Validasi
-  if (!questionText) {
-    showToast('⚠️ Pertanyaan tidak boleh kosong!', 'error'); return;
-  }
-  if (options.some(o => !o)) {
-    showToast('⚠️ Semua pilihan jawaban harus diisi!', 'error'); return;
-  }
-  if (selectedCorrect === null) {
-    showToast('⚠️ Pilih jawaban yang benar dulu!', 'error'); return;
+  if (userAnswers[currentQuestion] !== undefined) {
+    restoreAnswer(userAnswers[currentQuestion]);
   }
 
-  // Tambahkan soal baru
-  const newQ = {
-    id: Date.now(),
-    text: questionText,
-    options: options,
-    answer: selectedCorrect
-  };
+  // Mark button state
+  btnMark.classList.toggle('marked', markedQuestions.has(currentQuestion));
 
-  QUESTIONS.push(newQ);
-  saveQuestions(QUESTIONS);
-  buildQMap(); // rebuild peta soal
-  updateQMap();
+  updateProgress();
+  updateNavButtons();
+  updateQmap();
+  updateNavDots();
+  updateStreakUI();
+}
 
-  closeAddSoal();
-  showToast(`🎉 Soal ke-${QUESTIONS.length} berhasil ditambahkan!`, 'success', 2500);
+// ==================== SELECT OPTION ====================
+function selectOption(index, skipFX = false) {
+  const q = quizData[currentQuestion];
+  const btns = answerOptions.querySelectorAll('.option-btn');
+  const already = userAnswers[currentQuestion] !== undefined;
+  if (already) return;
 
-  // Langsung ke soal baru
+  userAnswers[currentQuestion] = index;
+  const isCorrect = index === q.correct;
+
+  const SVG_OK = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>`;
+  const SVG_X = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>`;
+
   setTimeout(() => {
-    state.current = QUESTIONS.length - 1;
-    renderQuestion();
-    updateQMap();
-  }, 300);
-});
+    btns.forEach(b => b.disabled = true);
+    btns[index].classList.add(isCorrect ? 'correct' : 'wrong');
+    btns[index].querySelector('.option-check').innerHTML = isCorrect ? SVG_OK : SVG_X;
+    if (!isCorrect) {
+      btns[q.correct].classList.add('correct');
+      btns[q.correct].querySelector('.option-check').innerHTML = SVG_OK;
+      btns[index].classList.add('shake');
+      setTimeout(() => btns[index].classList.remove('shake'), 500);
+      streak = 0;
+    } else {
+      streak++;
+      const xp = 10 + (streak > 1 ? (streak - 1) * 5 : 0);
+      totalXP += xp;
+      showXPPop(`+${xp} XP${streak > 1 ? ' 🔥' : ''}`);
+      xpBadge.textContent = `+${totalXP} XP`;
+      if (!skipFX) spawnConfetti();
+    }
+    updateStreakUI();
+    explanationTxt.textContent = q.explanation;
+    explanationBox.style.display = 'flex';
+    updateNavButtons();
+    updateQmap();
+    updateNavDots();
+    if (!skipFX) playSound(isCorrect ? 'correct' : 'wrong');
+  }, skipFX ? 0 : 260);
+}
 
-// ========== KEYBOARD SHORTCUTS ==========
-document.addEventListener('keydown', e => {
-  if (state.done) return;
-  if (['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)) return;
-
-  switch(e.key) {
-    case 'ArrowLeft':
-      if (state.current > 0) { state.current--; renderQuestion(); updateQMap(); } break;
-    case 'ArrowRight':
-      if (state.current < QUESTIONS.length - 1) { state.current++; renderQuestion(); updateQMap(); } break;
-    case '1': case '2': case '3': case '4':
-      const idx = parseInt(e.key) - 1;
-      if (!state.review && idx < QUESTIONS[state.current].options.length) selectOption(idx);
-      break;
-    case 'm': case 'M': dom.markBtn.click(); break;
-    case 'Escape':
-      if (dom.qmapOverlay.classList.contains('show')) closeQMap();
-      if (dom.addSoalOverlay.classList.contains('show')) closeAddSoal();
-      break;
+function restoreAnswer(index) {
+  const q = quizData[currentQuestion];
+  const btns = answerOptions.querySelectorAll('.option-btn');
+  const SVG_OK = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>`;
+  const SVG_X = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>`;
+  btns.forEach(b => b.disabled = true);
+  const isCorrect = index === q.correct;
+  btns[index].classList.add(isCorrect ? 'correct' : 'wrong');
+  btns[index].querySelector('.option-check').innerHTML = isCorrect ? SVG_OK : SVG_X;
+  if (!isCorrect) {
+    btns[q.correct].classList.add('correct');
+    btns[q.correct].querySelector('.option-check').innerHTML = SVG_OK;
   }
+  explanationTxt.textContent = q.explanation;
+  explanationBox.style.display = 'flex';
+}
+
+// ==================== NAV ====================
+function nextQ() {
+  if (currentQuestion < quizData.length - 1) {
+    currentQuestion++;
+    loadQuestion();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+function prevQ() {
+  if (currentQuestion > 0) {
+    currentQuestion--;
+    loadQuestion();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+function updateNavButtons() {
+  const answered = userAnswers[currentQuestion] !== undefined;
+  btnPrev.disabled = currentQuestion === 0;
+  const isLast = currentQuestion === quizData.length - 1;
+  btnNext.style.display = isLast ? 'none' : 'flex';
+  btnFinish.style.display = isLast ? 'flex' : 'none';
+  btnNext.disabled = !answered;
+}
+
+// ==================== PROGRESS ====================
+function updateProgress() {
+  const answered = userAnswers.filter(a => a !== undefined).length;
+  const pct = Math.round(((currentQuestion + 1) / quizData.length) * 100);
+  progressFill.style.width = pct + '%';
+  progressPct.textContent = pct + '%';
+  progressCounter.textContent = `${currentQuestion + 1} / ${quizData.length}`;
+}
+
+// ==================== QUESTION MAP ====================
+function buildQmap() {
+  qmapGrid.innerHTML = '';
+  quizData.forEach((_, i) => {
+    const btn = document.createElement('button');
+    btn.textContent = i + 1;
+    btn.dataset.qi = i;
+    btn.addEventListener('click', () => { currentQuestion = i; loadQuestion(); closeQmap(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+    qmapGrid.appendChild(btn);
+  });
+}
+
+function updateQmap() {
+  const btns = qmapGrid.querySelectorAll('button');
+  btns.forEach((btn, i) => {
+    btn.className = '';
+    if (i === currentQuestion) btn.classList.add('current');
+    else if (userAnswers[i] !== undefined) btn.classList.add('answered');
+    if (markedQuestions.has(i)) btn.classList.add('marked');
+  });
+}
+
+function openQmap() { qmapPanel.classList.add('open'); qmapBackdrop.classList.add('show'); updateQmap(); }
+function closeQmap() { qmapPanel.classList.remove('open'); qmapBackdrop.classList.remove('show'); }
+
+// ==================== NAV DOTS ====================
+function buildNavDots() {
+  qnavDots.innerHTML = '';
+  quizData.forEach((_, i) => {
+    const dot = document.createElement('span');
+    dot.className = 'qnav-dot';
+    dot.addEventListener('click', () => { currentQuestion = i; loadQuestion(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+    qnavDots.appendChild(dot);
+  });
+}
+
+function updateNavDots() {
+  const dots = qnavDots.querySelectorAll('.qnav-dot');
+  dots.forEach((dot, i) => {
+    dot.className = 'qnav-dot';
+    if (i === currentQuestion) dot.classList.add('current');
+    else if (userAnswers[i] !== undefined) dot.classList.add('answered');
+    if (markedQuestions.has(i)) dot.classList.add('marked');
+  });
+}
+
+// ==================== MARK ====================
+function toggleMark() {
+  if (markedQuestions.has(currentQuestion)) markedQuestions.delete(currentQuestion);
+  else markedQuestions.add(currentQuestion);
+  btnMark.classList.toggle('marked', markedQuestions.has(currentQuestion));
+  updateNavDots();
+  updateQmap();
+}
+
+// ==================== STREAK UI ====================
+function updateStreakUI() {
+  streakLabel.textContent = `Streak: ${streak}`;
+  const dots = streakDots.querySelectorAll('.sd');
+  dots.forEach((d, i) => d.classList.toggle('lit', i < streak));
+}
+
+// ==================== FINISH ====================
+function finishQuiz() {
+  clearInterval(timerInterval);
+  const correct = userAnswers.filter((a, i) => a === quizData[i].correct).length;
+  const wrong = quizData.length - correct;
+  const pct = Math.round((correct / quizData.length) * 100);
+  const xp = correct * 10;
+
+  document.getElementById('correct-count').textContent = correct;
+  document.getElementById('wrong-count').textContent = wrong;
+  document.getElementById('score-percentage').textContent = pct + '%';
+  document.getElementById('xp-earned').textContent = xp;
+
+  const SVG_TROPHY = `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>`;
+  const SVG_SILVER = `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>`;
+  const SVG_BRONZE = `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>`;
+  const SVG_STAR = `<svg width="22" height="22" viewBox="0 0 24 24" fill="#f59e0b" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>`;
+  const SVG_STAR_OFF = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>`;
+
+  const starsHtml = pct >= 80 ? SVG_STAR + SVG_STAR + SVG_STAR : pct >= 50 ? SVG_STAR + SVG_STAR + SVG_STAR_OFF : SVG_STAR + SVG_STAR_OFF + SVG_STAR_OFF;
+  document.getElementById('rmStars').innerHTML = starsHtml;
+  document.getElementById('rmTitle').textContent = pct >= 80 ? 'Luar Biasa!' : pct >= 50 ? 'Bagus!' : 'Tetap Semangat!';
+  document.getElementById('rmSub').textContent = `Skor kamu ${pct}% dari ${quizData.length} soal.`;
+  document.getElementById('rmTrophy').innerHTML = pct >= 80 ? SVG_TROPHY : pct >= 50 ? SVG_SILVER : SVG_BRONZE;
+
+  // Animate score ring
+  const ring = document.getElementById('scoreRingFill');
+  const circ = 314.16;
+  setTimeout(() => { ring.style.strokeDashoffset = circ * (1 - pct / 100); }, 300);
+
+  document.getElementById('result-modal').classList.add('active');
+  spawnResultConfetti();
+  playSound('success');
+  saveResult(pct, correct);
+}
+
+function reviewAnswers() {
+  document.getElementById('result-modal').classList.remove('active');
+  currentQuestion = 0;
+  loadQuestion();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ==================== SAVE ====================
+function saveResult(score, correct) {
+  // Simpan ke localStorage lokal juga (backup)
+  const results = JSON.parse(localStorage.getItem('quizResults') || '[]');
+  results.push({ score, correct, total: quizData.length, date: new Date().toISOString(), xp: correct * 10 });
+  localStorage.setItem('quizResults', JSON.stringify(results));
+
+  // Simpan ke sistem user global (jalan.js) jika tersedia
+  if (typeof eduvixSimpanQuiz === 'function') {
+    eduvixSimpanQuiz({
+      skor: score,
+      benar: correct,
+      salah: quizData.length - correct,
+      total: quizData.length
+    });
+  }
+}
+
+// ==================== FX ====================
+function spawnConfetti() {
+  const colors = ['#818cf8', '#34d399', '#fbbf24', '#f87171', '#c084fc'];
+  for (let i = 0; i < 18; i++) {
+    const el = document.createElement('div');
+    el.style.cssText = `position:fixed;width:${6 + Math.random() * 6}px;height:${6 + Math.random() * 6}px;
+            background:${colors[Math.floor(Math.random() * colors.length)]};
+            left:${Math.random() * 100}%;top:-12px;opacity:1;border-radius:${Math.random() > 0.5 ? '50%' : '3px'};
+            animation:confFall ${1.8 + Math.random() * 2}s linear forwards;z-index:9999;`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 4000);
+  }
+}
+
+function spawnResultConfetti() {
+  const box = document.getElementById('rmConfetti');
+  box.innerHTML = '';
+  const colors = ['#818cf8', '#34d399', '#fbbf24', '#f87171', '#c084fc', '#38bdf8'];
+  for (let i = 0; i < 40; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-p';
+    el.style.cssText = `left:${Math.random() * 100}%;top:-10px;
+            background:${colors[Math.floor(Math.random() * colors.length)]};
+            animation-duration:${1.5 + Math.random() * 2.5}s;animation-delay:${Math.random() * 1}s;`;
+    box.appendChild(el);
+  }
+}
+
+function showXPPop(msg) {
+  const starSvg = `<svg width="13" height="13" viewBox="0 0 24 24" fill="#fff" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>`;
+  xpPop.innerHTML = msg + ' ' + starSvg;
+  xpPop.classList.add('show');
+  setTimeout(() => xpPop.classList.remove('show'), 1800);
+}
+
+function showToast(msg, type) {
+  const el = document.createElement('div');
+  el.style.cssText = `position:fixed;bottom:28px;right:28px;z-index:9999;
+        padding:12px 20px;border-radius:14px;font-weight:700;font-size:14px;color:#fff;
+        background:${type === 'warn' ? '#d97706' : '#2563eb'};
+        box-shadow:0 8px 28px rgba(0,0,0,.25);animation:fadeSlideUp .4s ease;`;
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 3500);
+}
+
+function playSound(type) {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    if (type === 'correct') {
+      osc.frequency.value = 523.25;
+      gain.gain.setValueAtTime(.25, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(.01, ctx.currentTime + .35);
+    } else if (type === 'wrong') {
+      osc.type = 'sawtooth'; osc.frequency.value = 196;
+      gain.gain.setValueAtTime(.2, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(.01, ctx.currentTime + .4);
+    } else if (type === 'success') {
+      [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => {
+        const o = ctx.createOscillator(), g = ctx.createGain();
+        o.connect(g); g.connect(ctx.destination);
+        o.frequency.value = f; g.gain.setValueAtTime(.18, ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(.01, ctx.currentTime + .3);
+        o.start(); o.stop(ctx.currentTime + .3);
+      }, i * 100));
+      return;
+    }
+    osc.start(); osc.stop(ctx.currentTime + .35);
+  } catch (e) { }
+}
+
+// ==================== KEYBOARD ====================
+document.addEventListener('keydown', e => {
+  if (['1', '2', '3', '4'].includes(e.key)) {
+    const i = parseInt(e.key) - 1;
+    if (userAnswers[currentQuestion] === undefined) selectOption(i);
+  }
+  if (e.key === 'ArrowRight' && !btnNext.disabled && btnNext.style.display !== 'none') nextQ();
+  if (e.key === 'ArrowLeft' && !btnPrev.disabled) prevQ();
 });
 
-// ========== TOAST ==========
-function showToast(msg, type = '', duration = 2000) {
-  dom.toast.textContent = msg;
-  dom.toast.className = 'toast show ' + type;
-  clearTimeout(dom.toast._t);
-  dom.toast._t = setTimeout(() => dom.toast.classList.remove('show'), duration);
+// ==================== INJECT KEYFRAMES ====================
+const style = document.createElement('style');
+style.textContent = `
+@keyframes confFall { to { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
+@keyframes fadeSlideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+`;
+document.head.appendChild(style);
+
+
+
+// =========================================
+//   BOOTSTRAP
+// =========================================
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
 }
-
-// ========== LOCALSTORAGE ==========
-function saveState() {
-  const data = {
-    current: state.current,
-    answers: state.answers,
-    marked:  [...state.marked],
-    timer:   state.timer
-  };
-  localStorage.setItem('eduvix_quiz_progress', JSON.stringify(data));
-}
-
-function loadState() {
-  const raw = localStorage.getItem('eduvix_quiz_progress');
-  if (!raw) return;
-  try {
-    const d = JSON.parse(raw);
-    state.current = d.current || 0;
-    state.answers = d.answers || {};
-    state.marked  = new Set(d.marked || []);
-    state.timer   = d.timer  || QUIZ_CONFIG.duration;
-  } catch(e) {}
-}
-
-function bindEvents() {
-  // sudah di-bind di atas semua
-}
-
-// ========== START ==========
-init();
-
-// Hint shortcut setelah 4 detik
-setTimeout(() => {
-  const hints = ['⌨️ Tekan 1–4 untuk memilih jawaban','⌨️ ← → untuk navigasi soal','⌨️ M untuk mark soal'];
-  let i = 0;
-  const next = () => showToast(hints[i++ % hints.length], 'info', 2500);
-  next();
-  setInterval(next, 18000);
-}, 4000);
