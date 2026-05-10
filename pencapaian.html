@@ -5,303 +5,364 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pencapaian - EDUVIX.ID</title>
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="beranda.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="jalan.js"></script>
-    <script src="progress.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" type="image/png" href="WhatsApp Image 2026-05-05 at 18.33.04.png">
+    <script src="beranda.js" defer></script>
+    <style>
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .badge-card {
+            background: var(--card);
+            border-radius: var(--r-xl);
+            padding: 32px 24px;
+            text-align: center;
+            border: 1.5px solid var(--border);
+            transition: var(--tr);
+            position: relative;
+            overflow: hidden;
+            opacity: 0.4;
+            filter: grayscale(1);
+        }
+
+        .badge-card.earned {
+            opacity: 1;
+            filter: grayscale(0);
+            border-color: var(--indigo-l);
+            box-shadow: var(--shadow);
+        }
+
+        .badge-card.earned:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--indigo);
+        }
+
+        .badge-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--bg);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 32px;
+            color: var(--text-soft);
+            transition: var(--tr);
+        }
+
+        .badge-card.earned .badge-icon {
+            background: var(--indigo-l);
+            color: var(--indigo);
+        }
+
+        .badge-info h4 {
+            font-family: 'Sora', sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .badge-info p {
+            font-size: 12px;
+            color: var(--text-soft);
+            line-height: 1.5;
+        }
+
+        .earned-check {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 24px;
+            height: 24px;
+            background: var(--emerald);
+            color: #fff;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+        }
+
+        .badge-card.earned .earned-check {
+            display: flex;
+        }
+
+        /* Stats Grid */
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .summary-item {
+            background: var(--card);
+            border-radius: var(--r-lg);
+            padding: 24px;
+            border: 1.5px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .sum-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .sum-info h3 {
+            font-family: 'Sora', sans-serif;
+            font-size: 24px;
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .sum-info span {
+            font-size: 12px;
+            color: var(--text-soft);
+            font-weight: 600;
+        }
+    </style>
 </head>
 
 <body>
     <div class="app-container">
-        <!-- SIDEBAR -->
+        <!-- Sidebar (Shared with Dashboard) -->
         <aside class="sidebar">
-            <div class="sidebar-logo">
-                <img src="WhatsApp Image 2026-05-05 at 18.33.04.png" alt="EDUVIX.ID Logo" class="logo-img">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="WhatsApp Image 2026-05-05 at 18.33.04.png" alt="Logo">
+                </div>
+                <h1 class="brand">EDUVIX.</h1>
             </div>
 
             <nav class="sidebar-nav">
                 <a href="dashboard.html" class="nav-item">
-                    <i class="fa-solid fa-house"></i>
-                    <span>Beranda</span>
-                </a>
-                <a href="materi komunitas.html" class="nav-item">
-                    <i class="fa-solid fa-chalkboard-user"></i>
-                    <span>Materi Komunitas</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" />
+                        <rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" />
+                        <rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2" />
+                        <rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>Dashboard</span>
                 </a>
                 <a href="progress.html" class="nav-item">
-                    <i class="fa-solid fa-chart-line"></i>
-                    <span>Progress</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 19.5C4 18.837 4.26339 18.2011 4.73223 17.7322C5.20107 17.2634 5.83696 17 6.5 17H20"
+                            stroke="currentColor" stroke-width="2" />
+                        <path
+                            d="M6.5 2H20V22H6.5C5.83696 22 5.20107 21.7366 4.73223 21.2678C4.26339 20.7989 4 20.163 4 19.5V4.5C4 3.83696 4.26339 3.20107 4.73223 2.73223C5.20107 2.26339 5.83696 2 6.5 2Z"
+                            stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>Semua Materi</span>
                 </a>
                 <a href="pencapaian.html" class="nav-item active">
-                    <i class="fa-solid fa-trophy"></i>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M12 15l-2 5 2-1 2 1-2-5zm0-13C7.58 2 4 5.58 4 10c0 4.42 3.58 8 8 8s8-3.58 8-8c0-4.42-3.58-8-8-8z"
+                            stroke="currentColor" stroke-width="2" />
+                    </svg>
                     <span>Pencapaian</span>
                 </a>
-                <a href="materi.html" class="nav-item">
-                    <i class="fa-solid fa-file-pen"></i>
-                    <span>Materi</span>
-                </a>
                 <a href="store.html" class="nav-item">
-                    <i class="fa-solid fa-store"></i>
-                    <span>Store</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z" stroke="currentColor"
+                            stroke-width="2" />
+                        <path d="M9 22V12h6v10" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>Toko Hadiah</span>
+                </a>
+                <a href="materi komunitas.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" />
+                        <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2" />
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87" stroke="currentColor" stroke-width="2" />
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>Materi Komunitas</span>
                 </a>
             </nav>
 
             <div class="sidebar-footer">
-                <a href="login.html" class="nav-item logout">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    <span>Keluar</span>
-                </a>
+                <div class="upgrade-card">
+                    <p class="upgrade-text">Kumpulkan <strong>Badges</strong> untuk hadiah spesial!</p>
+                    <button class="btn-upgrade">Lihat Hadiah</button>
+                </div>
             </div>
         </aside>
 
-        <!-- MAIN CONTENT -->
         <main class="main-content">
-            <header class="topbar">
-                <div class="topbar-left">
-                    <div class="search-box">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" placeholder="Cari pencapaian...">
-                    </div>
+            <header class="top-header">
+                <div class="search-box">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2" />
+                        <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                    <input type="text" placeholder="Cari pencapaian...">
                 </div>
-                <div class="topbar-right">
-                    <div class="coin-display" id="coinDisplay">
-                        <div class="coin-icon">
-                            <i class="fa-solid fa-coins"></i>
-                        </div>
-                        <span data-user-coins class="stat-value">0</span>
-                    </div>
 
-                    <div class="user-profile" id="userProfile">
-                        <div class="avatar" id="userAvatarContainer"
-                            style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#7c3aed,#3b9eff);color:#fff;font-weight:800;font-size:14px;">
-                            <span data-user-avatar>U</span>
-                        </div>
-                        <span data-user-name>User</span>
-                        <i class="fa-solid fa-chevron-down"></i>
+                <div class="header-actions">
+                    <button class="icon-btn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                    </button>
+                    <div class="user-profile">
+                        <div class="avatar" data-user-avatar style="width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #6366f1; color: white; font-weight: bold;">U</div>
+                        <span class="user-name" data-user-name>User EDUVIX</span>
                     </div>
                 </div>
             </header>
 
-            <div class="page-body">
-                <div class="section-header">
-                    <h1 class="page-title">Pencapaian Koleksi</h1>
-                    <p class="page-subtitle">Lihat semua lencana dan sertifikat yang telah kamu kumpulkan.</p>
+            <section class="summary-stats">
+                <div class="summary-item">
+                    <div class="sum-icon" style="background:var(--amber); color:#fff;"><i class="fa-solid fa-medal"></i>
+                    </div>
+                    <div class="sum-info">
+                        <h3 id="totalMedals">0</h3>
+                        <span>Materi Selesai</span>
+                    </div>
                 </div>
+                <div class="summary-item">
+                    <div class="sum-icon" style="background:var(--indigo); color:#fff;"><i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <div class="sum-info">
+                        <h3 id="userTotalXP">0</h3>
+                        <span>Total XP Kamu</span>
+                    </div>
+                </div>
+                <div class="summary-item">
+                    <div class="sum-icon" style="background:var(--emerald); color:#fff;"><i
+                            class="fa-solid fa-trophy"></i></div>
+                    <div class="sum-info">
+                        <h3 id="userRank">#12</h3>
+                        <span>Peringkat Global</span>
+                    </div>
+                </div>
+            </section>
 
-                <!-- CERTIFICATE BANNER -->
-                <section class="certificate-banner reveal">
-                    <div class="cert-info">
-                        <h3>Sertifikat Kelulusan</h3>
-                        <p>Selesaikan semua materi utama untuk mengklaim sertifikat digitalmu.</p>
-                        <button class="btn-cert-locked" disabled><i class="fa-solid fa-lock"></i> Belum
-                            Tersedia</button>
+            <div class="with-logo" style="margin-bottom: 16px;">
+                <img src="WhatsApp Image 2026-05-05 at 18.33.04.png" alt="Logo" class="title-logo">
+                <h3 class="section-title" style="margin-bottom: 0;">Lencana Kehormatan</h3>
+            </div>
+            <div class="achievements-grid" id="badgeGrid">
+                <div class="badge-card">
+                    <div class="earned-check">✓</div>
+                    <div class="badge-icon"><i class="fa-solid fa-seedling"></i></div>
+                    <div class="badge-info">
+                        <h4>Pemula</h4>
+                        <p>Selesaikan materi pertamamu di EDUVIX.</p>
                     </div>
-                    <div class="cert-icon">
-                        <i class="fa-solid fa-file-certificate"></i>
+                </div>
+                <div class="badge-card">
+                    <div class="earned-check">✓</div>
+                    <div class="badge-icon"><i class="fa-solid fa-fire"></i></div>
+                    <div class="badge-info">
+                        <h4>7 Hari Belajar</h4>
+                        <p>Jaga streak belajarmu selama seminggu penuh.</p>
                     </div>
-                </section>
-
-                <div class="badge-gallery reveal">
-                    <div class="gallery-header">
-                        <h2>Lencana Kamu</h2>
-                        <span><span class="stat-value">0</span> / 12 Terkumpul</span>
+                </div>
+                <div class="badge-card">
+                    <div class="earned-check">✓</div>
+                    <div class="badge-icon"><i class="fa-solid fa-brain"></i></div>
+                    <div class="badge-info">
+                        <h4>Ahli Logika</h4>
+                        <p>Selesaikan 5 materi tentang Logical Fallacies.</p>
                     </div>
-                    <div class="gallery-grid">
-                        <div class="badge-card locked reveal">
-                            <div class="badge-art"><i class="fa-solid fa-seedling"></i></div>
-                            <h4>Langkah Awal</h4>
-                            <p>Mulai materi pertama</p>
-                        </div>
-                        <div class="badge-card locked reveal">
-                            <div class="badge-art"><i class="fa-solid fa-fire-glow"></i></div>
-                            <h4>Pejuang Streak</h4>
-                            <p>3 hari berturut-turut</p>
-                        </div>
-                        <div class="badge-card locked reveal">
-                            <div class="badge-art"><i class="fa-solid fa-brain"></i></div>
-                            <h4>Thinker Pro</h4>
-                            <p>Selesaikan Quiz Pro</p>
-                        </div>
-                        <div class="badge-card locked reveal">
-                            <div class="badge-art"><i class="fa-solid fa-shield-halved"></i></div>
-                            <h4>Analisis Kuat</h4>
-                            <p>Skor 100% Analisis</p>
-                        </div>
-                        <div class="badge-card locked reveal">
-                            <div class="badge-art"><i class="fa-solid fa-medal"></i></div>
-                            <h4>Juara Kelas</h4>
-                            <p>Masuk Top 3 Leaderboard</p>
-                        </div>
-                        <div class="badge-card locked reveal">
-                            <div class="badge-art"><i class="fa-solid fa-gem"></i></div>
-                            <h4>Kolektor Koin</h4>
-                            <p>Kumpulkan 1000 Koin</p>
-                        </div>
+                </div>
+                <div class="badge-card">
+                    <div class="earned-check">✓</div>
+                    <div class="badge-icon"><i class="fa-solid fa-star"></i></div>
+                    <div class="badge-info">
+                        <h4>Skor Tertinggi</h4>
+                        <p>Dapatkan skor sempurna di 3 quiz berbeda.</p>
+                    </div>
+                </div>
+                <div class="badge-card">
+                    <div class="earned-check">✓</div>
+                    <div class="badge-icon"><i class="fa-solid fa-crown"></i></div>
+                    <div class="badge-info">
+                        <h4>Raja Belajar</h4>
+                        <p>Selesaikan total 20 materi pembelajaran.</p>
+                    </div>
+                </div>
+                <div class="badge-card">
+                    <div class="earned-check">✓</div>
+                    <div class="badge-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="badge-info">
+                        <h4>Pelopor EDUVIX</h4>
+                        <p>Lencana khusus untuk pengguna awal platform.</p>
                     </div>
                 </div>
             </div>
         </main>
+
+        <!-- Right Sidebar (Shared stats) -->
+        <aside class="right-sidebar">
+            <div class="widget">
+                <div class="widget-header">
+                    <h3>Statistik Pencapaian</h3>
+                </div>
+                <div class="stats-widget">
+                    <div class="stat-box">
+                        <span class="stat-box-val">6/20</span>
+                        <div class="stat-box-lbl">Lencana Didapat</div>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-box-val">85%</span>
+                        <div class="stat-box-lbl">Completion Rate</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="widget streak-widget">
+                <div class="widget-header">
+                    <h3>Streak Belajar</h3>
+                </div>
+                <div class="streak-inner">
+                    <div class="streak-fire"><i class="fa-solid fa-fire"></i></div>
+                    <div>
+                        <div class="streak-num" data-streak>7</div>
+                        <div class="streak-lbl">hari berturut-turut</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
     </div>
-
-    <style>
-        .page-body {
-            padding: 30px;
-            width: 100%;
-            margin: 0;
-        }
-
-        .certificate-banner {
-            background: linear-gradient(135deg, #1e293b, #334155);
-            border-radius: var(--r-lg);
-            padding: 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: #fff;
-            margin-bottom: 40px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .certificate-banner::before {
-            content: '';
-            position: absolute;
-            right: -50px;
-            top: -50px;
-            width: 200px;
-            height: 200px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 50%;
-        }
-
-        .cert-info h3 {
-            font-size: 24px;
-            margin-bottom: 10px;
-            font-weight: 800;
-        }
-
-        .cert-info p {
-            opacity: 0.7;
-            margin-bottom: 25px;
-            max-width: 400px;
-        }
-
-        .btn-cert-locked {
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            color: rgba(255, 255, 255, 0.5);
-            padding: 12px 25px;
-            border-radius: 12px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .cert-icon {
-            font-size: 80px;
-            opacity: 0.2;
-        }
-
-        .gallery-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        .gallery-header h2 {
-            font-size: 20px;
-            font-weight: 800;
-        }
-
-        .gallery-header span {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--primary);
-            background: var(--primary-light);
-            padding: 5px 15px;
-            border-radius: 20px;
-        }
-
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 25px;
-        }
-
-        .badge-card {
-            background: #fff;
-            padding: 30px 20px;
-            border-radius: 24px;
-            text-align: center;
-            transition: var(--tr);
-            border: 1px solid var(--border);
-        }
-
-        .badge-card.locked {
-            opacity: 0.6;
-            filter: grayscale(1);
-        }
-
-        .badge-card:hover:not(.locked) {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-md);
-            border-color: var(--primary);
-        }
-
-        .badge-art {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: var(--bg-body);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            margin: 0 auto 15px;
-            color: var(--text-light);
-            transition: var(--tr);
-        }
-
-        .earned .badge-art {
-            background: var(--primary-light);
-            color: var(--primary);
-        }
-
-        .badge-card h4 {
-            font-size: 15px;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        .badge-card p {
-            font-size: 12px;
-            color: var(--text-light);
-        }
-
-        @media (max-width: 768px) {
-            .certificate-banner {
-                flex-direction: column;
-                text-align: center;
-                padding: 30px;
-            }
-
-            .cert-icon {
-                margin-top: 20px;
-            }
-
-            .gallery-grid {
-                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-                gap: 15px;
-            }
-        }
-    </style>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            if (window.eduvixUpdateUI) window.eduvixUpdateUI();
+            const sync = () => {
+                const raw = localStorage.getItem('eduvix_user');
+                const user = raw ? JSON.parse(raw) : null;
+                if (!user) return;
+
+                const done = (user.materiSelesai || []).length;
+                document.getElementById('totalMedals').innerText = done;
+                document.getElementById('userTotalXP').innerText = user.xp || 0;
+
+                const badges = document.querySelectorAll('.badge-card');
+                badges.forEach((b, i) => { if (i < done) b.classList.add('earned'); });
+
+                document.querySelectorAll('[data-user-name]').forEach(el => el.textContent = user.nama || user.username || 'Pengguna');
+            };
+            sync();
         });
     </script>
 </body>

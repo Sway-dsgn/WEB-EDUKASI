@@ -2,314 +2,363 @@
 <html lang="id">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EDUVIX.ID – Beranda</title>
-  <link rel="stylesheet" href="beranda.css" />
-  <script src="jalan.js"></script>
-  <script src="beranda.js" defer></script>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@400;600;700&display=swap"
-    rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - EDUVIX.ID</title>
+    <link rel="stylesheet" href="beranda.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" type="image/png" href="WhatsApp Image 2026-05-05 at 18.33.04.png">
+    <script src="beranda.js"></script>
 </head>
 
 <body>
-  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="WhatsApp Image 2026-05-05 at 18.33.04.png" alt="Logo">
+                </div>
+                <h1 class="brand">EDUVIX.</h1>
+            </div>
 
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-logo">
-      <img src="WhatsApp Image 2026-05-05 at 18.33.04.png" alt="EDUVIX.ID Logo" class="logo-img" />
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item active">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" />
+                        <rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" />
+                        <rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2" />
+                        <rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>Dashboard</span>
+                </a>
+                <a href="progress.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 19.5C4 18.837 4.26339 18.2011 4.73223 17.7322C5.20107 17.2634 5.83696 17 6.5 17H20"
+                            stroke="currentColor" stroke-width="2" />
+                        <path
+                            d="M6.5 2H20V22H6.5C5.83696 22 5.20107 21.7366 4.73223 21.2678C4.26339 20.7989 4 20.163 4 19.5V4.5C4 3.83696 4.26339 3.20107 4.73223 2.73223C5.20107 2.26339 5.83696 2 6.5 2Z"
+                            stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>Semua Materi</span>
+                </a>
+                <a href="pencapaian.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M12 15l-2 5 2-1 2 1-2-5zm0-13C7.58 2 4 5.58 4 10c0 4.42 3.58 8 8 8s8-3.58 8-8c0-4.42-3.58-8-8-8z"
+                            stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>Pencapaian</span>
+                </a>
+                <a href="store.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z" stroke="currentColor"
+                            stroke-width="2" />
+                        <path d="M9 22V12h6v10" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>Toko Hadiah</span>
+                </a>
+                <a href="materi komunitas.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" />
+                        <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2" />
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87" stroke="currentColor" stroke-width="2" />
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>Materi Komunitas</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="upgrade-card">
+                    <div class="upgrade-illustration">
+                        <svg width="100" height="80" viewBox="0 0 100 80" fill="none">
+                            <circle cx="50" cy="40" r="30" fill="#c7d2fe" />
+                            <path d="M35 45 L45 55 L65 35" stroke="#6366f1" stroke-width="4" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <p class="upgrade-text">Upgrade ke <strong>Pro</strong> untuk akses lebih banyak</p>
+                    <button class="btn-upgrade">Upgrade</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="top-header">
+                <div class="search-box">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2" />
+                        <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                    <input type="text" placeholder="Search">
+                </div>
+
+                <div class="header-actions">
+                    <button class="icon-btn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                    </button>
+                    <div class="user-profile">
+                        <div class="avatar" data-user-avatar style="width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #6366f1; color: white; font-weight: bold;">U</div>
+                        <span class="user-name" data-user-name>User EDUVIX</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Welcome Banner -->
+            <section class="welcome-banner">
+                <div class="banner-content">
+                    <div class="with-logo" style="margin-bottom: 8px;">
+                        <img src="WhatsApp Image 2026-05-05 at 18.33.04.png" alt="Logo" class="title-logo">
+                        <h2>Halo, <span data-user-name>User EDUVIX</span>! 👋</h2>
+                    </div>
+                    <p>Siap untuk melanjutkan petualangan belajarmu hari ini?</p>
+                    <p>Selesaikan 2 materi lagi untuk mencapai target mingguan!</p>
+                </div>
+                <div class="banner-illustration">
+                    <svg width="200" height="150" viewBox="0 0 200 150" fill="none">
+                        <circle cx="100" cy="75" r="60" fill="#c7d2fe" opacity="0.5" />
+                        <rect x="70" y="50" width="60" height="50" rx="4" fill="#6366f1" />
+                        <circle cx="85" cy="65" r="8" fill="white" />
+                        <circle cx="115" cy="65" r="8" fill="white" />
+                        <path d="M85 85 Q100 95 115 85" stroke="white" stroke-width="3" fill="none" />
+                    </svg>
+                </div>
+            </section>
+
+            <!-- Your Courses -->
+            <section class="courses-section">
+                <h3 class="section-title">Materi Kamu</h3>
+                <div class="courses-grid">
+                    <div class="course-card">
+                        <div class="course-thumbnail">
+                            <svg width="100%" height="120" viewBox="0 0 200 120">
+                                <rect width="200" height="120" fill="#ddd6fe" />
+                                <circle cx="100" cy="60" r="30" fill="#8b5cf6" />
+                                <path d="M85 60 L95 70 L115 50" stroke="white" stroke-width="3" />
+                            </svg>
+                        </div>
+                        <div class="course-info">
+                            <h4>Pengantar Berpikir Kritis</h4>
+                            <div class="course-meta">
+                                <span class="meta-item"><strong>Progress:</strong> 35%</span>
+                                <span class="meta-item"><strong>Hari:</strong> 4/18</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="course-card">
+                        <div class="course-thumbnail">
+                            <svg width="100%" height="120" viewBox="0 0 200 120">
+                                <rect width="200" height="120" fill="#fce7f3" />
+                                <circle cx="100" cy="60" r="30" fill="#ec4899" />
+                                <text x="100" y="70" text-anchor="middle" fill="white" font-size="24"
+                                    font-weight="bold">?</text>
+                            </svg>
+                        </div>
+                        <div class="course-info">
+                            <h4>Logical Fallacies</h4>
+                            <div class="course-meta">
+                                <span class="meta-item"><strong>Progress:</strong> 65%</span>
+                                <span class="meta-item"><strong>Hari:</strong> 9/24</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="course-card">
+                        <div class="course-thumbnail">
+                            <svg width="100%" height="120" viewBox="0 0 200 120">
+                                <rect width="200" height="120" fill="#dbeafe" />
+                                <circle cx="100" cy="60" r="30" fill="#3b82f6" />
+                                <path d="M85 60 h30 M100 45 v30" stroke="white" stroke-width="3" />
+                            </svg>
+                        </div>
+                        <div class="course-info">
+                            <h4>Cognitive Biases</h4>
+                            <div class="course-meta">
+                                <span class="meta-item"><strong>Progress:</strong> 20%</span>
+                                <span class="meta-item"><strong>Hari:</strong> 6/12</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="course-card add-course">
+                        <div class="add-icon">
+                            <svg width="60" height="60" viewBox="0 0 24 24" fill="none">
+                                <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" />
+                            </svg>
+                        </div>
+                        <p>Tambah Materi Baru</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Activity Graph -->
+            <section class="activity-section">
+                <div class="activity-header">
+                    <h3 class="section-title">Aktivitas Kamu</h3>
+                    <select class="filter-select">
+                        <option>Minggu Lalu</option>
+                        <option>Bulan Ini</option>
+                        <option>Semua</option>
+                    </select>
+                </div>
+                <div class="activity-stats">
+                    <div class="stat-badge">4 materi selesai</div>
+                </div>
+                <div class="activity-graph">
+                    <svg width="100%" height="100" viewBox="0 0 600 100" preserveAspectRatio="none">
+                        <path d="M0,80 Q100,60 150,65 T300,50 T450,55 T600,45" fill="none" stroke="#6366f1"
+                            stroke-width="3" />
+                        <circle cx="150" cy="65" r="6" fill="#6366f1" />
+                        <circle cx="300" cy="50" r="6" fill="#6366f1" />
+                        <circle cx="450" cy="55" r="6" fill="#6366f1" />
+                    </svg>
+                </div>
+                <div class="date-range">10 Oct 2020 - 17 Oct 2020</div>
+            </section>
+        </main>
+
+        <!-- Right Sidebar -->
+        <aside class="right-sidebar">
+            <!-- Progress Calendar -->
+            <div class="widget calendar-widget">
+                <div class="widget-header">
+                    <h3>Progress Saya</h3>
+                    <div class="month-nav">
+                        <button class="month-btn">‹</button>
+                        <span>Oktober</span>
+                        <button class="month-btn">›</button>
+                    </div>
+                </div>
+                <div class="calendar">
+                    <div class="calendar-header">
+                        <span>Sun</span>
+                        <span>Mon</span>
+                        <span>Tue</span>
+                        <span>Wed</span>
+                        <span>Thu</span>
+                        <span>Fri</span>
+                        <span>Sat</span>
+                    </div>
+                    <div class="calendar-grid">
+                        <button class="day"></button>
+                        <button class="day"></button>
+                        <button class="day"></button>
+                        <button class="day low">1</button>
+                        <button class="day medium">2</button>
+                        <button class="day high">3</button>
+                        <button class="day low">4</button>
+                        <button class="day medium">5</button>
+                        <button class="day">6</button>
+                        <button class="day">7</button>
+                        <button class="day">8</button>
+                        <button class="day">9</button>
+                        <button class="day">10</button>
+                        <button class="day">11</button>
+                        <button class="day">12</button>
+                        <button class="day high">13</button>
+                        <button class="day">14</button>
+                        <button class="day">15</button>
+                        <button class="day">16</button>
+                        <button class="day medium">17</button>
+                        <button class="day">18</button>
+                        <button class="day high">19</button>
+                        <button class="day">20</button>
+                        <button class="day">21</button>
+                        <button class="day">22</button>
+                        <button class="day">23</button>
+                        <button class="day">24</button>
+                        <button class="day medium">25</button>
+                        <button class="day">26</button>
+                        <button class="day high">27</button>
+                        <button class="day">28</button>
+                        <button class="day">29</button>
+                    </div>
+                    <div class="calendar-legend">
+                        <span>Low</span>
+                        <div class="legend-dots">
+                            <span class="dot low"></span>
+                            <span class="dot medium"></span>
+                            <span class="dot high"></span>
+                        </div>
+                        <span>Full</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upcoming Tasks -->
+            <div class="widget tasks-widget">
+                <div class="widget-header">
+                    <h3>Upcoming Task</h3>
+                    <a href="#" class="see-all">Lihat semua</a>
+                </div>
+                <div class="tasks-list">
+                    <div class="task-item">
+                        <div class="task-icon" style="background: #a5f3fc;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                <rect x="3" y="3" width="18" height="18" rx="2" stroke="#06b6d4" stroke-width="2" />
+                            </svg>
+                        </div>
+                        <div class="task-info">
+                            <h4>Quiz: Berpikir Kritis</h4>
+                            <p>21 Oct 2020, Friday</p>
+                        </div>
+                        <button class="task-arrow">›</button>
+                    </div>
+
+                    <div class="task-item">
+                        <div class="task-icon" style="background: #e9d5ff;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                <rect x="3" y="3" width="18" height="18" rx="2" stroke="#a855f7" stroke-width="2" />
+                            </svg>
+                        </div>
+                        <div class="task-info">
+                            <h4>Latihan Fallacies</h4>
+                            <p>21 Oct 2020, Friday</p>
+                        </div>
+                        <button class="task-arrow">›</button>
+                    </div>
+
+                    <div class="task-item">
+                        <div class="task-icon" style="background: #fef08a;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                <rect x="3" y="3" width="18" height="18" rx="2" stroke="#eab308" stroke-width="2" />
+                            </svg>
+                        </div>
+                        <div class="task-info">
+                            <h4>Essay: Cognitive Bias</h4>
+                            <p>21 Oct 2020, Friday</p>
+                        </div>
+                        <button class="task-arrow">›</button>
+                    </div>
+
+                    <div class="task-item">
+                        <div class="task-icon" style="background: #fecaca;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                <rect x="3" y="3" width="18" height="18" rx="2" stroke="#ef4444" stroke-width="2" />
+                            </svg>
+                        </div>
+                        <div class="task-info">
+                            <h4>Video: Evaluasi Sumber</h4>
+                            <p>22 Oct 2020, Friday</p>
+                        </div>
+                        <button class="task-arrow">›</button>
+                    </div>
+                </div>
+            </div>
+        </aside>
     </div>
 
-    <nav class="sidebar-nav">
-      <a href="dashboard.html" class="nav-item active">
-        <i class="fa-solid fa-house"></i>
-        <span>Beranda</span>
-      </a>
-      <a href="materi komunitas.html" class="nav-item">
-        <i class="fa-solid fa-chalkboard-user"></i>
-        <span>Materi Komunitas</span>
-      </a>
-      <a href="progress.html" class="nav-item">
-        <i class="fa-solid fa-chart-line"></i>
-        <span>Progress</span>
-      </a>
-      <a href="pencapaian.html" class="nav-item">
-        <i class="fa-solid fa-trophy"></i>
-        <span>Pencapaian</span>
-      </a>
-      <a href="materi.html" class="nav-item">
-        <i class="fa-solid fa-file-pen"></i>
-        <span>Materi</span>
-      </a>
-      <a href="store.html" class="nav-item" id="storeNavItem">
-        <i class="fa-solid fa-store"></i>
-        <span>Store</span>
-      </a>
-    </nav>
-
-    <a href="login.html" class="logout-btn" data-logout>
-      <i class="fa-solid fa-right-from-bracket"></i>
-      <span>Log Out</span>
-    </a>
-  </aside>
-
-  <!-- MAIN -->
-  <main class="main-content">
-
-    <!-- TOPBAR -->
-    <header class="topbar">
-      <div class="topbar-left">
-        <button class="menu-toggle" id="menuToggle">
-          <i class="fa-solid fa-bars"></i>
-        </button>
-        <div class="search-box">
-          <i class="fa-solid fa-magnifying-glass"></i>
-          <input type="text" placeholder="Temukan di sini ..." />
-        </div>
-      </div>
-      <div class="topbar-right">
-        <!-- COIN DISPLAY -->
-        <div class="coin-display" id="coinDisplay">
-          <div class="coin-icon">
-            <i class="fa-solid fa-coins"></i>
-          </div>
-          <span id="userCoins">0</span>
-        </div>
-
-        <div class="notif-wrapper" style="position: relative;">
-          <button class="notif-btn" id="notifBtn">
-            <i class="fa-solid fa-bell"></i>
-            <span class="badge" id="notifBadge">3</span>
-          </button>
-
-          <div class="notif-dropdown" id="notifDropdown">
-            <div class="notif-header">
-              <h3>Notifikasi</h3>
-              <button id="markAllRead" class="btn-text">Tandai sudah dibaca</button>
-            </div>
-            <div class="notif-body" id="notifBody">
-              <!-- Dynamically populated -->
-            </div>
-            <div class="notif-footer">
-              <a href="#">Lihat semua notifikasi</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="user-profile" id="userProfile">
-          <div class="avatar"
-            style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#7c3aed,#3b9eff);color:#fff;font-weight:800;font-size:16px;">
-            <span data-user-avatar>U</span>
-          </div>
-          <span data-user-name>User</span>
-          <i class="fa-solid fa-chevron-down"></i>
-        </div>
-      </div>
-    </header>
-
-    <!-- PAGE CONTENT -->
-    <div class="page-body">
-
-      <!-- HERO GREETING -->
-      <section class="hero-greeting reveal">
-        <div class="greeting-text">
-          <p class="greeting-sub" id="greetingSub">Selamat datang kembali 👋</p>
-          <h1 class="greeting-name">Halo, <span data-user-name>User</span>!</h1>
-          <p class="greeting-desc">Lanjutkan belajarmu hari ini dan raih pencapaian baru.</p>
-        </div>
-        <div class="greeting-visual">
-          <div class="floating-card fc1" style="--accent: #ab4d0a;">
-            <i class="fa-solid fa-fire" style="--accent: #ab4d0a;" data-streak-icon></i>
-            <span><span data-streak>0</span> Hari Streak</span>
-          </div>
-          <div class="floating-card fc2" style="--accent: #3b9eff;">
-            <i class="fa-solid fa-star"></i>
-            <span data-user-level>Level 1</span>
-          </div>
-          <div class="hero-blob"></div>
-        </div>
-      </section>
-
-      <!-- STATS CARDS -->
-      <section class="stats-grid reveal">
-        <div class="stat-card" style="--accent: #3b9eff;">
-          <div class="stat-icon"><i class="fa-solid fa-book-open"></i></div>
-          <div class="stat-info">
-            <span class="stat-value" data-target="12">0</span>
-            <span class="stat-label">Materi Aktif</span>
-          </div>
-          <div class="stat-chart">
-            <div class="mini-bar" style="height:40%"></div>
-            <div class="mini-bar" style="height:65%"></div>
-            <div class="mini-bar" style="height:50%"></div>
-            <div class="mini-bar" style="height:80%"></div>
-            <div class="mini-bar" style="height:70%"></div>
-          </div>
-        </div>
-        <div class="stat-card" style="--accent: #f97316;">
-          <div class="stat-icon"><i class="fa-solid fa-clipboard-check"></i></div>
-          <div class="stat-info">
-            <span class="stat-value" data-target="8">0</span>
-            <span class="stat-label">Tugas Selesai</span>
-          </div>
-          <div class="stat-chart">
-            <div class="mini-bar" style="height:55%"></div>
-            <div class="mini-bar" style="height:75%"></div>
-            <div class="mini-bar" style="height:60%"></div>
-            <div class="mini-bar" style="height:90%"></div>
-            <div class="mini-bar" style="height:80%"></div>
-          </div>
-        </div>
-        <div class="stat-card" style="--accent: #22c55e;">
-          <div class="stat-icon"><i class="fa-solid fa-chart-pie"></i></div>
-          <div class="stat-info">
-            <span class="stat-value" data-target="0" id="dashProgressValue">0</span><span class="stat-unit">%</span>
-            <span class="stat-label">Progress Belajar</span>
-          </div>
-          <div class="stat-chart">
-            <div class="mini-bar" style="height:30%"></div>
-            <div class="mini-bar" style="height:50%"></div>
-            <div class="mini-bar" style="height:45%"></div>
-            <div class="mini-bar" style="height:70%"></div>
-            <div class="mini-bar" style="height:65%"></div>
-          </div>
-        </div>
-        <div class="stat-card" style="--accent: #a855f7;">
-          <div class="stat-icon"><i class="fa-solid fa-calendar-check"></i></div>
-          <div class="stat-info">
-            <span class="stat-value" data-target="3">0</span>
-            <span class="stat-label">Jadwal Hari Ini</span>
-          </div>
-          <div class="stat-chart">
-            <div class="mini-bar" style="height:60%"></div>
-            <div class="mini-bar" style="height:40%"></div>
-            <div class="mini-bar" style="height:75%"></div>
-            <div class="mini-bar" style="height:55%"></div>
-            <div class="mini-bar" style="height:85%"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- BOTTOM GRID -->
-      <div class="bottom-grid">
-
-        <!-- MATERI TERBARU -->
-        <section class="section-card materi-section reveal">
-          <div class="section-header">
-            <h2>Materi Terbaru</h2>
-            <a href="#" class="link-see-all">Lihat Semua <i class="fa-solid fa-arrow-right"></i></a>
-          </div>
-
-          <div class="materi-list">
-            <div class="materi-item">
-              <div class="materi-icon" style="background:#dcfce7;color:#16a34a;">
-                <i class="fa-solid fa-flask"></i>
-              </div>
-              <div class="materi-info">
-                <h4>Pengantar berpikir kritis</h4>
-                <p><i class="fa-regular fa-calendar"></i> Mulai: 15 November 2021</p>
-              </div>
-              <span class="materi-badge mendatang">Mendatang</span>
-            </div>
-            <div class="materi-item">
-              <div class="materi-icon" style="background:#fce7f3;color:#db2777;">
-                <i class="fa-solid fa-gear"></i>
-              </div>
-              <div class="materi-info">
-                <h4>Identifikasi argumen</h4>
-                <p><i class="fa-regular fa-calendar"></i> Mulai: 16 November 2021</p>
-              </div>
-              <span class="materi-badge mendatang">Mendatang</span>
-            </div>
-            <div class="materi-item">
-              <div class="materi-icon" style="background:#ede9fe;color:#7c3aed;">
-                <i class="fa-solid fa-scale-balanced"></i>
-              </div>
-              <div class="materi-info">
-                <h4>Logical Fallacies</h4>
-                <p><i class="fa-regular fa-calendar"></i> Mulai: 17 November 2021</p>
-              </div>
-              <span class="materi-badge berjalan">Berjalan</span>
-            </div>
-            <div class="materi-item">
-              <div class="materi-icon" style="background:#fef3c7;color:#d97706;">
-                <i class="fa-solid fa-lightbulb"></i>
-              </div>
-              <div class="materi-info">
-                <h4>Dasar Pemrograman</h4>
-                <p><i class="fa-regular fa-calendar"></i> Mulai: 18 November 2021</p>
-              </div>
-              <span class="materi-badge selesai">Selesai</span>
-            </div>
-          </div>
-        </section>
-
-        <!-- RIGHT PANEL -->
-        <div class="right-panel">
-
-          <!-- JADWAL HARI INI -->
-          <section class="section-card jadwal-section reveal">
-            <div class="section-header">
-              <h2>Jadwal Hari Ini</h2>
-              <a href="#" class="link-see-all">Lihat Semua <i class="fa-solid fa-arrow-right"></i></a>
-            </div>
-            <div class="jadwal-list">
-              <div class="jadwal-item">
-                <div class="jadwal-date" style="background:#eff6ff;color:#3b9eff;">04</div>
-                <div class="jadwal-info">
-                  <h4>Kelas X MIPA 3</h4>
-                  <p>08.00 – 09.30 WIB</p>
-                </div>
-                <span class="jadwal-dot" style="background:#3b9eff;"></span>
-              </div>
-              <div class="jadwal-item">
-                <div class="jadwal-date" style="background:#fff7ed;color:#f97316;">05</div>
-                <div class="jadwal-info">
-                  <h4>Kelas XII MIPA 3</h4>
-                  <p>09.30 – 11.00 WIB</p>
-                </div>
-                <span class="jadwal-dot" style="background:#f97316;"></span>
-              </div>
-              <div class="jadwal-item">
-                <div class="jadwal-date" style="background:#f0fdf4;color:#22c55e;">06</div>
-                <div class="jadwal-info">
-                  <h4>Kelas XI MIPA 2</h4>
-                  <p>13.00 – 14.30 WIB</p>
-                </div>
-                <span class="jadwal-dot" style="background:#22c55e;"></span>
-              </div>
-            </div>
-          </section>
-
-          <!-- PERINGKAT (LEADERBOARD) -->
-          <section class="section-card leaderboard-section reveal">
-            <div class="section-header">
-              <h2>Peringkat Global</h2>
-              <i class="fa-solid fa-ranking-star" style="color: var(--warning);"></i>
-            </div>
-            <div class="leaderboard-list" id="leaderboardList">
-              <!-- Rendered by beranda.js -->
-            </div>
-          </section>
-
-          <!-- BUAT MATERI BARU -->
-          <section class="section-card buat-materi-card reveal">
-            <div class="buat-bg-blob"></div>
-            <div class="buat-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-            <h3>Buat Materi Baru</h3>
-            <p>Impor materi dari Ms. Word atau buat langsung di EDUVIX</p>
-            <button class="btn-buat" onclick="alert('Fitur membuat materi baru!')">
-              <i class="fa-solid fa-plus"></i> Buat Sekarang
-            </button>
-          </section>
-
-        </div>
-      </div>
-
-    </div>
-  </main>
+    <script src="beranda.js"></script>
 </body>
 
 </html>

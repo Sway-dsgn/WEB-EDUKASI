@@ -4,15 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EDUVIX.ID – Store</title>
+    <title>Store - EDUVIX.ID</title>
     <link rel="stylesheet" href="beranda.css">
-    <link rel="stylesheet" href="style.css">
-    <script src="jalan.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" type="image/png" href="WhatsApp Image 2026-05-05 at 18.33.04.png">
     <script src="beranda.js" defer></script>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@400;600;700&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         .store-grid {
             display: grid;
@@ -21,323 +17,365 @@
             margin-top: 24px;
         }
 
-        .store-card {
-            background: var(--white);
-            border-radius: var(--radius-md);
+        .item-card {
+            background: var(--card);
+            border-radius: var(--r-xl);
             padding: 24px;
             border: 1.5px solid var(--border);
-            box-shadow: var(--shadow-sm);
-            transition: var(--transition);
+            transition: var(--tr);
+            position: relative;
             display: flex;
             flex-direction: column;
             gap: 16px;
-            position: relative;
-            overflow: hidden;
         }
 
-        .store-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--primary);
+        .item-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--indigo);
         }
 
         .item-preview {
             height: 160px;
-            background: var(--bg-body);
-            border-radius: var(--radius-sm);
+            background: var(--bg);
+            border-radius: var(--r-lg);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 48px;
-            color: var(--primary);
-            position: relative;
-        }
-
-        .item-tag {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            background: var(--primary);
-            color: white;
-            padding: 4px 10px;
-            border-radius: 50px;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        .item-info h3 {
-            font-size: 18px;
-            font-weight: 800;
-            color: var(--text-dark);
-            margin-bottom: 4px;
-        }
-
-        .item-info p {
-            font-size: 13px;
-            color: var(--text-mid);
-            line-height: 1.5;
-        }
-
-        .item-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: auto;
-            padding-top: 16px;
-            border-top: 1.5px solid var(--border);
-        }
-
-        .item-price {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-weight: 850;
-            font-size: 16px;
-            color: #b45309;
-        }
-
-        .item-price i {
-            color: #ff8f00;
-            filter: drop-shadow(0 2px 4px rgba(255, 143, 0, 0.4));
-        }
-
-        .btn-buy {
-            background: var(--primary-gradient);
-            color: white;
-            border: none;
-            padding: 10px 18px;
-            border-radius: var(--radius-sm);
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .btn-buy:hover {
-            box-shadow: 0 4px 12px rgba(27, 170, 237, 0.4);
-            transform: scale(1.05);
-        }
-
-        .btn-buy.owned {
-            background: var(--success-soft);
-            color: var(--success);
-            cursor: default;
-        }
-
-        .store-header {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            padding: 40px;
-            border-radius: var(--radius-lg);
-            color: white;
-            margin-bottom: 32px;
+            font-size: 64px;
+            color: var(--indigo);
+            transition: var(--tr);
             position: relative;
             overflow: hidden;
         }
 
-        .store-header h1 {
-            font-size: 32px;
-            font-weight: 900;
-            margin-bottom: 8px;
-            position: relative;
-            z-index: 2;
+        .item-card:hover .item-preview {
+            background: var(--indigo-l);
+            transform: scale(0.98);
         }
 
-        .store-header p {
-            color: rgba(255, 255, 255, 0.7);
-            position: relative;
-            z-index: 2;
+        .item-info h3 {
+            font-family: 'Sora', sans-serif;
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text);
         }
 
-        .header-bg-icon {
+        .item-info p {
+            font-size: 13px;
+            color: var(--text-soft);
+            line-height: 1.5;
+            margin-top: 4px;
+        }
+
+        .item-footer {
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .price-tag {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Sora', sans-serif;
+            font-weight: 800;
+            color: var(--amber);
+            font-size: 18px;
+        }
+
+        .btn-buy {
+            padding: 10px 20px;
+            background: var(--indigo);
+            color: #fff;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 14px;
+            transition: var(--tr);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+        }
+
+        .btn-buy:hover {
+            background: var(--indigo-d);
+            transform: scale(1.05);
+        }
+
+        .btn-buy.owned {
+            background: var(--bg);
+            color: var(--text-soft);
+            box-shadow: none;
+            cursor: default;
+        }
+
+        .owned-badge {
             position: absolute;
-            right: -20px;
-            bottom: -20px;
-            font-size: 180px;
-            color: rgba(255, 255, 255, 0.03);
-            transform: rotate(-15deg);
+            top: 12px;
+            right: 12px;
+            background: var(--emerald);
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 800;
+            display: none;
+            z-index: 10;
+        }
+
+        .item-card.is-owned .owned-badge {
+            display: block;
+        }
+
+        .coin-display-large {
+            background: var(--card);
+            border-radius: var(--r-lg);
+            padding: 24px 32px;
+            border: 1.5px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .coin-meta h2 {
+            font-family: 'Sora', sans-serif;
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--amber);
+        }
+
+        .coin-meta span {
+            font-size: 13px;
+            color: var(--text-soft);
+            font-weight: 600;
+        }
+
+        .coin-icon-large {
+            width: 64px;
+            height: 64px;
+            background: #fff8e1;
+            color: var(--amber);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            box-shadow: inset 0 0 0 2px rgba(245, 158, 11, 0.1);
         }
     </style>
 </head>
 
 <body>
-    <aside class="sidebar">
-        <div class="sidebar-logo">
-            <img src="WhatsApp Image 2026-05-05 at 18.33.04.png" alt="Logo" class="logo-img">
-        </div>
-        <nav class="sidebar-nav">
-            <a href="dashboard.html" class="nav-item">
-                <i class="fa-solid fa-house"></i>
-                <span>Beranda</span>
-            </a>
-            <a href="materi komunitas.html" class="nav-item">
-                <i class="fa-solid fa-chalkboard-user"></i>
-                <span>Materi Komunitas</span>
-            </a>
-            <a href="progress.html" class="nav-item">
-                <i class="fa-solid fa-chart-line"></i>
-                <span>Progress</span>
-            </a>
-            <a href="pencapaian.html" class="nav-item">
-                <i class="fa-solid fa-trophy"></i>
-                <span>Pencapaian</span>
-            </a>
-            <a href="materi.html" class="nav-item">
-                <i class="fa-solid fa-file-pen"></i>
-                <span>Materi</span>
-            </a>
-            <a href="store.html" class="nav-item active">
-                <i class="fa-solid fa-store"></i>
-                <span>Store</span>
-            </a>
-        </nav>
-        <a href="login.html" class="logout-btn">
-            <i class="fa-solid fa-right-from-bracket"></i>
-            <span>Log Out</span>
-        </a>
-    </aside>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="WhatsApp Image 2026-05-05 at 18.33.04.png" alt="Logo">
+                </div>
+                <h1 class="brand">EDUVIX.</h1>
+            </div>
 
-    <main class="main-content">
-        <header class="topbar">
-            <div class="topbar-left">
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" />
+                        <rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" />
+                        <rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2" />
+                        <rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>Dashboard</span>
+                </a>
+                <a href="progress.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 19.5C4 18.837 4.26339 18.2011 4.73223 17.7322C5.20107 17.2634 5.83696 17 6.5 17H20"
+                            stroke="currentColor" stroke-width="2" />
+                        <path
+                            d="M6.5 2H20V22H6.5C5.83696 22 5.20107 21.7366 4.73223 21.2678C4.26339 20.7989 4 20.163 4 19.5V4.5C4 3.83696 4.26339 3.20107 4.73223 2.73223C5.20107 2.26339 5.83696 2 6.5 2Z"
+                            stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>Semua Materi</span>
+                </a>
+                <a href="pencapaian.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 15l-2 5 2-1 2 1-2-5zm0-13C7.58 2 4 5.58 4 10c0 4.42 3.58 8 8 8s8-3.58 8-8c0-4.42-3.58-8-8-8z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>Pencapaian</span>
+                </a>
+                <a href="store.html" class="nav-item active">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z" stroke="currentColor" stroke-width="2" />
+                        <path d="M9 22V12h6v10" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>Toko Hadiah</span>
+                </a>
+                <a href="materi komunitas.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" />
+                        <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2" />
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87" stroke="currentColor" stroke-width="2" />
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>Materi Komunitas</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="upgrade-card">
+                    <p class="upgrade-text">Kumpulkan <strong>Koin</strong> dari setiap materi!</p>
+                    <button class="btn-upgrade">Cara Dapat Koin</button>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-header">
                 <div class="search-box">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" placeholder="Cari item di store...">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2" />
+                        <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                    <input type="text" placeholder="Cari item di toko...">
+                </div>
+
+                <div class="header-actions">
+                    <button class="icon-btn">
+                        <i class="fa-solid fa-coins" style="color:var(--amber);"></i>
+                        <span id="userCoinsNav" style="font-weight:800; font-size:13px; margin-left:6px;">0</span>
+                    </button>
+                    <div class="user-profile">
+                        <div class="avatar" data-user-avatar style="width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #6366f1; color: white; font-weight: bold;">U</div>
+                        <span class="user-name" data-user-name>User EDUVIX</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="coin-display-large">
+                <div class="coin-meta">
+                    <span>Saldo Koin Kamu</span>
+                    <h2 id="userCoinsDisplay">0</h2>
+                </div>
+                <div class="coin-icon-large">
+                    <i class="fa-solid fa-coins"></i>
                 </div>
             </div>
-            <div class="topbar-right">
-                <!-- COIN DISPLAY -->
-                <div class="coin-display" id="coinDisplay">
-                    <div class="coin-icon">
-                        <i class="fa-solid fa-coins"></i>
-                    </div>
-                    <span id="userCoins">0</span>
-                </div>
 
-                <div class="user-profile" id="userProfile">
-                    <div class="avatar"
-                        style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#7c3aed,#3b9eff);color:#fff;font-weight:800;font-size:14px;">
-                        <span data-user-avatar>U</span>
-                    </div>
-                    <span data-user-name>User</span>
-                    <i class="fa-solid fa-chevron-down"></i>
-                </div>
+            <div class="with-logo" style="margin-bottom: 16px;">
+                <img src="WhatsApp Image 2026-05-05 at 18.33.04.png" alt="Logo" class="title-logo">
+                <h3 class="section-title" style="margin-bottom: 0;">Koleksi Spesial</h3>
             </div>
-        </header>
-
-        <div class="page-body">
-            <section class="store-header">
-                <i class="fa-solid fa-cart-shopping header-bg-icon"></i>
-                <h1>EDUVIX Store</h1>
-                <p>Tukarkan koin belajarmu dengan item eksklusif dan booster!</p>
-            </section>
-
             <div class="store-grid">
-                <!-- Item 1 -->
-                <div class="store-card">
-                    <div class="item-preview">
-                        <span class="item-tag">Avatar</span>
-                        <i class="fa-solid fa-user-ninja"></i>
-                    </div>
+                <div class="item-card" data-item-id="ninja_avatar">
+                    <div class="owned-badge">Dimiliki</div>
+                    <div class="item-preview"><i class="fa-solid fa-user-ninja"></i></div>
                     <div class="item-info">
-                        <h3>Cyber Ninja</h3>
-                        <p>Dapatkan avatar ninja futuristik yang keren untuk profilmu.</p>
+                        <h3>Cyber Ninja Avatar</h3>
+                        <p>Dapatkan tampilan avatar ninja futuristik yang eksklusif di profilmu.</p>
                     </div>
                     <div class="item-footer">
-                        <div class="item-price"><i class="fa-solid fa-coins"></i> 200</div>
-                        <button class="btn-buy" onclick="buyItem('Cyber Ninja', 200, this)">Beli</button>
+                        <div class="price-tag"><i class="fa-solid fa-coins"></i> 200</div>
+                        <button class="btn-buy" onclick="handlePurchase('ninja_avatar', 200, this)">Beli Sekarang</button>
                     </div>
                 </div>
 
-                <!-- Item 2 -->
-                <div class="store-card">
-                    <div class="item-preview" style="color: #7c3aed;">
-                        <span class="item-tag">Booster</span>
-                        <i class="fa-solid fa-bolt"></i>
-                    </div>
+                <div class="item-card" data-item-id="xp_booster">
+                    <div class="owned-badge">Dimiliki</div>
+                    <div class="item-preview" style="color:var(--emerald);"><i class="fa-solid fa-bolt"></i></div>
                     <div class="item-info">
-                        <h3>Double XP (24h)</h3>
-                        <p>Gandakan poin pengalaman yang kamu dapatkan selama 24 jam.</p>
+                        <h3>XP Booster 2x</h3>
+                        <p>Gandakan perolehan XP kamu selama 24 jam untuk naik level lebih cepat.</p>
                     </div>
                     <div class="item-footer">
-                        <div class="item-price"><i class="fa-solid fa-coins"></i> 450</div>
-                        <button class="btn-buy" onclick="buyItem('Double XP', 450, this)">Beli</button>
+                        <div class="price-tag"><i class="fa-solid fa-coins"></i> 450</div>
+                        <button class="btn-buy" onclick="handlePurchase('xp_booster', 450, this)">Beli Sekarang</button>
                     </div>
                 </div>
 
-                <!-- Item 3 -->
-                <div class="store-card">
-                    <div class="item-preview" style="color: #ef4444;">
-                        <span class="item-tag">Theme</span>
-                        <i class="fa-solid fa-moon"></i>
-                    </div>
+                <div class="item-card" data-item-id="royal_crown">
+                    <div class="owned-badge">Dimiliki</div>
+                    <div class="item-preview" style="color:var(--amber);"><i class="fa-solid fa-crown"></i></div>
                     <div class="item-info">
-                        <h3>Dark Mode Premium</h3>
-                        <p>Akses tema gelap yang elegan dan nyaman di mata.</p>
+                        <h3>Mahkota Kerajaan</h3>
+                        <p>Simbol kejayaan bagi murid yang paling rajin belajar di EDUVIX.</p>
                     </div>
                     <div class="item-footer">
-                        <div class="item-price"><i class="fa-solid fa-coins"></i> 300</div>
-                        <button class="btn-buy" onclick="buyItem('Dark Theme', 300, this)">Beli</button>
-                    </div>
-                </div>
-
-                <!-- Item 4 -->
-                <div class="store-card">
-                    <div class="item-preview" style="color: #22c55e;">
-                        <span class="item-tag">Badge</span>
-                        <i class="fa-solid fa-shield-halved"></i>
-                    </div>
-                    <div class="item-info">
-                        <h3>Scholar Guardian</h3>
-                        <p>Badge eksklusif yang menunjukkan dedikasimu dalam belajar.</p>
-                    </div>
-                    <div class="item-footer">
-                        <div class="item-price"><i class="fa-solid fa-coins"></i> 150</div>
-                        <button class="btn-buy" onclick="buyItem('Guardian Badge', 150, this)">Beli</button>
+                        <div class="price-tag"><i class="fa-solid fa-coins"></i> 850</div>
+                        <button class="btn-buy" onclick="handlePurchase('royal_crown', 850, this)">Beli Sekarang</button>
                     </div>
                 </div>
             </div>
-        </div>
-    </main>
+        </main>
+
+        <aside class="right-sidebar">
+            <div class="widget">
+                <div class="widget-header"><h3>Informasi Toko</h3></div>
+                <div class="stats-widget">
+                    <div class="stat-box">
+                        <span class="stat-box-val">3</span>
+                        <div class="stat-box-lbl">Item Tersedia</div>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-box-val">Baru</span>
+                        <div class="stat-box-lbl">Koleksi Mei</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="widget">
+                <div class="widget-header"><h3>Riwayat Pembelian</h3></div>
+                <p style="font-size:12px; color:var(--text-soft); text-align:center; padding:10px;">Belum ada riwayat pembelian.</p>
+            </div>
+        </aside>
+    </div>
 
     <script>
-        function buyItem(name, price, btn) {
-            if (window.useCoins && window.useCoins(price)) {
-                btn.textContent = 'Dimiliki';
-                btn.classList.add('owned');
-                btn.onclick = null;
+        function syncStore() {
+            const raw = localStorage.getItem('eduvix_user');
+            const user = raw ? JSON.parse(raw) : null;
+            if (!user) return;
 
-                // Khusus untuk Cyber Ninja
-                if (name === 'Cyber Ninja') {
-                    if (typeof eduvixSetAvatar === 'function') {
-                        eduvixSetAvatar('icon', 'fa-solid fa-user-ninja');
-                    }
-                }
-
-                alert(`Berhasil membeli ${name}!`);
-
-                // Simpan kepemilikan di localStorage
-                let owned = JSON.parse(localStorage.getItem('eduvix_owned_items') || '[]');
-                owned.push(name);
-                localStorage.setItem('eduvix_owned_items', JSON.stringify(owned));
-            } else {
-                alert('Koin tidak cukup! Teruslah belajar untuk mengumpulkan koin.');
-            }
-        }
-
-        // Cek item yang sudah dimiliki saat load
-        document.addEventListener('DOMContentLoaded', () => {
-            let owned = JSON.parse(localStorage.getItem('eduvix_owned_items') || '[]');
-            document.querySelectorAll('.store-card').forEach(card => {
-                let name = card.querySelector('h3').textContent;
-                if (owned.some(o => name.includes(o))) {
-                    let btn = card.querySelector('.btn-buy');
+            const coins = user.koin || 0;
+            document.getElementById('userCoinsDisplay').innerText = coins;
+            document.getElementById('userCoinsNav').innerText = coins;
+            
+            const owned = user.inventory || [];
+            document.querySelectorAll('.item-card').forEach(card => {
+                const id = card.getAttribute('data-item-id');
+                if (owned.includes(id)) {
+                    card.classList.add('is-owned');
+                    const btn = card.querySelector('.btn-buy');
                     btn.textContent = 'Dimiliki';
                     btn.classList.add('owned');
                     btn.onclick = null;
                 }
             });
-        });
+
+            document.querySelectorAll('[data-user-name]').forEach(el => el.textContent = user.nama || user.username || 'Pengguna');
+        }
+
+        function handlePurchase(itemId, price, btn) {
+            const raw = localStorage.getItem('eduvix_user');
+            const user = raw ? JSON.parse(raw) : null;
+            if (!user) return;
+
+            if (user.koin >= price) {
+                user.koin -= price;
+                user.inventory = user.inventory || [];
+                user.inventory.push(itemId);
+                localStorage.setItem('eduvix_user', JSON.stringify(user));
+                
+                // Show success toast or alert
+                alert(`Pembelian berhasil! Item '${itemId}' kini milikmu.`);
+                syncStore();
+            } else {
+                alert('Koin kamu tidak mencukupi. Teruslah belajar untuk mengumpulkan koin!');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', syncStore);
     </script>
 </body>
 

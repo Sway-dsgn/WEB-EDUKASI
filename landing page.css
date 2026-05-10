@@ -20,6 +20,21 @@
   --font-body:   'DM Sans', sans-serif;
 }
 
+.title-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+}
+
+.with-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 /* ══════════════════════════════
    RESET & BASE
 ══════════════════════════════ */
@@ -104,10 +119,10 @@ nav {
 }
 
 .nav-logo-img {
-  height: 150px;
+  height: 96px;
   width: auto;
   display: block;
-  mix-blend-mode: multiply;
+  border-radius: 16px;
 }
 
 .btn-contact {

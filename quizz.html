@@ -8,11 +8,10 @@
     <meta name="description" content="Uji pemahamanmu tentang Berpikir Kritis dengan quiz interaktif di EDUVIX.ID">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="quizz.css">
-    <script src="jalan.js"></script>
+    <link rel="icon" type="image/png" href="WhatsApp Image 2026-05-05 at 18.33.04.png">
+    <script src="beranda.js" defer></script>
 </head>
 
 <body>
@@ -31,7 +30,10 @@
         </button>
 
         <div class="qz-header-center">
-            <div class="qz-logo-text">EDUVIX<em>.ID</em></div>
+            <div class="qz-logo-wrapper">
+                <img src="WhatsApp Image 2026-05-05 at 18.33.04.png" alt="Logo EDUVIX" class="qz-logo-img">
+                <div class="qz-logo-text">EDUVIX<em>.ID</em></div>
+            </div>
             <div class="qz-session-pill">
                 <span class="session-dot"></span>
                 Sesi Aktif
@@ -40,15 +42,14 @@
 
         <!-- Timer -->
         <div class="qz-timer" id="qzTimer">
-            <svg class="timer-ring-svg" width="52" height="52" viewBox="0 0 52 52">
-                <circle class="timer-ring-bg" cx="26" cy="26" r="22" fill="none" stroke-width="3" />
-                <circle class="timer-ring-fill" id="timerRingFill" cx="26" cy="26" r="22" fill="none" stroke-width="3"
-                    stroke-dasharray="138.2" stroke-dashoffset="0" stroke-linecap="round"
-                    transform="rotate(-90 26 26)" />
+            <svg class="timer-ring-svg" width="40" height="40" viewBox="0 0 40 40">
+                <circle class="timer-ring-bg" cx="20" cy="20" r="18" fill="none" stroke-width="2.5" />
+                <circle class="timer-ring-fill" id="timerRingFill" cx="20" cy="20" r="18" fill="none" stroke-width="2.5"
+                    stroke-dasharray="113.1" stroke-dashoffset="0" stroke-linecap="round"
+                    transform="rotate(-90 20 20)" />
             </svg>
             <div class="timer-inner">
                 <div class="timer-value" id="timerValue">20:00</div>
-                <div class="timer-label">sisa</div>
             </div>
         </div>
     </header>
@@ -258,6 +259,12 @@
                                 d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z" />
                         </svg> XP</div>
                 </div>
+                <div class="rm-stat gold-stat">
+                    <div class="rms-val" id="gold-earned">0</div>
+                    <div class="rms-lbl"><svg width="13" height="13" viewBox="0 0 24 24" fill="gold" stroke="none">
+                            <circle cx="12" cy="12" r="10" />
+                        </svg> Gold</div>
+                </div>
             </div>
 
             <!-- Stars -->
@@ -292,7 +299,7 @@
             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z" />
         </svg></div>
 
-    <script src="quizz.js"></script>
+    <script src="quizz.js" defer></script>
 </body>
 
 </html>

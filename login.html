@@ -8,8 +8,9 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=DM+Sans:wght@400;500;600&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <script src="jalan.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="icon" type="image/png" href="WhatsApp Image 2026-05-05 at 18.33.04.png">
+    <script src="jalan.js"></script>
   <style>
     *,
     *::before,
@@ -101,6 +102,22 @@
       background: linear-gradient(135deg, #1e40af, #7c3aed);
       padding: 36px 36px 30px;
       text-align: center;
+    }
+
+    .card-header .brand-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .login-logo {
+      width: 120px;
+      height: 120px;
+      border-radius: 24px;
+      object-fit: cover;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+      border: 4px solid rgba(255, 255, 255, 0.15);
     }
 
     .card-header .brand {
@@ -339,7 +356,10 @@
   <div class="auth-card">
     <!-- Header -->
     <div class="card-header">
-      <div class="brand">EDUVIX<em>.ID</em></div>
+      <div class="brand-wrapper">
+        <img src="WhatsApp Image 2026-05-05 at 18.33.04.png" alt="Logo" class="login-logo">
+        <div class="brand">EDUVIX<em>.ID</em></div>
+      </div>
       <p>Mari mulai perjalanan belajarmu!</p>
     </div>
 

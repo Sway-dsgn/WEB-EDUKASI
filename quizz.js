@@ -164,7 +164,7 @@ function updateTimerDisplay() {
   const s = timeLeft % 60;
   timerValue.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
   const pct = timeLeft / MAX_TIME;
-  const circ = 138.2;
+  const circ = 113.1;
   timerRing.style.strokeDashoffset = circ * (1 - pct);
   const el = document.getElementById('qzTimer');
   el.classList.toggle('warn', timeLeft < 300 && timeLeft >= 60);
@@ -373,10 +373,14 @@ function finishQuiz() {
   const pct = Math.round((correct / quizData.length) * 100);
   const xp = correct * 10;
 
+  const gold = pct >= 70 ? 50 : 10;
+
   document.getElementById('correct-count').textContent = correct;
   document.getElementById('wrong-count').textContent = wrong;
   document.getElementById('score-percentage').textContent = pct + '%';
   document.getElementById('xp-earned').textContent = xp;
+  const goldEl = document.getElementById('gold-earned');
+  if (goldEl) goldEl.textContent = gold;
 
   const SVG_TROPHY = `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>`;
   const SVG_SILVER = `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>`;
@@ -410,10 +414,22 @@ function reviewAnswers() {
 
 // ==================== SAVE ====================
 function saveResult(score, correct) {
+  const xpEarned = correct * 10;
+  const goldEarned = score >= 70 ? 50 : 10;
+
   // Simpan ke localStorage lokal juga (backup)
   const results = JSON.parse(localStorage.getItem('quizResults') || '[]');
-  results.push({ score, correct, total: quizData.length, date: new Date().toISOString(), xp: correct * 10 });
+  results.push({ score, correct, total: quizData.length, date: new Date().toISOString(), xp: xpEarned, gold: goldEarned });
   localStorage.setItem('quizResults', JSON.stringify(results));
+
+  // Update data user di localStorage
+  try {
+    const rawUser = localStorage.getItem('eduvix_user');
+    let u = rawUser ? JSON.parse(rawUser) : { xp: 0, coins: 0 };
+    u.xp = (u.xp || 0) + xpEarned;
+    u.coins = (u.coins || 0) + goldEarned;
+    localStorage.setItem('eduvix_user', JSON.stringify(u));
+  } catch(e) {}
 
   // Simpan ke sistem user global (jalan.js) jika tersedia
   if (typeof eduvixSimpanQuiz === 'function') {
@@ -423,6 +439,11 @@ function saveResult(score, correct) {
       salah: quizData.length - correct,
       total: quizData.length
     });
+
+    // Bonus tambahan
+    if (typeof eduvixTambahKoin === 'function') {
+      eduvixTambahKoin(goldEarned, 'Menyelesaikan Quiz');
+    }
   }
 }
 

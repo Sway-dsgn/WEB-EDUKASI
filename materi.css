@@ -6,79 +6,38 @@
 
 /* ─── VARIABLES ─────────────────────────────── */
 :root {
-  /* --- 1. BRAND COLORS (PRIMARY BLUES) --- */
-  --primary: #1BAAED;
-  --primary-dark: #0d8fc9;
-  --primary-light: #e6f6fd;
-  --primary-gradient: linear-gradient(135deg, #1BAAED 0%, #0b7fc2 100%);
-  --sidebar-gradient: linear-gradient(175deg, #1BAAED 0%, #0b7fc2 100%);
-
-  /* --- 2. NEUTRAL COLORS (GREYS & WHITE) --- */
-  --white: #ffffff;
-  --bg-body: #eaf4fb;
-  --bg-card: #ffffff;
-  --border: #d6e8f5;
+  --indigo: #6366f1;
+  --indigo-d: #4f46e5;
+  --indigo-l: #e0e7ff;
+  --violet: #8b5cf6;
+  --emerald: #10b981;
+  --emerald-l: #d1fae5;
+  --red: #ef4444;
+  --amber: #f59e0b;
+  --amber-l: #fef3c7;
   
-  /* --- 3. TYPOGRAPHY (TEXT COLORS) --- */
-  --text-dark: #1a2340;
-  --text-mid: #5c6b8a;
-  --text-light: #9ba8bb;
+  --bg: #f5f6fa;
+  --bg2: #ffffff;
+  --card: #ffffff;
+  --border: #e8eaf0;
+  --text: #1a1d2e;
+  --text-mid: #5c6080;
+  --text-soft: #a0a4b8;
 
-  /* --- 4. SEMANTIC COLORS (STATUS) --- */
-  --success: #2e7d32;
-  --success-soft: #e8f5e9;
-  --warning: #f59e0b;
-  --warning-soft: #fff8e1;
-  --danger: #ef4444;
-  --danger-soft: #fff0f0;
-  --info: #3b9eff;
-  --info-soft: #f0f5ff;
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --r-xl: 26px;
 
-  /* --- 5. ACCENT PALETTE --- */
-  --pink: #e91e63;
-  --pink-soft: #fce4ec;
-  --pink-border: #f48fb1;
-  --teal: #00897b;
-  --teal-soft: #e0f7f4;
-  --purple: #7b1fa2;
-  --purple-soft: #ede7f6;
-  --green-soft: #e8f5e9;
-  --orange: #e65100;
-  --orange-soft: #fff3e0;
-  --yellow-border: #ffd54f;
+  --shadow: 0 4px 20px rgba(99, 102, 241, .10);
+  --shadow-md: 0 8px 32px rgba(99, 102, 241, .14);
+  --shadow-lg: 0 16px 48px rgba(99, 102, 241, .18);
+  --tr: all .22s cubic-bezier(.4, 0, .2, 1);
 
-  /* --- 6. UI TOKENS --- */
-  --radius-lg: 24px;
-  --radius-md: 16px;
-  --radius-sm: 10px;
-  --shadow-sm: 0 4px 12px rgba(27, 170, 237, 0.06);
-  --shadow-md: 0 4px 20px rgba(27, 170, 237, 0.08);
-  --shadow-lg: 0 8px 32px rgba(27, 170, 237, 0.18);
-  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --sidebar-width: 240px;
+  --sb-w: 240px;
+  --tb-h: 64px;
 
-  /* --- 7. ALIASES (Compatibility) --- */
-  --blue-main: var(--primary);
-  --blue-dark: var(--primary-dark);
-  --blue-light: var(--primary-light);
-  --bg: var(--bg-body);
-  --card-shadow: var(--shadow-md);
-  --card-shadow-hover: var(--shadow-lg);
-  --radius: var(--radius-md);
-  --sidebar-w: var(--sidebar-width);
-  --body-bg: var(--bg-body);
-  --card-bg: var(--bg-card);
-  --shadow: var(--shadow-sm);
-  --blue: var(--info);
-  --sb-w: var(--sidebar-width);
-  --tr: var(--transition);
-  --r-md: var(--radius-md);
-  --r-xl: var(--radius-lg);
-  --tb-h: 70px;
-
-  /* --- 8. FONTS --- */
-  --font-main: 'Plus Jakarta Sans', sans-serif;
-  font-family: var(--font-main);
+  font-family: 'DM Sans', sans-serif;
 }
 
 
@@ -137,13 +96,14 @@ img {
   left: 0;
   bottom: 0;
   width: var(--sb-w);
-  background: #0f172a;
+  background: var(--card);
   display: flex;
   flex-direction: column;
   z-index: 200;
   padding: 0;
   transition: transform .3s cubic-bezier(.4, 0, .2, 1);
   overflow-y: auto;
+  border-right: 1px solid var(--border);
 }
 
 .sidebar::-webkit-scrollbar {
@@ -185,24 +145,19 @@ img {
 }
 
 .sb-logo-img {
-  height: 30px;
-  width: auto;
-  filter: brightness(0) invert(1);
+  height: 32px;
+  width: 32px;
+  border-radius: 8px;
+  object-fit: cover;
   flex-shrink: 0;
 }
 
 .sb-logo-text {
-  font-family: 'Outfit', sans-serif;
-  font-size: 17px;
+  font-family: 'Sora', sans-serif;
+  font-size: 18px;
   font-weight: 800;
-  color: #fff;
-  letter-spacing: .2px;
-  white-space: nowrap;
-}
-
-.sb-logo-text em {
-  font-style: normal;
-  opacity: .5;
+  color: var(--text);
+  letter-spacing: -.3px;
 }
 
 /* Player */
@@ -211,8 +166,8 @@ img {
   align-items: center;
   gap: 12px;
   padding: 16px 20px;
-  background: rgba(255, 255, 255, .04);
-  border-bottom: 1px solid rgba(255, 255, 255, .06);
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
   flex-shrink: 0;
 }
 
@@ -220,7 +175,7 @@ img {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--blue), var(--purple));
+  background: linear-gradient(135deg, var(--indigo), var(--violet));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -232,7 +187,7 @@ img {
 .sb-username {
   font-size: 13px;
   font-weight: 700;
-  color: #fff;
+  color: var(--text);
   margin-bottom: 6px;
 }
 
@@ -245,7 +200,7 @@ img {
 .sb-level-tag {
   font-size: 10px;
   font-weight: 800;
-  background: var(--blue);
+  background: var(--indigo);
   color: #fff;
   padding: 2px 7px;
   border-radius: 50px;
@@ -254,7 +209,7 @@ img {
 .sb-xp-bar {
   flex: 1;
   height: 5px;
-  background: rgba(255, 255, 255, .1);
+  background: var(--indigo-l);
   border-radius: 50px;
   overflow: hidden;
 }
@@ -262,14 +217,14 @@ img {
 .sb-xp-fill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, var(--blue), var(--purple));
+  background: linear-gradient(90deg, var(--indigo), var(--violet));
   border-radius: 50px;
   transition: width .8s ease;
 }
 
 .sb-xp-num {
   font-size: 10px;
-  color: rgba(255, 255, 255, .5);
+  color: var(--text-soft);
   font-family: 'DM Mono', monospace;
   white-space: nowrap;
 }
@@ -305,7 +260,7 @@ img {
   font-weight: 700;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, .3);
+  color: var(--text-soft);
   padding: 0 8px;
   margin-bottom: 8px;
 }
@@ -317,22 +272,20 @@ img {
   padding: 12px 12px;
   border-radius: var(--r-md);
   background: transparent;
-  border: 1.5px solid transparent;
-  color: rgba(255, 255, 255, .5);
+  color: var(--text-mid);
   text-align: left;
   transition: var(--tr);
-  position: relative;
 }
 
 .sb-lesson:hover:not(.locked) {
-  background: rgba(255, 255, 255, .07);
-  color: rgba(255, 255, 255, .9);
+  background: var(--indigo-l);
+  color: var(--indigo);
 }
 
 .sb-lesson.active {
-  background: rgba(37, 99, 235, .25);
-  border-color: rgba(37, 99, 235, .5);
+  background: var(--indigo);
   color: #fff;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
 }
 
 .sb-lesson.locked {
@@ -478,14 +431,14 @@ img {
   right: 0;
   height: var(--tb-h);
   z-index: 100;
-  background: rgba(248, 250, 255, .9);
+  background: rgba(255, 255, 255, .8);
   backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 28px;
-  box-shadow: 0 1px 12px rgba(37, 99, 235, .06);
+  box-shadow: 0 1px 12px rgba(99, 102, 241, .06);
   transition: left .3s;
 }
 

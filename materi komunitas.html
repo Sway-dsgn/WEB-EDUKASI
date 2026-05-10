@@ -2,258 +2,756 @@
 <html lang="id">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EDUVIX.ID – belajar</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="script.js"></script>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&display=swap"
-    rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <script src="jalan.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Materi Komunitas - EDUVIX.ID</title>
+  <link rel="stylesheet" href="beranda.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" type="image/png" href="WhatsApp Image 2026-05-05 at 18.33.04.png">
+  <script src="beranda.js" defer></script>
+  <style>
+    .community-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .btn-upload {
+      padding: 12px 24px;
+      background: var(--indigo);
+      color: #fff;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 14px;
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+      transition: var(--tr);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-upload:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+      background: var(--indigo-d);
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-card {
+      background: var(--card);
+      width: 100%;
+      max-width: 500px;
+      border-radius: 24px 24px var(--r-xl) var(--r-xl);
+      padding: 32px;
+      padding-top: 40px;
+      box-shadow: var(--shadow-lg);
+      animation: modalFadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+
+    .modal-drag-handle {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      cursor: grab;
+      transition: var(--tr);
+    }
+
+    .modal-drag-handle:hover {
+      background: var(--text-soft);
+      width: 60px;
+    }
+
+    .modal-drag-handle:active {
+      cursor: grabbing;
+    }
+
+    @keyframes modalFadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-header {
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .btn-close-modal {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      width: 32px;
+      height: 32px;
+      background: var(--bg);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-mid);
+      cursor: pointer;
+      transition: var(--tr);
+      border: 1.5px solid var(--border);
+    }
+
+    .btn-close-modal:hover {
+      background: var(--red);
+      color: #fff;
+      border-color: var(--red);
+      transform: rotate(90deg);
+    }
+
+    .modal-header h2 {
+      font-family: 'Sora', sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-mid);
+      margin-bottom: 8px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 12px 16px;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+      transition: var(--tr);
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--indigo);
+      background: #fff;
+    }
+
+    .modal-footer {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .btn-cancel {
+      flex: 1;
+      padding: 12px;
+      background: var(--bg);
+      color: var(--text-mid);
+      border-radius: 12px;
+      font-weight: 700;
+      transition: var(--tr);
+    }
+
+    .btn-submit {
+      flex: 2;
+      padding: 12px;
+      background: var(--indigo);
+      color: #fff;
+      border-radius: 12px;
+      font-weight: 700;
+      transition: var(--tr);
+    }
+
+    .btn-submit:hover {
+      background: var(--indigo-d);
+    }
+
+    .btn-cancel:hover {
+      background: var(--border);
+    }
+
+    /* Course Card Enhancements */
+    .badge-category {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 4px 8px;
+      border-radius: 6px;
+      background: var(--indigo-l);
+      color: var(--indigo);
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+
+    /* Custom File Upload */
+    .file-upload-wrapper {
+      position: relative;
+      background: var(--bg);
+      border: 2px dashed var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      transition: var(--tr);
+      cursor: pointer;
+    }
+
+    .file-upload-wrapper:hover {
+      border-color: var(--indigo);
+      background: var(--indigo-l);
+    }
+
+    .file-upload-wrapper input[type="file"] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .upload-icon {
+      font-size: 32px;
+      color: var(--indigo);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .upload-text {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-mid);
+    }
+
+    .upload-hint {
+      font-size: 11px;
+      color: var(--text-soft);
+      margin-top: 4px;
+    }
+
+    /* Quiz Option Styling */
+    .option-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .option-field {
+      display: flex;
+      align-items: center;
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 4px 12px;
+      transition: var(--tr);
+    }
+
+    .option-field:focus-within {
+      border-color: var(--indigo);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+
+    .option-letter {
+      width: 28px;
+      height: 28px;
+      background: var(--bg);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--indigo);
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+
+    .option-field input {
+      border: none !important;
+      background: transparent !important;
+      padding: 8px 0 !important;
+      font-weight: 600;
+      outline: none;
+      width: 100%;
+      font-family: inherit;
+    }
+
+    .question-entry {
+      background: #fff !important;
+      padding: 24px !important;
+      border-radius: 20px !important;
+      margin-bottom: 24px !important;
+      border: 1.5px solid var(--border) !important;
+      box-shadow: var(--shadow-sm);
+    }
+  </style>
 </head>
 
 <body>
-  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <img src="WhatsApp Image 2026-05-05 at 18.33.04.png" alt="Logo">
+        </div>
+        <h1 class="brand">EDUVIX.</h1>
+      </div>
 
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-logo">
-      <img src="WhatsApp Image 2026-05-05 at 18.33.04.png" alt="EDUVIX.ID Logo" class="logo-img" />
-    </div>
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="nav-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" />
+            <rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" />
+            <rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2" />
+            <rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2" />
+          </svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="progress.html" class="nav-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 19.5C4 18.837 4.26339 18.2011 4.73223 17.7322C5.20107 17.2634 5.83696 17 6.5 17H20"
+              stroke="currentColor" stroke-width="2" />
+            <path
+              d="M6.5 2H20V22H6.5C5.83696 22 5.20107 21.7366 4.73223 21.2678C4.26339 20.7989 4 20.163 4 19.5V4.5C4 3.83696 4.26339 3.20107 4.73223 2.73223C5.20107 2.26339 5.83696 2 6.5 2Z"
+              stroke="currentColor" stroke-width="2" />
+          </svg>
+          <span>Semua Materi</span>
+        </a>
+        <a href="pencapaian.html" class="nav-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 15l-2 5 2-1 2 1-2-5zm0-13C7.58 2 4 5.58 4 10c0 4.42 3.58 8 8 8s8-3.58 8-8c0-4.42-3.58-8-8-8z"
+              stroke="currentColor" stroke-width="2" />
+          </svg>
+          <span>Pencapaian</span>
+        </a>
+        <a href="store.html" class="nav-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z" stroke="currentColor" stroke-width="2" />
+            <path d="M9 22V12h6v10" stroke="currentColor" stroke-width="2" />
+          </svg>
+          <span>Toko Hadiah</span>
+        </a>
+        <a href="materi komunitas.html" class="nav-item active">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" />
+            <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2" />
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" stroke="currentColor" stroke-width="2" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2" />
+          </svg>
+          <span>Materi Komunitas</span>
+        </a>
+      </nav>
 
-    <nav class="sidebar-nav">
-      <a href="dashboard.html" class="nav-item">
-        <i class="fa-solid fa-house"></i>
-        <span>Beranda</span>
-      </a>
-      <a href="materi komunitas.html" class="nav-item active">
-        <i class="fa-solid fa-chalkboard-user"></i>
-        <span>Materi Komunitas</span>
-      </a>
-      <a href="progress.html" class="nav-item">
-        <i class="fa-solid fa-chart-line"></i>
-        <span>Progress</span>
-      </a>
-      <a href="pencapaian.html" class="nav-item">
-        <i class="fa-solid fa-trophy"></i>
-        <span>Pencapaian</span>
-      </a>
-      <a href="materi.html" class="nav-item">
-        <i class="fa-solid fa-file-pen"></i>
-        <span>Materi</span>
-      </a>
-      <a href="store.html" class="nav-item">
-        <i class="fa-solid fa-store"></i>
-        <span>Store</span>
-      </a>
-    </nav>
+      <div class="sidebar-footer">
+        <div class="upgrade-card">
+          <p class="upgrade-text">Bagikan ilmu kamu ke <strong>Komunitas</strong>!</p>
+          <button class="btn-upgrade" onclick="toggleModal(true)">Upload Materi</button>
+        </div>
+      </div>
+    </aside>
 
-    <a href="#" class="logout-btn">
-      <i class="fa-solid fa-right-from-bracket"></i>
-      <span>Log Out</span>
-    </a>
-  </aside>
-
-  <!-- MAIN CONTENT -->
-  <main class="main-content">
-
-    <!-- TOP BAR -->
-    <header class="topbar">
-      <div class="topbar-left" style="display: flex; align-items: center; gap: 16px;">
-        <button class="menu-toggle" id="menuToggle">
-          <i class="fa-solid fa-bars"></i>
-        </button>
+    <main class="main-content">
+      <header class="top-header">
         <div class="search-box">
-          <i class="fa-solid fa-magnifying-glass"></i>
-          <input type="text" placeholder="Temukan di sini ..." />
-        </div>
-      </div>
-      <div class="topbar-right" style="display: flex; align-items: center; gap: 16px;">
-        <div class="user-profile">
-          <div class="avatar">
-            <i class="fa-solid fa-user" data-user-avatar></i>
-          </div>
-          <span class="user-name" data-user-name>User</span>
-          <i class="fa-solid fa-chevron-down"></i>
-        </div>
-      </div>
-    </header>
-
-    <!-- PAGE CONTENT -->
-    <div class="page-body">
-
-      <!-- LEFT COLUMN -->
-      <section class="left-col">
-        <h1 class="page-title">Materi Komunitas</h1>
-
-        <!-- TABS -->
-        <div class="tabs">
-          <button class="tab" onclick="filterTab(this, 'semua')">Semua</button>
-          <button class="tab active" onclick="filterTab(this, 'mendatang')">Mendatang</button>
-          <button class="tab" onclick="filterTab(this, 'selesai')">Selesai</button>
-          <button class="tab" onclick="filterTab(this, 'berjalan')">Berjalan</button>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2" />
+            <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+          <input type="text" placeholder="Cari materi komunitas...">
         </div>
 
-        <!-- EXAM LIST -->
-        <div class="exam-list" id="examList">
-
-          <div class="exam-card" data-status="mendatang">
-            <div class="exam-thumb thumb-teal">
-              <i class="fa-solid fa-flask"></i>
-            </div>
-            <div class="exam-info">
-              <h3>Pengantar berpikir kritis </h3>
-              <p></p>
-              <span class="exam-date"><i class="fa-regular fa-calendar"></i> Mulai : 15 November 2021</span>
-            </div>
-            <div class="exam-actions">
-              <button class="btn-icon edit" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
-              <button class="btn-icon delete" title="Hapus"><i class="fa-solid fa-trash"></i></button>
-            </div>
+        <div class="header-actions">
+          <div class="user-profile">
+            <div class="avatar" data-user-avatar style="width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #6366f1; color: white; font-weight: bold;">U</div>
+            <span class="user-name" data-user-name>User EDUVIX</span>
           </div>
-
-          <div class="exam-card" data-status="mendatang">
-            <div class="exam-thumb thumb-pink">
-              <i class="fa-solid fa-atom"></i>
-            </div>
-            <div class="exam-info">
-              <h3>Identifikasi argumen</h3>
-              <p></p>
-              <span class="exam-date"><i class="fa-regular fa-calendar"></i> Mulai : 16 November 2021</span>
-            </div>
-            <div class="exam-actions">
-              <button class="btn-icon edit" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
-              <button class="btn-icon delete" title="Hapus"><i class="fa-solid fa-trash"></i></button>
-            </div>
-          </div>
-
-          <div class="exam-card" data-status="mendatang">
-            <div class="exam-thumb thumb-purple">
-              <i class="fa-solid fa-microscope"></i>
-            </div>
-            <div class="exam-info">
-              <h3>Logical Fallacies</h3>
-              <p></p>
-              <span class="exam-date"><i class="fa-regular fa-calendar"></i> Mulai : 17 November 2021</span>
-            </div>
-            <div class="exam-actions">
-              <button class="btn-icon edit" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
-              <button class="btn-icon delete" title="Hapus"><i class="fa-solid fa-trash"></i></button>
-            </div>
-          </div>
-
-          <div class="exam-card" data-status="selesai">
-            <div class="exam-thumb thumb-green">
-              <i class="fa-solid fa-vial"></i>
-            </div>
-            <div class="exam-info">
-              <h3>Materi Selesai</h3>
-              <p></p>
-              <span class="exam-date"><i class="fa-regular fa-calendar"></i> Mulai : 20 November 2021</span>
-            </div>
-            <div class="exam-actions">
-              <button class="btn-icon edit" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
-              <button class="btn-icon delete" title="Hapus"><i class="fa-solid fa-trash"></i></button>
-            </div>
-          </div>
-
-          <div class="exam-card" data-status="berjalan">
-            <div class="exam-thumb thumb-orange">
-              <i class="fa-solid fa-fire-flame-curved"></i>
-            </div>
-            <div class="exam-info">
-              <h3>Materi Berjalan</h3>
-              <p></p>
-              <span class="exam-date"><i class="fa-regular fa-calendar"></i> Mulai : 05 Mei 2026</span>
-            </div>
-            <div class="exam-actions">
-              <button class="btn-icon edit" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
-              <button class="btn-icon delete" title="Hapus"><i class="fa-solid fa-trash"></i></button>
-            </div>
-          </div>
-
         </div>
-      </section>
+      </header>
 
-      <!-- RIGHT COLUMN -->
-      <aside class="right-col">
-
-        <!-- CREATE NEW EXAM BANNER -->
-        <div class="create-banner">
-          <div class="create-banner-text">
-            <h3>Buat Materi Baru</h3>
-            <p>Impor materi dari Ms. Word atau buat langsung di EDUVIX</p>
+      <div class="community-header">
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <a href="dashboard.html" class="icon-btn" title="Kembali ke Dashboard">
+            <i class="fa-solid fa-arrow-left"></i>
+          </a>
+          <div class="with-logo">
+            <img src="WhatsApp Image 2026-05-05 at 18.33.04.png" alt="Logo" class="title-logo">
+            <h3 class="section-title" style="margin-bottom: 0;">Kontribusi Komunitas</h3>
           </div>
-          <div class="create-banner-icon">
-            <i class="fa-solid fa-wand-magic-sparkles"></i>
-          </div>
-          <button class="btn-create" onclick="handleCreate()">
-            <i class="fa-solid fa-plus"></i> Buat Sekarang
+        </div>
+        <div style="display: flex; gap: 12px;">
+          <button class="btn-upload" onclick="toggleModal('uploadModal', true)" style="background: var(--emerald);">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            Tambah Materi
+          </button>
+          <button class="btn-upload" onclick="toggleModal('quizModal', true)">
+            <i class="fa-solid fa-puzzle-piece"></i>
+            Buat Quiz
           </button>
         </div>
-
-        <!-- SCHEDULE -->
-        <div class="schedule-card">
-          <div class="schedule-header">
-            <h3>Jadwal</h3>
-            <a href="#">Lihat Semua</a>
-          </div>
-
-          <div class="schedule-list">
-            <div class="schedule-item active">
-              <div class="schedule-day">04</div>
-              <div class="schedule-detail">
-                <span class="class-name">Kelas X MIPA 3</span>
-                <span class="class-topic"></span>
-              </div>
-              <div class="schedule-time">08.00 – 09.30 WIB</div>
-            </div>
-
-            <div class="schedule-item">
-              <div class="schedule-day">05</div>
-              <div class="schedule-detail">
-                <span class="class-name">Kelas XII MIPA 3</span>
-                <span class="class-topic"></span>
-              </div>
-              <div class="schedule-time">09.30 – 11.00 WIB</div>
-            </div>
-
-            <div class="schedule-item">
-              <div class="schedule-day">06</div>
-              <div class="schedule-detail">
-                <span class="class-name">Kelas XI MIPA 2</span>
-                <span class="class-topic"></span>
-              </div>
-              <div class="schedule-time">13.00 – 14.30 WIB</div>
-            </div>
-          </div>
-        </div>
-
-      </aside>
-    </div>
-  </main>
-
-  <!-- MODAL: CREATE EXAM -->
-  <div class="modal-overlay" id="modalOverlay">
-    <div class="modal">
-      <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
-      <h2>Buat Materi Baru</h2>
-      <p>Pilih metode pembuatan materi:</p>
-      <div class="modal-options">
-        <div class="modal-option">
-          <i class="fa-solid fa-file-word"></i>
-          <span>Impor dari Ms. Word</span>
-        </div>
-        <div class="modal-option">
-          <i class="fa-solid fa-pen-nib"></i>
-          <span>Buat Manual</span>
-        </div>
       </div>
+
+      <div class="courses-grid" id="communityGrid">
+        <!-- Materials will be loaded here -->
+      </div>
+    </main>
+  </div>
+
+  <!-- Upload Modal -->
+  <div class="modal-overlay" id="uploadModal" onclick="if(event.target === this) toggleModal('uploadModal', false)">
+    <div class="modal-card">
+      <div class="modal-drag-handle" onclick="toggleModal('uploadModal', false)"></div>
+      <div class="modal-header">
+        <h2>Upload Materi Baru</h2>
+        <button class="btn-close-modal" onclick="toggleModal('uploadModal', false)"><i
+            class="fa-solid fa-xmark"></i></button>
+        <p style="font-size: 13px; color: var(--text-soft); margin-top: 4px;">Bagikan pengetahuanmu dengan pelajar lain.
+        </p>
+      </div>
+      <form id="uploadForm">
+        <div class="form-group">
+          <label>Judul Materi</label>
+          <input type="text" id="materiTitle" placeholder="Contoh: Dasar Pemrograman Python" required>
+        </div>
+        <div class="form-group">
+          <label>Kategori</label>
+          <select id="materiCategory">
+            <option value="Sains">Sains</option>
+            <option value="Teknologi">Teknologi</option>
+            <option value="Seni">Seni</option>
+            <option value="Bahasa">Bahasa</option>
+            <option value="Lainnya">Lainnya</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Deskripsi Singkat</label>
+          <textarea id="materiDesc" rows="3" placeholder="Jelaskan apa yang akan dipelajari..." required></textarea>
+        </div>
+        <div class="form-group">
+          <label>Link Video / Web (Opsional)</label>
+          <input type="text" id="materiLink" placeholder="Contoh: https://youtube.com/..." value="-">
+        </div>
+        <div class="form-group">
+          <label>Lampirkan Dokumen</label>
+          <div class="file-upload-wrapper" id="dropArea">
+            <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+            <span class="upload-text" id="fileNameDisplay">Pilih File Word/PPT atau seret ke sini</span>
+            <p class="upload-hint">Format: .doc, .docx, .ppt, .pptx, .pdf</p>
+            <input type="file" id="materiFile" accept=".doc,.docx,.ppt,.pptx,.pdf" onchange="handleFileSelect(this)">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" onclick="toggleModal('uploadModal', false)">Batal</button>
+          <button type="submit" class="btn-submit">Simpan & Bagikan</button>
+        </div>
+      </form>
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <!-- Quiz Modal -->
+  <div class="modal-overlay" id="quizModal" onclick="if(event.target === this) toggleModal('quizModal', false)">
+    <div class="modal-card" style="max-width: 650px;">
+      <div class="modal-drag-handle" onclick="toggleModal('quizModal', false)"></div>
+      <div class="modal-header">
+        <h2>Buat Quiz Baru</h2>
+        <button class="btn-close-modal" onclick="toggleModal('quizModal', false)"><i
+            class="fa-solid fa-xmark"></i></button>
+        <p style="font-size: 13px; color: var(--text-soft); margin-top: 4px;">Uji pemahaman komunitas dengan quiz
+          buatanmu.</p>
+      </div>
+      <form id="quizForm">
+        <div class="form-group">
+          <label>Judul Quiz</label>
+          <input type="text" id="quizTitle" placeholder="Contoh: Quiz Logika Dasar" required>
+        </div>
+        <div id="questionsContainer">
+          <div class="question-entry">
+            <div class="form-group">
+              <label>Pertanyaan 1</label>
+              <textarea class="q-text" rows="2" placeholder="Tuliskan pertanyaan quiz..." required></textarea>
+            </div>
+            <div class="option-group">
+              <div class="option-field">
+                <span class="option-letter">A</span>
+                <input type="text" class="q-opt" placeholder="Jawaban A" required>
+              </div>
+              <div class="option-field">
+                <span class="option-letter">B</span>
+                <input type="text" class="q-opt" placeholder="Jawaban B" required>
+              </div>
+              <div class="option-field">
+                <span class="option-letter">C</span>
+                <input type="text" class="q-opt" placeholder="Jawaban C" required>
+              </div>
+              <div class="option-field">
+                <span class="option-letter">D</span>
+                <input type="text" class="q-opt" placeholder="Jawaban D" required>
+              </div>
+            </div>
+            <div class="form-group" style="margin-top: 16px;">
+              <label>Tentukan Jawaban Benar</label>
+              <select class="q-correct">
+                <option value="0">Pilihan A</option>
+                <option value="1">Pilihan B</option>
+                <option value="2">Pilihan C</option>
+                <option value="3">Pilihan D</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn-cancel"
+          style="width: 100%; margin-bottom: 20px; border: 1.5px dashed var(--indigo); color: var(--indigo);"
+          onclick="addQuestion()">+ Tambah Pertanyaan</button>
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" onclick="toggleModal('quizModal', false)">Batal</button>
+          <button type="submit" class="btn-submit">Publikasikan Quiz</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function toggleModal(id, show) {
+      document.getElementById(id).style.display = show ? 'flex' : 'none';
+    }
+
+    function addQuestion() {
+      const container = document.getElementById('questionsContainer');
+      const qCount = container.children.length + 1;
+      const qDiv = document.createElement('div');
+      qDiv.className = 'question-entry';
+      qDiv.innerHTML = `
+            <div class="form-group">
+                <label>Pertanyaan ${qCount}</label>
+                <textarea class="q-text" rows="2" placeholder="Tuliskan pertanyaan quiz..." required></textarea>
+            </div>
+            <div class="option-group">
+                <div class="option-field">
+                    <span class="option-letter">A</span>
+                    <input type="text" class="q-opt" placeholder="Jawaban A" required>
+                </div>
+                <div class="option-field">
+                    <span class="option-letter">B</span>
+                    <input type="text" class="q-opt" placeholder="Jawaban B" required>
+                </div>
+                <div class="option-field">
+                    <span class="option-letter">C</span>
+                    <input type="text" class="q-opt" placeholder="Jawaban A" required>
+                </div>
+                <div class="option-field">
+                    <span class="option-letter">D</span>
+                    <input type="text" class="q-opt" placeholder="Jawaban D" required>
+                </div>
+            </div>
+            <div class="form-group" style="margin-top: 16px;">
+                <label>Tentukan Jawaban Benar</label>
+                <select class="q-correct">
+                    <option value="0">Pilihan A</option>
+                    <option value="1">Pilihan B</option>
+                    <option value="2">Pilihan C</option>
+                    <option value="3">Pilihan D</option>
+                </select>
+            </div>
+        `;
+      container.appendChild(qDiv);
+    }
+
+    const defaultMaterials = [
+      {
+        id: 1,
+        type: 'materi',
+        title: "Biologi: Struktur Sel",
+        category: "Sains",
+        desc: "Pelajari blok bangunan dasar kehidupan dengan ilustrasi mendalam.",
+        author: "Dr. Aris",
+        color: "#6366f1"
+      },
+      {
+        id: 2,
+        type: 'materi',
+        title: "Algoritma Javascript",
+        category: "Teknologi",
+        desc: "Kuasai struktur data dan logika dalam pemrograman Javascript.",
+        author: "DevTeam",
+        color: "#10b981"
+      }
+    ];
+
+    function loadMaterials() {
+      const grid = document.getElementById('communityGrid');
+      const customRaw = localStorage.getItem('eduvix_community_materi');
+      const custom = customRaw ? JSON.parse(customRaw) : [];
+
+      const quizzesRaw = localStorage.getItem('eduvix_community_quizzes');
+      const quizzes = quizzesRaw ? JSON.parse(quizzesRaw) : [];
+
+      const allItems = [...defaultMaterials, ...custom, ...quizzes];
+
+      grid.innerHTML = allItems.map(m => `
+                <div class="course-card">
+                    <div class="course-thumbnail">
+                        <div style="height: 120px; background: ${m.color || '#e0e7ff'}; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 48px;">
+                            <i class="fa-solid ${m.type === 'quiz' ? 'fa-puzzle-piece' : getIcon(m.category)}"></i>
+                        </div>
+                    </div>
+                    <div class="course-info">
+                        <span class="badge-category" style="${m.type === 'quiz' ? 'background: var(--indigo); color: #fff;' : ''}">
+                            ${m.type === 'quiz' ? 'QUIZ' : m.category}
+                        </span>
+                        <h4>${m.title}</h4>
+                        <p style="font-size: 12px; color: var(--text-soft); margin-bottom: 12px;">${m.desc}</p>
+                        <div class="course-meta">
+                            <span class="meta-item">Oleh <strong>${m.author}</strong></span>
+                            ${m.fileName ? `<span class="meta-item" style="color: var(--indigo);"><i class="fa-solid ${getFileIcon(m.fileName)}"></i> ${m.fileName}</span>` : ''}
+                            ${m.type === 'quiz' ? `<span class="meta-item" style="color: var(--indigo);"><i class="fa-solid fa-list-check"></i> ${m.questions.length} Pertanyaan</span>` : ''}
+                        </div>
+                        <div style="display: flex; gap: 8px; margin-top: 15px;">
+                            <button class="btn-upgrade" style="flex: 2;" onclick="openItem('${m.id}', '${m.type}')">
+                                ${m.type === 'quiz' ? 'Mulai Quiz' : 'Buka Materi'}
+                            </button>
+                            ${m.fileName ? `<button class="icon-btn" style="border-radius: 12px; width: 45px; height: 45px;" onclick="alert('Mengekspor/Mengunduh: ${m.fileName}')" title="Export ke Dokumen"><i class="fa-solid fa-file-export"></i></button>` : ''}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+    }
+
+    function getFileIcon(filename) {
+      if (filename.endsWith('.doc') || filename.endsWith('.docx')) return 'fa-file-word';
+      if (filename.endsWith('.ppt') || filename.endsWith('.pptx')) return 'fa-file-powerpoint';
+      if (filename.endsWith('.pdf')) return 'fa-file-pdf';
+      return 'fa-file-lines';
+    }
+
+    function getIcon(cat) {
+      switch (cat) {
+        case 'Sains': return 'fa-microscope';
+        case 'Teknologi': return 'fa-code';
+        case 'Seni': return 'fa-palette';
+        case 'Bahasa': return 'fa-language';
+        default: return 'fa-book-open';
+      }
+    }
+
+    document.getElementById('quizForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const rawUser = localStorage.getItem('eduvix_user');
+      const user = rawUser ? JSON.parse(rawUser) : { nama: 'Anonim' };
+
+      const questions = [];
+      document.querySelectorAll('.question-entry').forEach(q => {
+        questions.push({
+          question: q.querySelector('.q-text').value,
+          options: Array.from(q.querySelectorAll('.q-opt')).map(o => o.value),
+          correct: parseInt(q.querySelector('.q-correct').value)
+        });
+      });
+
+      const newQuiz = {
+        id: 'q_' + Date.now(),
+        type: 'quiz',
+        title: document.getElementById('quizTitle').value,
+        desc: `Quiz interaktif dengan ${questions.length} pertanyaan.`,
+        questions: questions,
+        author: user.nama || user.username || 'User EDUVIX',
+        color: '#6366f1'
+      };
+
+      const quizzesRaw = localStorage.getItem('eduvix_community_quizzes');
+      const quizzes = quizzesRaw ? JSON.parse(quizzesRaw) : [];
+      quizzes.push(newQuiz);
+      localStorage.setItem('eduvix_community_quizzes', JSON.stringify(quizzes));
+
+      toggleModal('quizModal', false);
+      e.target.reset();
+      loadMaterials();
+      alert('Quiz berhasil dipublikasikan ke komunitas!');
+    });
+
+    document.getElementById('uploadForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const rawUser = localStorage.getItem('eduvix_user');
+      const user = rawUser ? JSON.parse(rawUser) : { nama: 'Anonim' };
+
+      const fileInput = document.getElementById('materiFile');
+      const fileName = fileInput.files.length > 0 ? fileInput.files[0].name : '';
+
+      const newMateri = {
+        id: Date.now(),
+        type: 'materi',
+        title: document.getElementById('materiTitle').value,
+        category: document.getElementById('materiCategory').value,
+        desc: document.getElementById('materiDesc').value,
+        link: document.getElementById('materiLink').value,
+        fileName: fileName,
+        author: user.nama || user.username || 'User EDUVIX',
+        color: '#10b981'
+      };
+
+      const customRaw = localStorage.getItem('eduvix_community_materi');
+      const custom = customRaw ? JSON.parse(customRaw) : [];
+      custom.push(newMateri);
+      localStorage.setItem('eduvix_community_materi', JSON.stringify(custom));
+
+      toggleModal('uploadModal', false);
+      e.target.reset();
+      loadMaterials();
+      alert('Materi berhasil diupload ke komunitas!');
+    });
+
+    function handleFileSelect(input) {
+      const display = document.getElementById('fileNameDisplay');
+      if (input.files.length > 0) {
+        display.textContent = input.files[0].name;
+        display.style.color = 'var(--indigo)';
+      } else {
+        display.textContent = 'Pilih File Word/PPT atau seret ke sini';
+        display.style.color = 'var(--text-mid)';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadMaterials();
+      const rawUser = localStorage.getItem('eduvix_user');
+      if (rawUser) {
+        const user = JSON.parse(rawUser);
+        document.querySelectorAll('[data-user-name]').forEach(el => el.textContent = user.nama || user.username || 'User EDUVIX');
+      }
+    });
+  </script>
 </body>
 
 </html>
