@@ -8,9 +8,9 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=DM+Sans:wght@400;500;600&display=swap"
     rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <link rel="icon" type="image/png" href="WhatsApp Image 2026-05-05 at 18.33.04.png">
-    <script src="jalan.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="icon" type="image/png" href="WhatsApp Image 2026-05-05 at 18.33.04.png">
+  <script src="jalan.js"></script>
   <style>
     *,
     *::before,
@@ -206,6 +206,10 @@
       font-size: 15px;
       padding: 4px;
       transition: color .2s;
+    }
+
+    .input-wrap .eye-btn i {
+      font-family: "Font Awesome 6 Free" !important;
     }
 
     .input-wrap .eye-btn:hover {
@@ -407,12 +411,13 @@
     function togglePw(id, btn) {
       const inp = document.getElementById(id);
       const icon = btn.querySelector('i');
+
       if (inp.type === 'password') {
         inp.type = 'text';
-        icon.className = 'fa-solid fa-eye-slash';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
       } else {
         inp.type = 'password';
-        icon.className = 'fa-solid fa-eye';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
       }
     }
 

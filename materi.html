@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="icon" type="image/png" href="WhatsApp Image 2026-05-05 at 18.33.04.png">
     <script src="beranda.js" defer></script>
+    <script src="materi.js" defer></script>
     <style>
         .materi-container {
             background: var(--card);
@@ -163,16 +164,280 @@
             margin-top: 48px;
             transition: var(--tr);
             box-shadow: 0 6px 20px rgba(99, 102, 241, 0.25);
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
         }
 
         .btn-quiz:hover {
             transform: translateY(-3px);
             box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+            color: white;
         }
-        
+
         /* Sidebar Fix for Materi */
         .sidebar-nav {
             padding: 16px 12px;
+        }
+
+        /* ── TKA specific styles ── */
+        .tka-type-card {
+            background: var(--bg);
+            border: 1.5px solid var(--border);
+            border-radius: var(--r-lg);
+            padding: 28px;
+            transition: var(--tr);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tka-type-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--tka-color, var(--indigo));
+            border-radius: var(--r-lg) var(--r-lg) 0 0;
+        }
+
+        .tka-type-card:hover {
+            border-color: var(--indigo);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tka-type-card .ic-icon {
+            background: var(--tka-bg, var(--indigo-l));
+            color: var(--tka-color, var(--indigo));
+        }
+
+        .tka-type-card h3 {
+            font-family: 'Sora', sans-serif;
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .tka-type-card p {
+            font-size: 14px;
+            color: var(--text-mid);
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+
+        .tka-examples {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .tka-example-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-mid);
+            background: white;
+            border-radius: 8px;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+        }
+
+        .tka-example-item i {
+            color: var(--tka-color, var(--indigo));
+            font-size: 11px;
+            flex-shrink: 0;
+        }
+
+        .soal-box {
+            background: var(--bg);
+            border: 1.5px solid var(--border);
+            border-radius: var(--r-lg);
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .soal-box .soal-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--indigo);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .soal-box .soal-text {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+
+        .soal-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .soal-opt {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1.5px solid var(--border);
+            background: white;
+            font-size: 14px;
+            color: var(--text);
+            cursor: pointer;
+            transition: var(--tr);
+            text-align: left;
+        }
+
+        .soal-opt:hover {
+            border-color: var(--indigo);
+            background: var(--indigo-l);
+            transform: translateX(4px);
+        }
+
+        .soal-opt.correct {
+            border-color: #10b981;
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .soal-opt.wrong {
+            border-color: #ef4444;
+            background: #fee2e2;
+            color: #7f1d1d;
+        }
+
+        .soal-opt .opt-letter {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: var(--indigo-l);
+            color: var(--indigo);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .soal-opt.correct .opt-letter {
+            background: #10b981;
+            color: white;
+        }
+
+        .soal-opt.wrong .opt-letter {
+            background: #ef4444;
+            color: white;
+        }
+
+        .soal-feedback {
+            margin-top: 12px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 13.5px;
+            font-weight: 600;
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .soal-feedback.show {
+            display: flex;
+        }
+
+        .soal-feedback.correct {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .soal-feedback.wrong {
+            background: #fee2e2;
+            color: #7f1d1d;
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .tip-card {
+            background: var(--bg);
+            border-radius: var(--r-md);
+            padding: 20px;
+            border: 1.5px solid var(--border);
+            transition: var(--tr);
+        }
+
+        .tip-card:hover {
+            border-color: var(--indigo);
+            transform: translateY(-3px);
+        }
+
+        .tip-num {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--indigo), var(--violet));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .tip-card h4 {
+            font-family: 'Sora', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+
+        .tip-card p {
+            font-size: 13px;
+            color: var(--text-mid);
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+
+        .page-nav-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .page-dot {
+            height: 6px;
+            border-radius: 50px;
+            background: var(--border);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .page-dot.active {
+            background: var(--indigo);
+            width: 32px !important;
+        }
+
+        .page-dot:not(.active) {
+            width: 6px;
         }
     </style>
 </head>
@@ -210,13 +475,16 @@
                 </a>
                 <a href="pencapaian.html" class="nav-item">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 15l-2 5 2-1 2 1-2-5zm0-13C7.58 2 4 5.58 4 10c0 4.42 3.58 8 8 8s8-3.58 8-8c0-4.42-3.58-8-8-8z" stroke="currentColor" stroke-width="2" />
+                        <path
+                            d="M12 15l-2 5 2-1 2 1-2-5zm0-13C7.58 2 4 5.58 4 10c0 4.42 3.58 8 8 8s8-3.58 8-8c0-4.42-3.58-8-8-8z"
+                            stroke="currentColor" stroke-width="2" />
                     </svg>
                     <span>Pencapaian</span>
                 </a>
                 <a href="store.html" class="nav-item">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z" stroke="currentColor" stroke-width="2" />
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z" stroke="currentColor"
+                            stroke-width="2" />
                         <path d="M9 22V12h6v10" stroke="currentColor" stroke-width="2" />
                     </svg>
                     <span>Toko Hadiah</span>
@@ -260,18 +528,26 @@
                         </svg>
                     </button>
                     <div class="user-profile">
-                        <div class="avatar" data-user-avatar style="width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #6366f1; color: white; font-weight: bold;">U</div>
+                        <div class="avatar" data-user-avatar
+                            style="width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #6366f1; color: white; font-weight: bold;">
+                            U</div>
                         <span class="user-name" data-user-name>User EDUVIX</span>
                     </div>
                 </div>
             </header>
 
-            <button class="icon-btn" onclick="location.href='progress.html'" style="margin-bottom: 16px; border-radius: 12px; width: auto; padding: 0 16px; font-size: 14px; font-weight: 600; gap: 8px;">
+            <button class="icon-btn" onclick="location.href='progress.html'"
+                style="margin-bottom: 16px; border-radius: 12px; width: auto; padding: 0 16px; font-size: 14px; font-weight: 600; gap: 8px;">
                 <i class="fa-solid fa-arrow-left"></i> Kembali ke Silabus
             </button>
 
-            <!-- Content Area -->
-            <div class="materi-container">
+            <!-- Page nav dots -->
+            <div class="page-nav-bar" id="pageNavBar"></div>
+
+            <!-- ═══════════════════════════════════════
+                 MODUL 01 — Dasar Berpikir Kritis
+            ════════════════════════════════════════ -->
+            <div class="materi-container lesson-page active" id="page-1">
                 <div class="materi-header">
                     <span class="mh-badge">Modul 01</span>
                     <h1>Dasar Berpikir Kritis</h1>
@@ -280,34 +556,43 @@
 
                 <div class="materi-section">
                     <h2><i class="fa-solid fa-brain"></i> Apa itu Berpikir Kritis?</h2>
-                    <p>Berpikir kritis bukanlah tentang menjadi "kritis" dalam artian suka mencari kesalahan orang lain. Sebaliknya, ini adalah proses berpikir secara terarah, rasional, dan objektif untuk mengevaluasi sebuah informasi sebelum menerimanya sebagai kebenaran.</p>
-                    <p>Di era digital saat ini, kita kebanjiran informasi (dan misinformasi). Berpikir kritis adalah tameng utama kita agar tidak mudah tertipu oleh hoaks atau argumen yang menyesatkan.</p>
+                    <p>Berpikir kritis bukanlah tentang menjadi "kritis" dalam artian suka mencari kesalahan orang lain.
+                        Sebaliknya, ini adalah proses berpikir secara terarah, rasional, dan objektif untuk mengevaluasi
+                        sebuah informasi sebelum menerimanya sebagai kebenaran.</p>
+                    <p>Di era digital saat ini, kita kebanjiran informasi (dan misinformasi). Berpikir kritis adalah
+                        tameng utama kita agar tidak mudah tertipu oleh hoaks atau argumen yang menyesatkan.</p>
                 </div>
 
                 <div class="info-box">
                     <h4><i class="fa-solid fa-lightbulb"></i> Tahukah Kamu?</h4>
-                    <p>Otak manusia secara alami cenderung malas berpikir keras. Ini disebut sebagai <strong>Cognitive Miser</strong> (pelit kognitif). Otak lebih suka menggunakan jalan pintas (bias) daripada menganalisis sesuatu secara mendalam. Berpikir kritis melatih otak untuk menembus kebiasaan ini!</p>
+                    <p>Otak manusia secara alami cenderung malas berpikir keras. Ini disebut sebagai <strong>Cognitive
+                            Miser</strong> (pelit kognitif). Otak lebih suka menggunakan jalan pintas (bias) daripada
+                        menganalisis sesuatu secara mendalam. Berpikir kritis melatih otak untuk menembus kebiasaan ini!
+                    </p>
                 </div>
 
                 <div class="materi-section">
                     <h2><i class="fa-solid fa-layer-group"></i> 4 Elemen Utama</h2>
                     <p>Ada empat hal penting yang membedakan pemikir kritis dari pemikir pasif:</p>
-                    
+
                     <div class="interactive-grid">
                         <div class="interactive-card">
                             <div class="ic-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
                             <h3>1. Observasi Aktif</h3>
-                            <p>Tidak hanya melihat, tapi memperhatikan detail dan mengumpulkan data yang relevan sebelum membuat asumsi.</p>
+                            <p>Tidak hanya melihat, tapi memperhatikan detail dan mengumpulkan data yang relevan sebelum
+                                membuat asumsi.</p>
                         </div>
                         <div class="interactive-card">
                             <div class="ic-icon"><i class="fa-solid fa-question"></i></div>
                             <h3>2. Bertanya (Questioning)</h3>
-                            <p>Selalu mempertanyakan "Mengapa?", "Dari mana sumbernya?", dan "Apakah ini masuk akal?".</p>
+                            <p>Selalu mempertanyakan "Mengapa?", "Dari mana sumbernya?", dan "Apakah ini masuk akal?".
+                            </p>
                         </div>
                         <div class="interactive-card">
                             <div class="ic-icon"><i class="fa-solid fa-scale-balanced"></i></div>
                             <h3>3. Objektivitas</h3>
-                            <p>Mengesampingkan emosi dan prasangka pribadi saat mengevaluasi suatu argumen atau kejadian.</p>
+                            <p>Mengesampingkan emosi dan prasangka pribadi saat mengevaluasi suatu argumen atau
+                                kejadian.</p>
                         </div>
                         <div class="interactive-card">
                             <div class="ic-icon"><i class="fa-solid fa-puzzle-piece"></i></div>
@@ -319,16 +604,293 @@
 
                 <div class="materi-section">
                     <h2><i class="fa-solid fa-check-double"></i> Fakta vs Opini</h2>
-                    <p>Langkah paling awal dalam berpikir kritis adalah mampu memisahkan Fakta dari Opini. <strong>Fakta</strong> adalah hal yang dapat dibuktikan kebenarannya secara objektif, sedangkan <strong>Opini</strong> adalah pandangan pribadi, perasaan, atau keyakinan seseorang terhadap sesuatu.</p>
+                    <p>Langkah paling awal dalam berpikir kritis adalah mampu memisahkan Fakta dari Opini.
+                        <strong>Fakta</strong> adalah hal yang dapat dibuktikan kebenarannya secara objektif, sedangkan
+                        <strong>Opini</strong> adalah pandangan pribadi, perasaan, atau keyakinan seseorang terhadap
+                        sesuatu.
+                    </p>
                     <p>Banyak kesesatan logika terjadi karena seseorang menganggap opininya sebagai fakta mutlak.</p>
                 </div>
 
-                <button class="btn-quiz" onclick="location.href='quizz.html'">
+                <a href="quizz.html" class="btn-quiz">
                     <i class="fa-solid fa-gamepad"></i> Mulai Kuis Interaktif
-                </button>
+                </a>
+                <a href="#" class="btn-quiz" onclick="goToPage(2); return false;"
+                    style="background: var(--indigo-l); color: var(--indigo); margin-top: 12px; box-shadow: none;">
+                    Materi Selanjutnya <i class="fa-solid fa-arrow-right"></i>
+                </a>
             </div>
+
+            <!-- ═══════════════════════════════════════
+                 MODUL 02 — Tes Kemampuan Akademik (TKA)
+            ════════════════════════════════════════ -->
+            <div class="materi-container lesson-page" id="page-2" style="display:none;">
+                <div class="materi-header">
+                    <span class="mh-badge" style="background: #fef3c7; color: #d97706;">Modul 02</span>
+                    <h1>Tes Kemampuan Akademik (TKA)</h1>
+                    <p>Mengasah kemampuan verbal, numerik, dan figural untuk persiapan akademik.</p>
+                </div>
+
+                <div class="materi-section">
+                    <h2><i class="fa-solid fa-pen-nib"></i> Apa itu TKA?</h2>
+                    <p>TKA (Tes Kemampuan Akademik) adalah tes yang dirancang untuk mengukur kemampuan kognitif
+                        seseorang
+                        yang dianggap penting untuk keberhasilan di lingkungan akademik maupun profesional. TKA sering
+                        digunakan dalam seleksi masuk perguruan tinggi, beasiswa, dan rekrutmen.</p>
+                    <p>TKA tidak hanya menguji pengetahuan, tapi kemampuan berpikir cepat, logis, dan sistematis
+                        dalam waktu yang terbatas.</p>
+                </div>
+
+                <div class="info-box"
+                    style="border-color: #d97706; background: linear-gradient(135deg, #fef3c7, #fffbeb);">
+                    <h4 style="color: #92400e;"><i class="fa-solid fa-clock"></i> Strategi Waktu</h4>
+                    <p>Pada TKA, kecepatan dan akurasi sama pentingnya. Jangan terpaku terlalu lama pada satu soal —
+                        lewati dulu soal yang sulit, kerjakan yang mudah, lalu kembali ke soal yang dilewati.</p>
+                </div>
+
+                <div class="materi-section">
+                    <h2><i class="fa-solid fa-th-large"></i> 3 Jenis Kemampuan TKA</h2>
+
+                    <div class="interactive-grid">
+                        <div class="tka-type-card" style="--tka-color: #6366f1; --tka-bg: #e0e7ff;">
+                            <div class="ic-icon"><i class="fa-solid fa-font"></i></div>
+                            <h3>Kemampuan Verbal</h3>
+                            <p>Mengukur kemampuan memahami dan menggunakan bahasa secara efektif, termasuk pemahaman
+                                bacaan dan hubungan kata.</p>
+                            <div class="tka-examples">
+                                <div class="tka-example-item"><i class="fa-solid fa-circle-dot"></i> Sinonim & Antonim
+                                </div>
+                                <div class="tka-example-item"><i class="fa-solid fa-circle-dot"></i> Analogi Kata</div>
+                                <div class="tka-example-item"><i class="fa-solid fa-circle-dot"></i> Pemahaman Bacaan
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tka-type-card" style="--tka-color: #10b981; --tka-bg: #d1fae5;">
+                            <div class="ic-icon" style="background: #d1fae5; color: #10b981;"><i
+                                    class="fa-solid fa-calculator"></i></div>
+                            <h3>Kemampuan Numerik</h3>
+                            <p>Mengukur kemampuan berhitung, logika angka, dan penerapan konsep matematika dasar secara
+                                cepat.</p>
+                            <div class="tka-examples">
+                                <div class="tka-example-item"><i class="fa-solid fa-circle-dot"
+                                        style="color:#10b981;"></i> Deret Angka</div>
+                                <div class="tka-example-item"><i class="fa-solid fa-circle-dot"
+                                        style="color:#10b981;"></i> Operasi Aritmatika</div>
+                                <div class="tka-example-item"><i class="fa-solid fa-circle-dot"
+                                        style="color:#10b981;"></i> Perbandingan & Rasio</div>
+                            </div>
+                        </div>
+
+                        <div class="tka-type-card"
+                            style="--tka-color: #f59e0b; --tka-bg: #fef3c7; grid-column: 1 / -1;">
+                            <div class="ic-icon" style="background: #fef3c7; color: #f59e0b;"><i
+                                    class="fa-solid fa-shapes"></i></div>
+                            <h3>Kemampuan Figural</h3>
+                            <p>Mengukur kemampuan berpikir visual dan memahami pola, rotasi, serta hubungan antar bentuk
+                                geometris.</p>
+                            <div class="tka-examples"
+                                style="display: grid; grid-template-columns: repeat(3,1fr); gap: 8px;">
+                                <div class="tka-example-item"><i class="fa-solid fa-circle-dot"
+                                        style="color:#f59e0b;"></i> Pola & Seri Gambar</div>
+                                <div class="tka-example-item"><i class="fa-solid fa-circle-dot"
+                                        style="color:#f59e0b;"></i> Rotasi Bangun</div>
+                                <div class="tka-example-item"><i class="fa-solid fa-circle-dot"
+                                        style="color:#f59e0b;"></i> Pencerminan</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="materi-section">
+                    <h2><i class="fa-solid fa-flask"></i> Contoh Soal Latihan</h2>
+                    <p>Coba jawab soal-soal berikut untuk menguji pemahamanmu!</p>
+
+                    <!-- Soal 1 — Verbal -->
+                    <div class="soal-box">
+                        <div class="soal-label"><i class="fa-solid fa-font"></i> Verbal</div>
+                        <div class="soal-text">RAJIN adalah antonim dari...</div>
+                        <div class="soal-options" id="soal1">
+                            <button class="soal-opt" onclick="jawab(this,'soal1','A','C')"><span
+                                    class="opt-letter">A</span> Tekun</button>
+                            <button class="soal-opt" onclick="jawab(this,'soal1','B','C')"><span
+                                    class="opt-letter">B</span> Cermat</button>
+                            <button class="soal-opt" onclick="jawab(this,'soal1','C','C')"><span
+                                    class="opt-letter">C</span> Malas</button>
+                            <button class="soal-opt" onclick="jawab(this,'soal1','D','C')"><span
+                                    class="opt-letter">D</span> Pintar</button>
+                        </div>
+                        <div class="soal-feedback" id="fb-soal1"></div>
+                    </div>
+
+                    <!-- Soal 2 — Numerik -->
+                    <div class="soal-box">
+                        <div class="soal-label" style="color: #10b981;"><i class="fa-solid fa-calculator"></i> Numerik —
+                            Deret Angka</div>
+                        <div class="soal-text">2, 6, 12, 20, 30, ...</div>
+                        <div class="soal-options" id="soal2">
+                            <button class="soal-opt" onclick="jawab(this,'soal2','A','B')"><span
+                                    class="opt-letter">A</span> 38</button>
+                            <button class="soal-opt" onclick="jawab(this,'soal2','B','B')"><span
+                                    class="opt-letter">B</span> 42</button>
+                            <button class="soal-opt" onclick="jawab(this,'soal2','C','B')"><span
+                                    class="opt-letter">C</span> 40</button>
+                            <button class="soal-opt" onclick="jawab(this,'soal2','D','B')"><span
+                                    class="opt-letter">D</span> 36</button>
+                        </div>
+                        <div class="soal-feedback" id="fb-soal2"></div>
+                    </div>
+
+                    <!-- Soal 3 — Verbal Analogi -->
+                    <div class="soal-box">
+                        <div class="soal-label"><i class="fa-solid fa-font"></i> Verbal — Analogi</div>
+                        <div class="soal-text">BUKU : PERPUSTAKAAN = LUKISAN : ...</div>
+                        <div class="soal-options" id="soal3">
+                            <button class="soal-opt" onclick="jawab(this,'soal3','A','D')"><span
+                                    class="opt-letter">A</span> Seniman</button>
+                            <button class="soal-opt" onclick="jawab(this,'soal3','B','D')"><span
+                                    class="opt-letter">B</span> Kanvas</button>
+                            <button class="soal-opt" onclick="jawab(this,'soal3','C','D')"><span
+                                    class="opt-letter">C</span> Cat</button>
+                            <button class="soal-opt" onclick="jawab(this,'soal3','D','D')"><span
+                                    class="opt-letter">D</span> Museum</button>
+                        </div>
+                        <div class="soal-feedback" id="fb-soal3"></div>
+                    </div>
+                </div>
+
+                <div class="materi-section">
+                    <h2><i class="fa-solid fa-star"></i> Tips Mengerjakan TKA</h2>
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <div class="tip-num">1</div>
+                            <h4>Baca soal dengan cepat</h4>
+                            <p>Identifikasi kata kunci soal sebelum melihat pilihan jawaban agar tidak terkecoh.</p>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-num">2</div>
+                            <h4>Eliminasi jawaban salah</h4>
+                            <p>Buang pilihan yang jelas salah terlebih dahulu, lalu pilih yang paling tepat dari
+                                sisanya.</p>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-num">3</div>
+                            <h4>Manajemen waktu</h4>
+                            <p>Alokasikan waktu per soal. Jika lebih dari 1 menit belum ketemu, lewati dan kembali
+                                nanti.</p>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-num">4</div>
+                            <h4>Latihan rutin</h4>
+                            <p>Kemampuan TKA bisa ditingkatkan dengan latihan konsisten. Kerjakan minimal 10 soal per
+                                hari.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigasi -->
+                <a href="#" class="btn-quiz" onclick="goToPage(1); return false;"
+                    style="background: var(--indigo-l); color: var(--indigo); margin-top: 32px; box-shadow: none;">
+                    <i class="fa-solid fa-arrow-left"></i> Kembali ke Modul 01
+                </a>
+                <a href="tka.html" class="btn-quiz" style="margin-top: 12px;">
+                    <i class="fa-solid fa-gamepad"></i> Mulai Kuis TKA
+                </a>
+                <a href="#" class="btn-quiz" onclick="goToPage(3); return false;"
+                    style="background: var(--indigo-l); color: var(--indigo); margin-top: 12px; box-shadow: none;">
+                    Materi Selanjutnya <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <!-- ═══════════════════════════════════════
+                 MODUL 03 — Coming Soon
+            ════════════════════════════════════════ -->
+            <div class="materi-container lesson-page" id="page-3" style="display:none;">
+                <div style="text-align:center; padding: 60px 20px;">
+                    <div style="font-size:56px; margin-bottom:20px;">🔒</div>
+                    <span class="mh-badge" style="background: #f3f4f6; color: #6b7280;">Modul 03</span>
+                    <h2
+                        style="font-family:'Sora',sans-serif; font-size:28px; font-weight:800; margin: 16px 0 10px; color: var(--text);">
+                        Anatomi Argumen</h2>
+                    <p style="color: var(--text-mid); font-size:15px; margin-bottom:32px;">Konten modul ini sedang dalam
+                        pengembangan. Pantau terus ya!</p>
+                    <a href="#" class="btn-quiz" onclick="goToPage(2); return false;"
+                        style="background: var(--indigo-l); color: var(--indigo); box-shadow: none; max-width: 280px; margin: 0 auto;">
+                        <i class="fa-solid fa-arrow-left"></i> Kembali ke Modul 02
+                    </a>
+                </div>
+            </div>
+
         </main>
     </div>
+
+    <script>
+        const TOTAL_PAGES = 3;
+
+        // Build nav dots
+        const navBar = document.getElementById('pageNavBar');
+        for (let i = 1; i <= TOTAL_PAGES; i++) {
+            const d = document.createElement('div');
+            d.className = 'page-dot' + (i === 1 ? ' active' : '');
+            d.onclick = () => goToPage(i);
+            navBar.appendChild(d);
+        }
+
+        function goToPage(num) {
+            // Hide all
+            document.querySelectorAll('.lesson-page').forEach(p => {
+                p.style.display = 'none';
+                p.classList.remove('active');
+            });
+            // Show target
+            const target = document.getElementById('page-' + num);
+            if (target) {
+                target.style.display = 'block';
+                target.classList.add('active');
+            }
+            // Update dots
+            document.querySelectorAll('.page-dot').forEach((d, i) => {
+                d.classList.toggle('active', i + 1 === num);
+            });
+            // Scroll to top of main
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Check URL hash on load
+        window.addEventListener('DOMContentLoaded', () => {
+            const hash = window.location.hash;
+            if (hash === '#page-2') goToPage(2);
+            else if (hash === '#page-3') goToPage(3);
+        });
+
+        // Contoh soal interaktif
+        function jawab(btn, soalId, pilihan, jawaban) {
+            const container = document.getElementById(soalId);
+            const fb = document.getElementById('fb-' + soalId);
+            // Disable all buttons
+            container.querySelectorAll('.soal-opt').forEach(b => b.disabled = true);
+            // Mark correct/wrong
+            if (pilihan === jawaban) {
+                btn.classList.add('correct');
+                btn.querySelector('.opt-letter').style.background = '#10b981';
+                btn.querySelector('.opt-letter').style.color = 'white';
+                fb.className = 'soal-feedback show correct';
+                fb.innerHTML = '<i class="fa-solid fa-check-circle"></i> Benar! Jawaban yang tepat.';
+            } else {
+                btn.classList.add('wrong');
+                btn.querySelector('.opt-letter').style.background = '#ef4444';
+                btn.querySelector('.opt-letter').style.color = 'white';
+                // Highlight correct answer
+                container.querySelectorAll('.soal-opt').forEach(b => {
+                    if (b.getAttribute('onclick').includes("'" + jawaban + "'," + "'" + jawaban + "'")) {
+                        b.classList.add('correct');
+                    }
+                });
+                fb.className = 'soal-feedback show wrong';
+                fb.innerHTML = '<i class="fa-solid fa-times-circle"></i> Kurang tepat. Coba perhatikan kembali!';
+            }
+        }
+    </script>
 </body>
 
 </html>

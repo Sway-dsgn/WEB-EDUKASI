@@ -164,7 +164,10 @@
             stroke-linecap: round;
         }
 
-        .cp-bg { stroke: var(--bg); }
+        .cp-bg {
+            stroke: var(--bg);
+        }
+
         .cp-fg {
             stroke: var(--indigo);
             stroke-dasharray: 440;
@@ -236,13 +239,16 @@
                 </a>
                 <a href="pencapaian.html" class="nav-item">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 15l-2 5 2-1 2 1-2-5zm0-13C7.58 2 4 5.58 4 10c0 4.42 3.58 8 8 8s8-3.58 8-8c0-4.42-3.58-8-8-8z" stroke="currentColor" stroke-width="2" />
+                        <path
+                            d="M12 15l-2 5 2-1 2 1-2-5zm0-13C7.58 2 4 5.58 4 10c0 4.42 3.58 8 8 8s8-3.58 8-8c0-4.42-3.58-8-8-8z"
+                            stroke="currentColor" stroke-width="2" />
                     </svg>
                     <span>Pencapaian</span>
                 </a>
                 <a href="store.html" class="nav-item">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z" stroke="currentColor" stroke-width="2" />
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z" stroke="currentColor"
+                            stroke-width="2" />
                         <path d="M9 22V12h6v10" stroke="currentColor" stroke-width="2" />
                     </svg>
                     <span>Toko Hadiah</span>
@@ -284,7 +290,9 @@
                         </svg>
                     </button>
                     <div class="user-profile">
-                        <div class="avatar" data-user-avatar style="width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #6366f1; color: white; font-weight: bold;">U</div>
+                        <div class="avatar" data-user-avatar
+                            style="width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #6366f1; color: white; font-weight: bold;">
+                            U</div>
                         <span class="user-name" data-user-name>User EDUVIX</span>
                     </div>
                 </div>
@@ -309,13 +317,21 @@
                         <div class="lesson-card locked">
                             <div class="l-index">02</div>
                             <div class="l-content">
+                                <h4>Tes Kemampuan Akademik (TKA)</h4>
+                                <p>Latihan penalaran verbal dan numerik.</p>
+                            </div>
+                            <div class="l-status-icon status-lock"><i class="fa-solid fa-lock"></i></div>
+                        </div>
+                        <div class="lesson-card locked">
+                            <div class="l-index">03</div>
+                            <div class="l-content">
                                 <h4>Anatomi Argumen</h4>
                                 <p>Mengenal premis, konklusi, dan validitas argumen.</p>
                             </div>
                             <div class="l-status-icon status-lock"><i class="fa-solid fa-lock"></i></div>
                         </div>
                         <div class="lesson-card locked">
-                            <div class="l-index">03</div>
+                            <div class="l-index">04</div>
                             <div class="l-content">
                                 <h4>Logical Fallacies</h4>
                                 <p>Mengenal kesesatan berpikir yang umum terjadi.</p>
@@ -323,8 +339,7 @@
                             <div class="l-status-icon status-lock"><i class="fa-solid fa-lock"></i></div>
                         </div>
                         <div class="lesson-card locked">
-                            <div class="l-index">04</div>
-                            <div class="l-index">04</div>
+                            <div class="l-index">05</div>
                             <div class="l-content">
                                 <h4>Syllogism Logic</h4>
                                 <p>Memahami struktur logika deduktif klasik.</p>
@@ -344,12 +359,16 @@
                             <div class="cp-text"><span id="progPct">0</span>%</div>
                         </div>
                         <h4 style="font-family:'Sora'; margin-bottom:8px;">Total Progres</h4>
-                        <p style="font-size:13px; color:var(--text-soft); line-height:1.5;">Kamu telah menyelesaikan <strong id="doneCount" style="color:var(--indigo);">0</strong> dari 6 materi.</p>
+                        <p style="font-size:13px; color:var(--text-soft); line-height:1.5;">Kamu telah menyelesaikan
+                            <strong id="doneCount" style="color:var(--indigo);">0</strong> dari 6 materi.
+                        </p>
                         <button class="btn-continue" onclick="location.href='materi.html'">Lanjutkan Belajar</button>
                     </div>
 
                     <div class="widget">
-                        <div class="widget-header"><h3>Statistik Belajar</h3></div>
+                        <div class="widget-header">
+                            <h3>Statistik Belajar</h3>
+                        </div>
                         <div class="stats-widget">
                             <div class="stat-box">
                                 <span class="stat-box-val">120</span>
@@ -371,14 +390,14 @@
             const syncProgress = () => {
                 const raw = localStorage.getItem('eduvix_user');
                 const user = raw ? JSON.parse(raw) : { materiSelesai: [] };
-                
+
                 const totalMateri = 6;
                 const doneCount = (user.materiSelesai || []).length;
                 const pct = Math.round((doneCount / totalMateri) * 100);
-                
+
                 document.getElementById('progPct').innerText = pct;
                 document.getElementById('doneCount').innerText = doneCount;
-                
+
                 // Update Circle
                 const circle = document.getElementById('progCircle');
                 const circumference = 2 * Math.PI * 70;

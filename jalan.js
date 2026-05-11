@@ -646,3 +646,22 @@ window.eduvixSetAvatar = eduvixSetAvatar;
 window.eduvixSetBorder = eduvixSetBorder;
 window.eduvixSetBadge = eduvixSetBadge;
 window.eduvixGetLeaderboard = eduvixGetLeaderboard;
+
+const passwordInput = document.getElementById('passwordInput');
+const toggleBtn = document.getElementById('toggleBtn');
+const eyeIcon = document.getElementById('eyeIcon');
+
+toggleBtn.addEventListener('click', function () {
+    // Cek tipe input sekarang
+    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+
+    // Ganti tipe input
+    passwordInput.setAttribute('type', type);
+
+    // Ganti ikon mata
+    if (type === 'text') {
+        eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
+    } else {
+        eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
+    }
+});

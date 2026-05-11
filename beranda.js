@@ -80,13 +80,13 @@ function renderUserInfo(stats = {}) {
         el.style.background = '#6366f1';
       }
     }
-    
+
     // Apply Border
     if (user.avatarBorder && user.avatarBorder !== 'none') {
       if (user.avatarBorder === 'gold') {
-         el.style.boxShadow = `0 0 0 3px gold`;
+        el.style.boxShadow = `0 0 0 3px gold`;
       } else {
-         el.style.boxShadow = `0 0 0 3px ${user.avatarBorder}`;
+        el.style.boxShadow = `0 0 0 3px ${user.avatarBorder}`;
       }
       el.style.border = `2px solid white`;
     } else {
@@ -436,9 +436,12 @@ function initNav() {
 
 // ─── COURSE CARDS ─────────────────────────────
 function initCourseCards() {
-  document.querySelectorAll('.course-card:not(.add-course)').forEach(card => {
+  document.querySelectorAll('.course-card:not(.add-course)').forEach((card, index) => {
     card.addEventListener('click', () => {
-      window.location.href = 'progress.html';
+      // Mengarahkan ke quiz sesuai materi (0: Kritis, 1: TKA)
+      if (index === 0) window.location.href = 'quizz.html';
+      else if (index === 1) window.location.href = 'tka.html';
+      else window.location.href = 'progress.html';
     });
   });
 
@@ -452,9 +455,12 @@ function initCourseCards() {
 
 // ─── TASK ITEMS ───────────────────────────────
 function initTasks() {
-  document.querySelectorAll('.task-item').forEach(item => {
+  document.querySelectorAll('.task-item').forEach((item, index) => {
+    item.style.cursor = 'pointer';
     item.addEventListener('click', () => {
-      window.location.href = 'quiz.html';
+      // Modul 1 ke quizz.html, Modul 2 ke tka.html
+      if (index === 0) window.location.href = 'quizz.html';
+      else if (index === 1) window.location.href = 'tka.html';
     });
   });
 }
@@ -478,7 +484,7 @@ function initLogout() {
 function initNotifProfile() {
   const notifBtn = document.querySelector('.notif-btn') || document.querySelector('.header-actions .icon-btn');
   const notifPanel = document.getElementById('notifPanel');
-  
+
   if (notifBtn && notifPanel) {
     notifBtn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -526,9 +532,9 @@ function initNotifProfile() {
     opt.addEventListener('click', () => {
       user.avatarImage = null; // Hapus image jika pilih icon
       if (opt.dataset.icon === 'initial') {
-         user.avatarIcon = null;
+        user.avatarIcon = null;
       } else {
-         user.avatarIcon = opt.dataset.icon;
+        user.avatarIcon = opt.dataset.icon;
       }
       saveUser(user);
       renderUserInfo({});
@@ -539,11 +545,11 @@ function initNotifProfile() {
   // Handle Image Upload from Gallery
   const avatarUpload = document.getElementById('avatarUpload');
   if (avatarUpload) {
-    avatarUpload.addEventListener('change', function(e) {
+    avatarUpload.addEventListener('change', function (e) {
       const file = e.target.files[0];
       if (file) {
         const reader = new FileReader();
-        reader.onload = function(evt) {
+        reader.onload = function (evt) {
           user.avatarImage = evt.target.result;
           user.avatarIcon = null; // Hapus icon karena pakai image
           saveUser(user);
