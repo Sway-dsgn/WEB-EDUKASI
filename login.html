@@ -4,91 +4,210 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EDUVIX.ID — Login</title>
+  <title>EduVix – Login & Daftar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link
-    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=DM+Sans:wght@400;500;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Syne:wght@700;800&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  <link rel="icon" type="image/png" href="WhatsApp Image 2026-05-05 at 18.33.04.png">
-  <script src="jalan.js"></script>
   <style>
+    :root {
+      --blue: #1BAAED;
+      --blue-dk: #0284c7;
+      --blue-lt: #e0f5fd;
+      --bg: #f0fbff;
+      --ink: #0f172a;
+      --soft: #64748b;
+      --muted: #94a3b8;
+      --white: #ffffff;
+      --green: #22c55e;
+      --red: #ef4444;
+    }
+
     *,
     *::before,
     *::after {
       box-sizing: border-box;
       margin: 0;
-      padding: 0
+      padding: 0;
     }
 
-    :root {
-      --blue: #2563eb;
-      --blue-d: #1d4ed8;
-      --purple: #7c3aed;
-      --green: #22c55e;
-      --red: #ef4444;
-      --bg: #f0f5ff;
-      --card: #fff;
-      --text: #0f172a;
-      --mid: #475569;
-      --soft: #94a3b8;
-      --border: #e2e8f0;
-      --r: 16px;
-      --tr: all .22s cubic-bezier(.4, 0, .2, 1);
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
-      color: var(--text);
       min-height: 100vh;
+      background: var(--bg);
+      font-family: 'DM Sans', sans-serif;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      padding: 40px 24px;
+      position: relative;
       overflow-x: hidden;
+      overflow-y: auto;
     }
 
-    /* BG deco */
-    .bg-blob {
+    body::before,
+    body::after {
+      content: '';
       position: fixed;
       border-radius: 50%;
+      filter: blur(90px);
       pointer-events: none;
       z-index: 0;
     }
 
-    .blob1 {
+    body::before {
       width: 500px;
       height: 500px;
-      background: radial-gradient(circle, rgba(37, 99, 235, .12), transparent 70%);
-      top: -100px;
+      background: radial-gradient(circle, rgba(27, 170, 237, .2), transparent 70%);
+      top: -150px;
+      left: -150px;
+    }
+
+    body::after {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(2, 132, 199, .13), transparent 70%);
+      bottom: -100px;
       right: -100px;
     }
 
-    .blob2 {
-      width: 400px;
-      height: 400px;
-      background: radial-gradient(circle, rgba(124, 58, 237, .10), transparent 70%);
-      bottom: -80px;
-      left: -80px;
+    .sp {
+      position: fixed;
+      color: var(--blue);
+      pointer-events: none;
+      z-index: 0;
+      animation: pulse 3s ease-in-out infinite;
     }
 
-    /* CARD */
-    .auth-card {
+    .sp-1 {
+      top: 60px;
+      left: 80px;
+      font-size: 1.5rem;
+      animation-delay: 0s;
+    }
+
+    .sp-2 {
+      top: 100px;
+      right: 120px;
+      font-size: 1rem;
+      animation-delay: .8s;
+    }
+
+    .sp-3 {
+      bottom: 80px;
+      left: 140px;
+      font-size: 1.2rem;
+      animation-delay: 1.4s;
+    }
+
+    .sp-4 {
+      bottom: 60px;
+      right: 90px;
+      font-size: 1.4rem;
+      animation-delay: 2s;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: .3;
+        transform: scale(1)
+      }
+
+      50% {
+        opacity: .9;
+        transform: scale(1.3)
+      }
+    }
+
+    .login-card {
       position: relative;
       z-index: 1;
-      background: var(--card);
-      border-radius: 24px;
+      background: var(--white);
+      border-radius: 32px;
+      padding: 40px 44px 36px;
       width: 100%;
-      max-width: 400px;
-      box-shadow: 0 20px 60px rgba(37, 99, 235, .12);
-      overflow: hidden;
-      animation: slideUp .4s ease;
+      max-width: 420px;
+      box-shadow: 0 20px 60px rgba(27, 170, 237, .13), 0 4px 16px rgba(0, 0, 0, .04);
+      border: 1.5px solid rgba(27, 170, 237, .1);
     }
 
-    @keyframes slideUp {
+    .card-logo {
+      display: flex;
+      justify-content: center;
+      margin-bottom: -10px;
+    }
+
+    .card-logo img {
+      height: 120px;
+      width: auto;
+      mix-blend-mode: multiply;
+    }
+
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--ink);
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    .card-sub {
+      font-size: .85rem;
+      color: var(--soft);
+      text-align: center;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 0;
+      background: #f0fbff;
+      border-radius: 50px;
+      padding: 4px;
+      margin-bottom: 24px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 50px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .88rem;
+      font-weight: 600;
+      color: var(--muted);
+      background: transparent;
+      cursor: pointer;
+      transition: all .25s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--blue);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(27, 170, 237, .3);
+    }
+
+    .form-panel {
+      display: none;
+    }
+
+    .form-panel.active {
+      display: block;
+      animation: fadeIn .3s ease;
+    }
+
+    @keyframes fadeIn {
       from {
         opacity: 0;
-        transform: translateY(24px)
+        transform: translateY(8px)
       }
 
       to {
@@ -97,207 +216,157 @@
       }
     }
 
-    /* HEADER */
-    .card-header {
-      background: linear-gradient(135deg, #1e40af, #7c3aed);
-      padding: 36px 36px 30px;
-      text-align: center;
-    }
-
-    .card-header .brand-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .login-logo {
-      width: 120px;
-      height: 120px;
-      border-radius: 24px;
-      object-fit: cover;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
-      border: 4px solid rgba(255, 255, 255, 0.15);
-    }
-
-    .card-header .brand {
-      font-family: 'Outfit', sans-serif;
-      font-size: 32px;
-      font-weight: 900;
-      color: #fff;
-      margin-bottom: 6px;
-      letter-spacing: -1px;
-    }
-
-    .card-header .brand em {
-      font-style: normal;
-      opacity: .65;
-      color: #93c5fd;
-    }
-
-    .card-header p {
-      font-size: 14px;
-      color: rgba(255, 255, 255, .75);
-    }
-
-    /* FORM */
-    .form-wrap {
-      padding: 32px;
-    }
-
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     .form-group label {
       display: block;
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--mid);
-      margin-bottom: 8px;
+      font-size: .82rem;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 7px;
     }
 
     .input-wrap {
       position: relative;
     }
 
-    .input-wrap i {
+    .input-wrap .ico {
       position: absolute;
       left: 14px;
       top: 50%;
       transform: translateY(-50%);
-      color: var(--soft);
-      font-size: 15px;
+      width: 18px;
+      height: 18px;
+      stroke: var(--muted);
+      fill: none;
+      stroke-width: 1.8;
+      transition: stroke .2s;
       pointer-events: none;
+    }
+
+    .input-wrap:focus-within .ico {
+      stroke: var(--blue);
     }
 
     .input-wrap input {
       width: 100%;
-      padding: 14px 14px 14px 42px;
-      border: 1.5px solid var(--border);
-      border-radius: var(--r);
-      font-family: inherit;
-      font-size: 15px;
-      color: var(--text);
-      background: #fff;
+      padding: 13px 16px 13px 44px;
+      border-radius: 14px;
+      border: 1.5px solid #e0f5fd;
+      background: #f8fdff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .92rem;
+      color: var(--ink);
       outline: none;
-      transition: var(--tr);
+      transition: border-color .2s, box-shadow .2s, background .2s;
+    }
+
+    .input-wrap input::placeholder {
+      color: var(--muted);
+      font-weight: 300;
     }
 
     .input-wrap input:focus {
       border-color: var(--blue);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, .1);
+      background: var(--white);
+      box-shadow: 0 0 0 4px rgba(27, 170, 237, .1);
     }
 
-    .input-wrap input.error {
-      border-color: var(--red);
-      box-shadow: 0 0 0 3px rgba(239, 68, 68, .1);
-    }
-
-    .input-wrap .eye-btn {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      color: var(--soft);
-      cursor: pointer;
-      font-size: 15px;
-      padding: 4px;
-      transition: color .2s;
-    }
-
-    .input-wrap .eye-btn i {
-      font-family: "Font Awesome 6 Free" !important;
-    }
-
-    .input-wrap .eye-btn:hover {
-      color: var(--blue);
-    }
-
-    .field-error {
-      font-size: 12px;
-      color: var(--red);
-      margin-top: 6px;
+    .alert {
+      padding: 11px 14px;
+      border-radius: 12px;
+      font-size: .84rem;
+      font-weight: 600;
+      margin-bottom: 14px;
       display: none;
       align-items: center;
-      gap: 5px;
-      font-weight: 500;
+      gap: 8px;
     }
 
-    .field-error.show {
+    .alert.show {
       display: flex;
-      animation: shake .3s ease;
     }
 
-    @keyframes shake {
-
-      0%,
-      100% {
-        transform: translateX(0);
-      }
-
-      25% {
-        transform: translateX(-4px);
-      }
-
-      75% {
-        transform: translateX(4px);
-      }
+    .alert.error {
+      background: #fef2f2;
+      color: var(--red);
+      border: 1.5px solid #fecaca;
     }
 
-    /* Submit button */
-    .btn-submit {
+    .alert.success {
+      background: #f0fdf4;
+      color: var(--green);
+      border: 1.5px solid #bbf7d0;
+    }
+
+    .btn-main {
       width: 100%;
-      padding: 15px;
+      margin-top: 6px;
+      padding: 14px;
+      border-radius: 999px;
       border: none;
-      border-radius: var(--r);
-      background: linear-gradient(135deg, var(--blue), var(--purple));
-      color: #fff;
-      font-family: inherit;
-      font-size: 16px;
-      font-weight: 800;
+      background: var(--blue);
+      color: white;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .95rem;
+      font-weight: 600;
       cursor: pointer;
-      transition: var(--tr);
-      box-shadow: 0 6px 20px rgba(37, 99, 235, .3);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      margin-top: 10px;
+      gap: 8px;
+      transition: background .25s, transform .2s, box-shadow .25s;
+      box-shadow: 0 6px 20px rgba(27, 170, 237, .35);
     }
 
-    .btn-submit:hover {
+    .btn-main:hover:not(:disabled) {
+      background: var(--blue-dk);
       transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(37, 99, 235, .4);
+      box-shadow: 0 10px 28px rgba(27, 170, 237, .4);
     }
 
-    .btn-submit:active {
+    .btn-main:active:not(:disabled) {
       transform: translateY(0);
     }
 
-    .btn-submit:disabled {
+    .btn-main:disabled {
       opacity: .6;
       cursor: not-allowed;
-      transform: none;
     }
 
-    .btn-submit .spinner {
-      width: 20px;
-      height: 20px;
-      border: 2.5px solid rgba(255, 255, 255, .3);
-      border-top-color: #fff;
+    .btn-main .arr {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .22);
+      display: grid;
+      place-items: center;
+      font-size: .78rem;
+      transition: transform .25s;
+    }
+
+    .btn-main:hover:not(:disabled) .arr {
+      transform: rotate(45deg);
+    }
+
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255, 255, 255, .4);
+      border-top-color: white;
       border-radius: 50%;
       animation: spin .7s linear infinite;
       display: none;
     }
 
-    .btn-submit.loading .spinner {
+    .btn-main.loading .spinner {
       display: block;
     }
 
-    .btn-submit.loading .btn-text {
+    .btn-main.loading .btn-text,
+    .btn-main.loading .arr {
       display: none;
     }
 
@@ -307,32 +376,84 @@
       }
     }
 
-    /* Footer note */
-    .card-footer {
-      text-align: center;
-      padding: 0 32px 24px;
-      font-size: 13px;
-      color: var(--soft);
+    .pw-strength {
+      margin-top: 8px;
+      display: none;
     }
 
-    /* Toast */
+    .pw-strength.show {
+      display: block;
+    }
+
+    .pw-bars {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 4px;
+    }
+
+    .pw-bar {
+      flex: 1;
+      height: 4px;
+      border-radius: 50px;
+      background: #e0f5fd;
+      transition: background .3s;
+    }
+
+    .pw-bar.weak {
+      background: #f87171;
+    }
+
+    .pw-bar.medium {
+      background: #fb923c;
+    }
+
+    .pw-bar.strong {
+      background: var(--green);
+    }
+
+    .pw-label {
+      font-size: .72rem;
+      font-weight: 700;
+    }
+
+    .pw-label.weak {
+      color: #f87171;
+    }
+
+    .pw-label.medium {
+      color: #fb923c;
+    }
+
+    .pw-label.strong {
+      color: var(--green);
+    }
+
+    .page-footer {
+      position: relative;
+      z-index: 1;
+      margin-top: 24px;
+      font-size: .73rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
     .toast {
       position: fixed;
       bottom: 24px;
       left: 50%;
-      transform: translateX(-50%) translateY(20px);
-      z-index: 999;
-      padding: 14px 24px;
-      border-radius: 12px;
+      transform: translateX(-50%) translateY(16px);
+      z-index: 9999;
+      padding: 12px 24px;
+      border-radius: 50px;
       font-size: 14px;
       font-weight: 700;
       color: #fff;
-      background: linear-gradient(135deg, var(--green), #16a34a);
-      box-shadow: 0 8px 24px rgba(34, 197, 94, .3);
-      opacity: 0;
-      transition: var(--tr);
-      pointer-events: none;
+      background: #0f172a;
       white-space: nowrap;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, .2);
+      opacity: 0;
+      transition: all .3s ease;
+      pointer-events: none;
     }
 
     .toast.show {
@@ -340,13 +461,18 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    @media(max-width:480px) {
-      .card-header {
-        padding: 28px 24px 24px;
-      }
+    .toast.success {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+    }
 
-      .form-wrap {
-        padding: 24px;
+    .toast.error {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+    }
+
+    @media(max-width:480px) {
+      .login-card {
+        padding: 32px 20px;
+        border-radius: 24px;
       }
     }
   </style>
@@ -354,168 +480,312 @@
 
 <body>
 
-  <div class="bg-blob blob1"></div>
-  <div class="bg-blob blob2"></div>
+  <div class="sp sp-1">✦</div>
+  <div class="sp sp-2">✦</div>
+  <div class="sp sp-3">✦</div>
+  <div class="sp sp-4">✦</div>
 
-  <div class="auth-card">
-    <!-- Header -->
-    <div class="card-header">
-      <div class="brand-wrapper">
-        <img src="WhatsApp Image 2026-05-05 at 18.33.04.png" alt="Logo" class="login-logo">
-        <div class="brand">EDUVIX<em>.ID</em></div>
-      </div>
-      <p>Mari mulai perjalanan belajarmu!</p>
+  <div class="login-card">
+    <div class="card-logo">
+      <img src="WhatsApp Image 2026-05-05 at 18.33.04.png" alt="EduVix.ID" onerror="this.style.display='none'" />
     </div>
 
-    <div class="form-wrap">
-      <!-- ── FORM LOGIN (HANYA INI SAJA) ── -->
-      <div class="form-group">
-        <label>Username</label>
-        <div class="input-wrap">
-          <i class="fa-solid fa-user"></i>
-          <input type="text" id="loginUsername" placeholder="Masukkan username" autocomplete="off" />
-        </div>
-        <div class="field-error" id="errUsername">
-          <i class="fa-solid fa-circle-exclamation"></i><span>Username wajib diisi</span>
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Password</label>
-        <div class="input-wrap">
-          <i class="fa-solid fa-lock"></i>
-          <input type="password" id="loginPassword" placeholder="Masukkan password" autocomplete="off" />
-          <button class="eye-btn" onclick="togglePw('loginPassword',this)" type="button">
-            <i class="fa-solid fa-eye"></i>
-          </button>
-        </div>
-        <div class="field-error" id="errPassword">
-          <i class="fa-solid fa-circle-exclamation"></i><span>Password wajib diisi</span>
-        </div>
-      </div>
+    <h1 class="card-title">Halo, Selamat Datang!</h1>
+    <p class="card-sub">Masuk atau daftar untuk mulai belajar bareng EduVix 👋</p>
 
-      <button class="btn-submit" id="btnLogin">
+    <div class="tabs">
+      <button class="tab-btn active" id="tabLogin">Masuk</button>
+      <button class="tab-btn" id="tabDaftar">Daftar</button>
+    </div>
+
+    <div class="alert" id="alertBox"><span id="alertMsg"></span></div>
+
+    <div class="form-panel active" id="panelLogin">
+      <div class="form-group">
+        <label for="loginUsername">Username</label>
+        <div class="input-wrap">
+          <svg class="ico" viewBox="0 0 24 24">
+            <circle cx="12" cy="8" r="4" />
+            <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+          </svg>
+          <input type="text" id="loginUsername" placeholder="Username kamu" autocomplete="username" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="loginPassword">Password</label>
+        <div class="input-wrap">
+          <svg class="ico" viewBox="0 0 24 24">
+            <rect x="3" y="11" width="18" height="11" rx="2" />
+            <path d="M7 11V7a5 5 0 0110 0v4" />
+          </svg>
+          <input type="password" id="loginPassword" placeholder="Password kamu" autocomplete="current-password" />
+        </div>
+      </div>
+      <button class="btn-main" id="btnLogin">
         <div class="spinner"></div>
-        <span class="btn-text">Masuk Sekarang <i class="fa-solid fa-arrow-right"></i></span>
+        <span class="btn-text">Masuk</span>
+        <span class="arr">↗</span>
       </button>
     </div>
 
-    <div class="card-footer">
-      Selamat datang di platform belajar berpikir kritis interaktif!
+    <div class="form-panel" id="panelDaftar">
+      <div class="form-group">
+        <label for="regNama">Nama Lengkap</label>
+        <div class="input-wrap">
+          <svg class="ico" viewBox="0 0 24 24">
+            <circle cx="12" cy="8" r="4" />
+            <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+          </svg>
+          <input type="text" id="regNama" placeholder="Nama lengkap kamu" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="regUsername">Username</label>
+        <div class="input-wrap">
+          <svg class="ico" viewBox="0 0 24 24">
+            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+          <input type="text" id="regUsername" placeholder="Username unik kamu" autocomplete="username" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="regPassword">Password</label>
+        <div class="input-wrap">
+          <svg class="ico" viewBox="0 0 24 24">
+            <rect x="3" y="11" width="18" height="11" rx="2" />
+            <path d="M7 11V7a5 5 0 0110 0v4" />
+          </svg>
+          <input type="password" id="regPassword" placeholder="Min. 6 karakter" autocomplete="new-password" />
+        </div>
+        <div class="pw-strength" id="pwStrength">
+          <div class="pw-bars">
+            <div class="pw-bar" id="bar1"></div>
+            <div class="pw-bar" id="bar2"></div>
+            <div class="pw-bar" id="bar3"></div>
+          </div>
+          <span class="pw-label" id="pwLabel">Lemah</span>
+        </div>
+      </div>
+      <button class="btn-main" id="btnDaftar">
+        <div class="spinner"></div>
+        <span class="btn-text">Buat Akun</span>
+        <span class="arr">↗</span>
+      </button>
     </div>
   </div>
 
+  <p class="page-footer">© 2026 EduVix.ID · All rights reserved</p>
   <div class="toast" id="toast"></div>
 
+  <script src="api.js"></script>
   <script>
-    // Toggle Password
-    function togglePw(id, btn) {
-      const inp = document.getElementById(id);
-      const icon = btn.querySelector('i');
+    (function () {
+      'use strict';
 
-      if (inp.type === 'password') {
-        inp.type = 'text';
-        icon.classList.replace('fa-eye', 'fa-eye-slash');
-      } else {
-        inp.type = 'password';
-        icon.classList.replace('fa-eye-slash', 'fa-eye');
+      // ── REDIRECT LOGIN ──
+      if (localStorage.getItem('eduvix_token')) {
+        window.location.href = 'dashboard.html';
       }
-    }
 
-    // Show Toast
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 2000);
-    }
+      // ── ELEMENTS ──
+      const tabLogin = document.getElementById('tabLogin');
+      const tabDaftar = document.getElementById('tabDaftar');
+      const panelLogin = document.getElementById('panelLogin');
+      const panelDaftar = document.getElementById('panelDaftar');
+      const alertBox = document.getElementById('alertBox');
+      const alertMsg = document.getElementById('alertMsg');
+      const toastEl = document.getElementById('toast');
+      const btnLogin = document.getElementById('btnLogin');
+      const btnDaftar = document.getElementById('btnDaftar');
 
-    // Validation Error
-    function showError(id, inpId) {
-      document.getElementById(id).classList.add('show');
-      document.getElementById(inpId).classList.add('error');
-    }
-    function clearErrors() {
-      document.querySelectorAll('.field-error').forEach(e => e.classList.remove('show'));
-      document.querySelectorAll('input').forEach(e => e.classList.remove('error'));
-    }
+      let toastTimeout = null;
 
-    // Remove errors on typing
-    document.getElementById('loginUsername').addEventListener('input', clearErrors);
-    document.getElementById('loginPassword').addEventListener('input', clearErrors);
+      // ── TAB SWITCH ──
+      tabLogin.addEventListener('click', () => {
+        tabLogin.classList.add('active');
+        tabDaftar.classList.remove('active');
+        panelLogin.classList.add('active');
+        panelDaftar.classList.remove('active');
+        clearAlert();
+      });
 
-    // Login Logic
-    document.getElementById('btnLogin').addEventListener('click', () => {
-      clearErrors();
-      const uname = document.getElementById('loginUsername').value.trim();
-      const pw = document.getElementById('loginPassword').value;
-      let valid = true;
+      tabDaftar.addEventListener('click', () => {
+        tabDaftar.classList.add('active');
+        tabLogin.classList.remove('active');
+        panelDaftar.classList.add('active');
+        panelLogin.classList.remove('active');
+        clearAlert();
+      });
 
-      if (!uname) { showError('errUsername', 'loginUsername'); valid = false; }
-      if (!pw) { showError('errPassword', 'loginPassword'); valid = false; }
+      // ── ALERT ──
+      function showAlert(msg, type) {
+        alertMsg.textContent = msg;
+        alertBox.className = 'alert show ' + type;
+      }
 
-      if (!valid) return;
+      function clearAlert() {
+        alertBox.className = 'alert';
+      }
 
-      // Interaktif Loading State
-      const btn = document.getElementById('btnLogin');
-      btn.classList.add('loading');
-      btn.disabled = true;
+      // ── TOAST ──
+      function showToast(msg, type, duration) {
+        toastEl.textContent = msg;
+        toastEl.className = 'toast show ' + (type || '');
+        if (toastTimeout) clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => {
+          toastEl.classList.remove('show');
+        }, duration || 2500);
+      }
 
-      // Proses simulasi login (karena tidak pakai database/firebase lagi)
-      setTimeout(() => {
-        // Cek apakah user sudah ada di localStorage, jika tidak, kita buat baru aja
-        const users = typeof eduvixGetAllUsers === 'function' ? eduvixGetAllUsers() : [];
-        let found = users.find(u => u.username === uname);
+      // ── LOADING ──
+      function setLoading(btn, loading) {
+        btn.classList.toggle('loading', loading);
+        btn.disabled = loading;
+      }
 
-        if (!found) {
-          // Auto-register secara halus untuk memudahkan tanpa form pendaftaran
-          found = {
-            nama: uname,
-            username: uname,
-            password: pw,
-            xp: 0,
-            level: 1,
-            streak: 1,
-            lastLogin: new Date().toDateString(),
-            quizHistory: [],
-            materiSelesai: [],
-            unlockedLesson: 1
-          };
-          users.push(found);
-          if (typeof eduvixSaveAllUsers === 'function') eduvixSaveAllUsers(users);
-        } else {
-          // Jika password salah (simulasi)
-          if (found.password !== pw) {
-            btn.classList.remove('loading');
-            btn.disabled = false;
-            showError('errPassword', 'loginPassword');
-            document.querySelector('#errPassword span').textContent = "Password salah!";
-            return;
+      // ── PASSWORD STRENGTH ──
+      document.getElementById('regPassword').addEventListener('input', function () {
+        const pw = this.value;
+        const pwStrength = document.getElementById('pwStrength');
+
+        if (!pw) {
+          pwStrength.classList.remove('show');
+          return;
+        }
+
+        pwStrength.classList.add('show');
+        let score = 0;
+
+        if (pw.length >= 6) score++;
+        if (/[A-Z]/.test(pw) || /[0-9]/.test(pw)) score++;
+        if (/[^A-Za-z0-9]/.test(pw) || pw.length >= 10) score++;
+
+        score = Math.max(1, score);
+
+        const bars = [
+          document.getElementById('bar1'),
+          document.getElementById('bar2'),
+          document.getElementById('bar3')
+        ];
+        const label = document.getElementById('pwLabel');
+
+        bars.forEach(b => b.className = 'pw-bar');
+
+        if (score === 1) {
+          bars[0].classList.add('weak');
+          label.textContent = 'Lemah';
+          label.className = 'pw-label weak';
+        } else if (score === 2) {
+          bars[0].classList.add('medium');
+          bars[1].classList.add('medium');
+          label.textContent = 'Sedang';
+          label.className = 'pw-label medium';
+        } else if (score === 3) {
+          bars.forEach(b => b.classList.add('strong'));
+          label.textContent = 'Kuat';
+          label.className = 'pw-label strong';
+        }
+      });
+
+      // ── LOGIN ──
+      btnLogin.addEventListener('click', async () => {
+        clearAlert();
+        const username = document.getElementById('loginUsername').value.trim();
+        const password = document.getElementById('loginPassword').value;
+
+        if (!username) {
+          showAlert('Username tidak boleh kosong!', 'error');
+          return;
+        }
+        if (!password) {
+          showAlert('Password tidak boleh kosong!', 'error');
+          return;
+        }
+
+        setLoading(btnLogin, true);
+
+        try {
+          if (typeof EduvixAPI === 'undefined') {
+            throw new Error('API tidak terhubung. Pastikan api.js sudah di-load.');
           }
+
+          const data = await EduvixAPI.login(username, password);
+          showToast('Login berhasil! 🎉', 'success');
+
+          if (data.user && data.user.streak > 1) {
+            showToast('🔥 ' + data.user.streak + ' hari streak!', 'success', 3000);
+          }
+
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 1000);
+        } catch (err) {
+          setLoading(btnLogin, false);
+          console.error('Login error:', err);
+          showAlert('❌ ' + (err.message || 'Login gagal'), 'error');
+        }
+      });
+
+      // ── REGISTER ──
+      btnDaftar.addEventListener('click', async () => {
+        clearAlert();
+        const nama = document.getElementById('regNama').value.trim();
+        const username = document.getElementById('regUsername').value.trim();
+        const password = document.getElementById('regPassword').value;
+
+        if (!nama) {
+          showAlert('Nama tidak boleh kosong!', 'error');
+          return;
+        }
+        if (!username) {
+          showAlert('Username tidak boleh kosong!', 'error');
+          return;
+        }
+        if (username.length < 3) {
+          showAlert('Username minimal 3 karakter!', 'error');
+          return;
+        }
+        if (!password) {
+          showAlert('Password tidak boleh kosong!', 'error');
+          return;
+        }
+        if (password.length < 6) {
+          showAlert('Password minimal 6 karakter!', 'error');
+          return;
         }
 
-        // Login Berhasil!
-        if (typeof eduvixSaveUser === 'function') {
-          eduvixSaveUser(found);
-        } else {
-          localStorage.setItem('eduvix_user', JSON.stringify(found));
+        setLoading(btnDaftar, true);
+
+        try {
+          if (typeof EduvixAPI === 'undefined') {
+            throw new Error('API tidak terhubung. Pastikan api.js sudah di-load.');
+          }
+
+          await EduvixAPI.register(nama, username, password);
+          showAlert('✅ Akun berhasil dibuat!', 'success');
+          showToast('Selamat datang di EDUVIX! 🚀', 'success', 3000);
+
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 1500);
+        } catch (err) {
+          setLoading(btnDaftar, false);
+          console.error('Register error:', err);
+          showAlert('❌ ' + (err.message || 'Pendaftaran gagal'), 'error');
         }
+      });
 
-        showToast('Login berhasil! Mengalihkan...');
-
-        // Redirect ke dashboard
-        setTimeout(() => {
-          window.location.href = 'dashboard.html';
-        }, 1000);
-
-      }, 800);
-    });
-
-    // Enter key login support
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Enter') {
-        document.getElementById('btnLogin').click();
-      }
-    });
+      // ── ENTER KEY ──
+      document.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter') return;
+        if (panelLogin.classList.contains('active')) {
+          btnLogin.click();
+        } else if (panelDaftar.classList.contains('active')) {
+          btnDaftar.click();
+        }
+      });
+    })();
   </script>
 </body>
 

@@ -521,17 +521,32 @@
                 </div>
 
                 <div class="header-actions">
-                    <button class="icon-btn">
+                    <div class="streak-badge"
+                        style="display: flex; align-items: center; gap: 8px; background: #fff1f2; padding: 6px 12px; border-radius: 12px; border: 1px solid #ffe4e6; margin-right: 8px;">
+                        <i class="fa-solid fa-fire" style="color: #ef4444;" data-streak-icon></i>
+                        <span data-streak style="font-weight: 800; color: #9f1239; font-size: 14px;">0</span>
+                    </div>
+                    <div class="coin-badge"
+                        style="display: flex; align-items: center; gap: 8px; background: #fff7ed; padding: 6px 12px; border-radius: 12px; border: 1px solid #ffedd5; margin-right: 8px;">
+                        <i class="fa-solid fa-coins" style="color: #f59e0b;"></i>
+                        <span data-user-coins style="font-weight: 800; color: #9a3412; font-size: 14px;">0</span>
+                    </div>
+                    <button class="icon-btn notif-btn">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"
                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" />
                         </svg>
                     </button>
                     <div class="user-profile">
-                        <div class="avatar" data-user-avatar
-                            style="width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #6366f1; color: white; font-weight: bold;">
-                            U</div>
-                        <span class="user-name" data-user-name>User EDUVIX</span>
+                        <div class="avatar-wrapper" style="position: relative;">
+                            <div class="avatar" data-user-avatar
+                                style="width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #6366f1; color: white; font-weight: bold;">
+                                U</div>
+                            <div data-level-number
+                                style="position: absolute; bottom: -4px; right: -4px; background: #f59e0b; color: white; border: 2px solid white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                1</div>
+                        </div>
+                        <span class="user-name" data-user-name></span>
                     </div>
                 </div>
             </header>
@@ -612,7 +627,11 @@
                     <p>Banyak kesesatan logika terjadi karena seseorang menganggap opininya sebagai fakta mutlak.</p>
                 </div>
 
-                <a href="quizz.html" class="btn-quiz">
+                <a href="#" class="btn-quiz" onclick="EduvixAPI.selesaikanMateri('materi_01', 50).then(() => EduvixAPI.showApiToast('XP & Koin Berhasil Diambil!', 'success')); return false;"
+                    style="background: var(--green); color: white;">
+                    <i class="fa-solid fa-check"></i> Selesaikan Modul & Ambil XP
+                </a>
+                <a href="quizz.html" class="btn-quiz" style="margin-top: 12px;">
                     <i class="fa-solid fa-gamepad"></i> Mulai Kuis Interaktif
                 </a>
                 <a href="#" class="btn-quiz" onclick="goToPage(2); return false;"
@@ -793,12 +812,13 @@
                     style="background: var(--indigo-l); color: var(--indigo); margin-top: 32px; box-shadow: none;">
                     <i class="fa-solid fa-arrow-left"></i> Kembali ke Modul 01
                 </a>
-                <a href="tka.html" class="btn-quiz" style="margin-top: 12px;">
-                    <i class="fa-solid fa-gamepad"></i> Mulai Kuis TKA
+                <a href="#" class="btn-quiz" onclick="EduvixAPI.selesaikanMateri('materi_02', 50).then(() => window.location.href='dashboard.html'); return false;"
+                    style="background: var(--green); color: white; margin-top: 12px;">
+                    <i class="fa-solid fa-check-double"></i> Selesaikan Modul & Ambil XP
                 </a>
                 <a href="#" class="btn-quiz" onclick="goToPage(3); return false;"
                     style="background: var(--indigo-l); color: var(--indigo); margin-top: 12px; box-shadow: none;">
-                    Materi Selanjutnya <i class="fa-solid fa-arrow-right"></i>
+                    Materi Selanjutnya (Coming Soon) <i class="fa-solid fa-lock"></i>
                 </a>
             </div>
 
@@ -890,6 +910,13 @@
                 fb.innerHTML = '<i class="fa-solid fa-times-circle"></i> Kurang tepat. Coba perhatikan kembali!';
             }
         }
+    </script>
+    <script src="api.js"></script>
+    <script src="jalan.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            EduvixAPI.initPage();
+        });
     </script>
 </body>
 

@@ -150,7 +150,7 @@ function init() {
     dom.qmapBackdrop.addEventListener('click', closeQmap);
     dom.btnMark.addEventListener('click', toggleMark);
     document.querySelector('.btn-review-answers').addEventListener('click', reviewAnswers);
-    document.querySelector('.btn-back-dashboard').addEventListener('click', () => window.location.href = 'materi.html');
+    document.querySelector('.btn-back-dashboard').addEventListener('click', () => window.location.href = 'dashboard.html');
 }
 
 // ==================== TIMER ====================
@@ -437,10 +437,15 @@ function saveResult(score, correct) {
         u.xp = (u.xp || 0) + xpEarned;
         u.coins = (u.coins || 0) + goldEarned;
         localStorage.setItem('eduvix_user', JSON.stringify(u));
+        if (window.EduvixAPI) EduvixAPI.updateUI(u);
     } catch (e) { }
 
     // Simpan ke sistem user global (jalan.js) jika tersedia
-    if (typeof eduvixSimpanQuiz === 'function') {
+    if (window.EduvixAPI && EduvixAPI.tambahKoin) {
+        EduvixAPI.tambahXP(xpEarned, 'Menyelesaikan Quiz');
+        EduvixAPI.tambahKoin(goldEarned, 'Hadiah Quiz');
+    }
+    else if (typeof eduvixSimpanQuiz === 'function') {
         eduvixSimpanQuiz({
             skor: score,
             benar: correct,

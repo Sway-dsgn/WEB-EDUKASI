@@ -72,30 +72,34 @@ let timeLeft = 1200;
 let timerInterval;
 const MAX_TIME = 1200;
 
-// ==================== DOM ====================
-const questionText = document.getElementById('question-text');
-const answerOptions = document.getElementById('answer-options');
-const explanationBox = document.getElementById('explanation');
-const explanationTxt = document.getElementById('explanation-text');
-const progressFill = document.getElementById('progressFill');
-const progressPct = document.getElementById('progressPct');
-const progressCounter = document.getElementById('progressCounter');
-const timerValue = document.getElementById('timerValue');
-const timerRing = document.getElementById('timerRingFill');
-const btnPrev = document.getElementById('btn-previous');
-const btnNext = document.getElementById('btn-next');
-const btnFinish = document.getElementById('btn-finish');
-const questionLabel = document.getElementById('questionLabel');
-const streakLabel = document.getElementById('streakLabel');
-const streakDots = document.getElementById('streakDots');
-const xpBadge = document.getElementById('xpBadge');
-const xpPop = document.getElementById('xpPop');
-const qmapPanel = document.getElementById('qmapPanel');
-const qmapBackdrop = document.getElementById('qmapBackdrop');
-const qmapGrid = document.getElementById('qmapGrid');
-const qnavDots = document.getElementById('qnavDots');
-const btnMap = document.getElementById('btnMap');
-const btnMark = document.getElementById('btnMark');
+// ==================== DOM REFS (Initialized in init) ====================
+let dom = {};
+
+function initDOMRefs() {
+  dom.questionText = document.getElementById('question-text');
+  dom.answerOptions = document.getElementById('answer-options');
+  dom.explanationBox = document.getElementById('explanation');
+  dom.explanationTxt = document.getElementById('explanation-text');
+  dom.progressFill = document.getElementById('progressFill');
+  dom.progressPct = document.getElementById('progressPct');
+  dom.progressCounter = document.getElementById('progressCounter');
+  dom.timerValue = document.getElementById('timerValue');
+  dom.timerRing = document.getElementById('timerRingFill');
+  dom.btnPrev = document.getElementById('btn-previous');
+  dom.btnNext = document.getElementById('btn-next');
+  dom.btnFinish = document.getElementById('btn-finish');
+  dom.questionLabel = document.getElementById('questionLabel');
+  dom.streakLabel = document.getElementById('streakLabel');
+  dom.streakDots = document.getElementById('streakDots');
+  dom.xpBadge = document.getElementById('xpBadge');
+  dom.xpPop = document.getElementById('xpPop');
+  dom.qmapPanel = document.getElementById('qmapPanel');
+  dom.qmapBackdrop = document.getElementById('qmapBackdrop');
+  dom.qmapGrid = document.getElementById('qmapGrid');
+  dom.qnavDots = document.getElementById('qnavDots');
+  dom.btnMap = document.getElementById('btnMap');
+  dom.btnMark = document.getElementById('btnMark');
+}
 
 // ==================== PARTICLES ====================
 (function initParticles() {
@@ -130,22 +134,26 @@ const btnMark = document.getElementById('btnMark');
 })();
 
 // ==================== INIT ====================
-function init() {
+async function init() {
+  // Cek login dulu
+  if (window.EduvixAPI) await EduvixAPI.requireLogin();
+  
+  initDOMRefs();
   buildQmap();
   buildNavDots();
   loadQuestion();
   startTimer();
   updateProgress();
   updateNavButtons();
-  btnPrev.addEventListener('click', prevQ);
-  btnNext.addEventListener('click', nextQ);
-  btnFinish.addEventListener('click', finishQuiz);
-  btnMap.addEventListener('click', openQmap);
+  dom.btnPrev.addEventListener('click', prevQ);
+  dom.btnNext.addEventListener('click', nextQ);
+  dom.btnFinish.addEventListener('click', finishQuiz);
+  dom.btnMap.addEventListener('click', openQmap);
   document.getElementById('qmapClose').addEventListener('click', closeQmap);
-  qmapBackdrop.addEventListener('click', closeQmap);
-  btnMark.addEventListener('click', toggleMark);
+  dom.qmapBackdrop.addEventListener('click', closeQmap);
+  dom.btnMark.addEventListener('click', toggleMark);
   document.querySelector('.btn-review-answers').addEventListener('click', reviewAnswers);
-  document.querySelector('.btn-back-dashboard').addEventListener('click', () => window.location.href = 'materi.html');
+  document.querySelector('.btn-back-dashboard').addEventListener('click', () => window.location.href = 'dashboard.html');
 }
 
 // ==================== TIMER ====================
@@ -162,10 +170,10 @@ function startTimer() {
 function updateTimerDisplay() {
   const m = Math.floor(timeLeft / 60);
   const s = timeLeft % 60;
-  timerValue.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  dom.timerValue.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
   const pct = timeLeft / MAX_TIME;
   const circ = 113.1;
-  timerRing.style.strokeDashoffset = circ * (1 - pct);
+  dom.timerRing.style.strokeDashoffset = circ * (1 - pct);
   const el = document.getElementById('qzTimer');
   el.classList.toggle('warn', timeLeft < 300 && timeLeft >= 60);
   el.classList.toggle('danger', timeLeft < 60);
@@ -174,12 +182,12 @@ function updateTimerDisplay() {
 // ==================== LOAD QUESTION ====================
 function loadQuestion() {
   const q = quizData[currentQuestion];
-  questionLabel.textContent = `Soal ${currentQuestion + 1}`;
-  questionText.style.animation = 'none';
-  requestAnimationFrame(() => { questionText.style.animation = 'fadeSlide .4s ease'; });
-  questionText.textContent = q.question;
+  dom.questionLabel.textContent = `Soal ${currentQuestion + 1}`;
+  dom.questionText.style.animation = 'none';
+  requestAnimationFrame(() => { dom.questionText.style.animation = 'fadeSlide .4s ease'; });
+  dom.questionText.textContent = q.question;
 
-  answerOptions.innerHTML = '';
+  dom.answerOptions.innerHTML = '';
   q.options.forEach((opt, i) => {
     const btn = document.createElement('button');
     btn.className = 'option-btn';
@@ -191,17 +199,17 @@ function loadQuestion() {
           <span class="option-check"></span>
         `;
     btn.addEventListener('click', () => selectOption(i));
-    answerOptions.appendChild(btn);
+    dom.answerOptions.appendChild(btn);
   });
 
-  explanationBox.style.display = 'none';
+  dom.explanationBox.style.display = 'none';
 
   if (userAnswers[currentQuestion] !== undefined) {
     restoreAnswer(userAnswers[currentQuestion]);
   }
 
   // Mark button state
-  btnMark.classList.toggle('marked', markedQuestions.has(currentQuestion));
+  dom.btnMark.classList.toggle('marked', markedQuestions.has(currentQuestion));
 
   updateProgress();
   updateNavButtons();
@@ -213,7 +221,7 @@ function loadQuestion() {
 // ==================== SELECT OPTION ====================
 function selectOption(index, skipFX = false) {
   const q = quizData[currentQuestion];
-  const btns = answerOptions.querySelectorAll('.option-btn');
+  const btns = dom.answerOptions.querySelectorAll('.option-btn');
   const already = userAnswers[currentQuestion] !== undefined;
   if (already) return;
 
@@ -238,12 +246,12 @@ function selectOption(index, skipFX = false) {
       const xp = 10 + (streak > 1 ? (streak - 1) * 5 : 0);
       totalXP += xp;
       showXPPop(`+${xp} XP${streak > 1 ? ' 🔥' : ''}`);
-      xpBadge.textContent = `+${totalXP} XP`;
+      dom.xpBadge.textContent = `+${totalXP} XP`;
       if (!skipFX) spawnConfetti();
     }
     updateStreakUI();
-    explanationTxt.textContent = q.explanation;
-    explanationBox.style.display = 'flex';
+    dom.explanationTxt.textContent = q.explanation;
+    dom.explanationBox.style.display = 'flex';
     updateNavButtons();
     updateQmap();
     updateNavDots();
@@ -253,7 +261,7 @@ function selectOption(index, skipFX = false) {
 
 function restoreAnswer(index) {
   const q = quizData[currentQuestion];
-  const btns = answerOptions.querySelectorAll('.option-btn');
+  const btns = dom.answerOptions.querySelectorAll('.option-btn');
   const SVG_OK = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>`;
   const SVG_X = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>`;
   btns.forEach(b => b.disabled = true);
@@ -264,8 +272,8 @@ function restoreAnswer(index) {
     btns[q.correct].classList.add('correct');
     btns[q.correct].querySelector('.option-check').innerHTML = SVG_OK;
   }
-  explanationTxt.textContent = q.explanation;
-  explanationBox.style.display = 'flex';
+  dom.explanationTxt.textContent = q.explanation;
+  dom.explanationBox.style.display = 'flex';
 }
 
 // ==================== NAV ====================
@@ -287,36 +295,36 @@ function prevQ() {
 
 function updateNavButtons() {
   const answered = userAnswers[currentQuestion] !== undefined;
-  btnPrev.disabled = currentQuestion === 0;
+  dom.btnPrev.disabled = currentQuestion === 0;
   const isLast = currentQuestion === quizData.length - 1;
-  btnNext.style.display = isLast ? 'none' : 'flex';
-  btnFinish.style.display = isLast ? 'flex' : 'none';
-  btnNext.disabled = !answered;
+  dom.btnNext.style.display = isLast ? 'none' : 'flex';
+  dom.btnFinish.style.display = isLast ? 'flex' : 'none';
+  dom.btnNext.disabled = !answered;
 }
 
 // ==================== PROGRESS ====================
 function updateProgress() {
   const answered = userAnswers.filter(a => a !== undefined).length;
   const pct = Math.round(((currentQuestion + 1) / quizData.length) * 100);
-  progressFill.style.width = pct + '%';
-  progressPct.textContent = pct + '%';
-  progressCounter.textContent = `${currentQuestion + 1} / ${quizData.length}`;
+  dom.progressFill.style.width = pct + '%';
+  dom.progressPct.textContent = pct + '%';
+  dom.progressCounter.textContent = `${currentQuestion + 1} / ${quizData.length}`;
 }
 
 // ==================== QUESTION MAP ====================
 function buildQmap() {
-  qmapGrid.innerHTML = '';
+  dom.qmapGrid.innerHTML = '';
   quizData.forEach((_, i) => {
     const btn = document.createElement('button');
     btn.textContent = i + 1;
     btn.dataset.qi = i;
     btn.addEventListener('click', () => { currentQuestion = i; loadQuestion(); closeQmap(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
-    qmapGrid.appendChild(btn);
+    dom.qmapGrid.appendChild(btn);
   });
 }
 
 function updateQmap() {
-  const btns = qmapGrid.querySelectorAll('button');
+  const btns = dom.qmapGrid.querySelectorAll('button');
   btns.forEach((btn, i) => {
     btn.className = '';
     if (i === currentQuestion) btn.classList.add('current');
@@ -325,22 +333,22 @@ function updateQmap() {
   });
 }
 
-function openQmap() { qmapPanel.classList.add('open'); qmapBackdrop.classList.add('show'); updateQmap(); }
-function closeQmap() { qmapPanel.classList.remove('open'); qmapBackdrop.classList.remove('show'); }
+function openQmap() { dom.qmapPanel.classList.add('open'); dom.qmapBackdrop.classList.add('show'); updateQmap(); }
+function closeQmap() { dom.qmapPanel.classList.remove('open'); dom.qmapBackdrop.classList.remove('show'); }
 
 // ==================== NAV DOTS ====================
 function buildNavDots() {
-  qnavDots.innerHTML = '';
+  dom.qnavDots.innerHTML = '';
   quizData.forEach((_, i) => {
     const dot = document.createElement('span');
     dot.className = 'qnav-dot';
     dot.addEventListener('click', () => { currentQuestion = i; loadQuestion(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
-    qnavDots.appendChild(dot);
+    dom.qnavDots.appendChild(dot);
   });
 }
 
 function updateNavDots() {
-  const dots = qnavDots.querySelectorAll('.qnav-dot');
+  const dots = dom.qnavDots.querySelectorAll('.qnav-dot');
   dots.forEach((dot, i) => {
     dot.className = 'qnav-dot';
     if (i === currentQuestion) dot.classList.add('current');
@@ -353,7 +361,7 @@ function updateNavDots() {
 function toggleMark() {
   if (markedQuestions.has(currentQuestion)) markedQuestions.delete(currentQuestion);
   else markedQuestions.add(currentQuestion);
-  btnMark.classList.toggle('marked', markedQuestions.has(currentQuestion));
+  dom.btnMark.classList.toggle('marked', markedQuestions.has(currentQuestion));
   updateNavDots();
   updateQmap();
 }
@@ -361,7 +369,7 @@ function toggleMark() {
 // ==================== STREAK UI ====================
 function updateStreakUI() {
   streakLabel.textContent = `Streak: ${streak}`;
-  const dots = streakDots.querySelectorAll('.sd');
+  const dots = dom.streakDots.querySelectorAll('.sd');
   dots.forEach((d, i) => d.classList.toggle('lit', i < streak));
 }
 
@@ -429,21 +437,18 @@ function saveResult(score, correct) {
     u.xp = (u.xp || 0) + xpEarned;
     u.coins = (u.coins || 0) + goldEarned;
     localStorage.setItem('eduvix_user', JSON.stringify(u));
-  } catch(e) {}
+  } catch (e) { }
 
-  // Simpan ke sistem user global (jalan.js) jika tersedia
-  if (typeof eduvixSimpanQuiz === 'function') {
-    eduvixSimpanQuiz({
-      skor: score,
-      benar: correct,
-      salah: quizData.length - correct,
-      total: quizData.length
-    });
-
-    // Bonus tambahan
-    if (typeof eduvixTambahKoin === 'function') {
-      eduvixTambahKoin(goldEarned, 'Menyelesaikan Quiz');
-    }
+  // Simpan ke sistem user global (api.js)
+  if (window.EduvixAPI) {
+    EduvixAPI.simpanHasilQuiz('tka_dasar', score, correct, quizData.length - correct, quizData.length)
+      .then(res => {
+        console.log("Quiz saved:", res);
+        EduvixAPI.showApiToast(`+${res.xpDapat} XP & +${res.koinDapat} Koin!`, 'success');
+      })
+      .catch(err => {
+        console.error("Failed to save quiz:", err);
+      });
   }
 }
 
@@ -477,9 +482,9 @@ function spawnResultConfetti() {
 
 function showXPPop(msg) {
   const starSvg = `<svg width="13" height="13" viewBox="0 0 24 24" fill="#fff" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>`;
-  xpPop.innerHTML = msg + ' ' + starSvg;
-  xpPop.classList.add('show');
-  setTimeout(() => xpPop.classList.remove('show'), 1800);
+  dom.xpPop.innerHTML = msg + ' ' + starSvg;
+  dom.xpPop.classList.add('show');
+  setTimeout(() => dom.xpPop.classList.remove('show'), 1800);
 }
 
 function showToast(msg, type) {

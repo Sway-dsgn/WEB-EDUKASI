@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz · Berpikir Kritis — EDUVIX.ID</title>
-    <meta name="description" content="Uji pemahamanmu tentang Berpikir Kritis dengan quiz interaktif di EDUVIX.ID">
+    <meta name="description" content="Uji kemampuan berpikir kritismu dengan quiz interaktif di EDUVIX.ID">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="quizz.css">
+    <link rel="stylesheet" href="tka.css">
     <link rel="icon" type="image/png" href="WhatsApp Image 2026-05-05 at 18.33.04.png">
 </head>
 
@@ -22,7 +22,7 @@
 
     <!-- ░░ HEADER ░░ -->
     <header class="qz-header" id="qzHeader">
-        <button class="qz-back" onclick="window.location.href='materi.html'" id="btn-go-back">
+        <button class="qz-back" onclick="window.location.href='dashboard.html'" id="btn-go-back">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                 stroke-linecap="round" stroke-linejoin="round">
                 <path d="M19 12H5M5 12L12 19M5 12L12 5" />
@@ -58,10 +58,10 @@
     <!-- ░░ PROGRESS STRIP ░░ -->
     <div class="progress-strip">
         <div class="progress-track">
-            <div class="progress-fill" id="progressFill" style="width:10%"></div>
+            <div class="progress-fill" id="progressFill" style="width:0%"></div>
         </div>
         <div class="progress-meta">
-            <span class="progress-pct" id="progressPct">10%</span>
+            <span class="progress-pct" id="progressPct">0%</span>
             <span class="progress-counter" id="progressCounter">1 / 10</span>
         </div>
     </div>
@@ -139,7 +139,7 @@
 
             <!-- Question Body -->
             <div class="qz-body">
-                <p class="question-text" id="question-text">Apa yang dimaksud dengan berpikir kritis?</p>
+                <p class="question-text" id="question-text">Memuat pertanyaan...</p>
 
                 <!-- Options -->
                 <div class="answer-options" id="answer-options">
@@ -269,14 +269,7 @@
             </div>
 
             <!-- Stars -->
-            <div class="rm-stars" id="rmStars"><svg width="24" height="24" viewBox="0 0 24 24" fill="#f59e0b"
-                    stroke="none">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z" />
-                </svg><svg width="24" height="24" viewBox="0 0 24 24" fill="#f59e0b" stroke="none">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z" />
-                </svg><svg width="24" height="24" viewBox="0 0 24 24" fill="#f59e0b" stroke="none">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z" />
-                </svg></div>
+            <div class="rm-stars" id="rmStars"></div>
 
             <!-- Actions -->
             <div class="rm-actions">
@@ -296,10 +289,9 @@
     </div>
 
     <!-- ░░ XP POP ░░ -->
-    <div class="xp-pop" id="xpPop">+10 XP <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" stroke="none">
-            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z" />
-        </svg></div>
+    <div class="xp-pop" id="xpPop">+10 XP</div>
 
+    <script src="api.js"></script>
     <script src="quizz.js" defer></script>
 </body>
 

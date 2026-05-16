@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🔧 Backend Debugger - EduVix</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0f172a;
+            color: #e0e7ff;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #1baaed;
+            margin-bottom: 20px;
+        }
+
+        .section {
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #334155;
+        }
+
+        .section h2 {
+            color: #60a5fa;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #cbd5e1;
+            font-size: 0.9rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px 12px;
+            background: #0f172a;
+            border: 1px solid #334155;
+            color: #e0e7ff;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #1baaed;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #1baaed;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #0284c7;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button.secondary {
+            background: #64748b;
+        }
+
+        button.secondary:hover {
+            background: #475569;
+        }
+
+        .console {
+            background: #000;
+            border: 1px solid #1baaed;
+            border-radius: 4px;
+            padding: 15px;
+            height: 300px;
+            overflow-y: auto;
+            font-size: 0.85rem;
+            margin-top: 10px;
+        }
+
+        .log {
+            margin: 5px 0;
+            padding: 5px 0;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .log:last-child {
+            border-bottom: none;
+        }
+
+        .log.info {
+            color: #60a5fa;
+        }
+
+        .log.success {
+            color: #22c55e;
+        }
+
+        .log.error {
+            color: #ef4444;
+        }
+
+        .log.warn {
+            color: #f59e0b;
+        }
+
+        .status {
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .status.checking {
+            background: #f59e0b;
+            color: #000;
+        }
+
+        .status.connected {
+            background: #22c55e;
+            color: #000;
+        }
+
+        .status.disconnected {
+            background: #ef4444;
+            color: #fff;
+        }
+
+        .endpoint {
+            background: #0f172a;
+            padding: 10px;
+            border-left: 3px solid #1baaed;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media(max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>🔧 EduVix Backend Debugger</h1>
+
+        <div class="section">
+            <h2>📡 Backend Connection Status</h2>
+            <div id="statusBox" class="status checking">
+                Checking backend connection...
+            </div>
+            <button onclick="checkBackendStatus()">🔄 Check Status</button>
+            <button class="secondary" onclick="clearConsole()">Clear Console</button>
+
+            <div class="console" id="console"></div>
+        </div>
+
+        <div class="grid">
+            <div class="section">
+                <h2>🔓 Test Login</h2>
+                <div class="form-group">
+                    <label>Backend URL:</label>
+                    <input type="text" id="apiUrl" value="http://localhost:5000" placeholder="http://localhost:5000" />
+                </div>
+                <div class="form-group">
+                    <label>Username:</label>
+                    <input type="text" id="loginUser" value="testuser" placeholder="username" />
+                </div>
+                <div class="form-group">
+                    <label>Password:</label>
+                    <input type="password" id="loginPass" value="password123" placeholder="password" />
+                </div>
+                <button onclick="testLogin()">Login</button>
+                <button class="secondary" onclick="document.getElementById('loginResponse').innerHTML=''">Clear
+                    Response</button>
+                <div id="loginResponse"></div>
+            </div>
+
+            <div class="section">
+                <h2>📝 Test Register</h2>
+                <div class="form-group">
+                    <label>Backend URL:</label>
+                    <input type="text" id="apiUrl2" value="http://localhost:5000" placeholder="http://localhost:5000" />
+                </div>
+                <div class="form-group">
+                    <label>Nama Lengkap:</label>
+                    <input type="text" id="regNama" value="Test User" placeholder="nama" />
+                </div>
+                <div class="form-group">
+                    <label>Username:</label>
+                    <input type="text" id="regUser" value="newuser" placeholder="username" />
+                </div>
+                <div class="form-group">
+                    <label>Password:</label>
+                    <input type="password" id="regPass" value="password123" placeholder="password" />
+                </div>
+                <button onclick="testRegister()">Register</button>
+                <button class="secondary" onclick="document.getElementById('regResponse').innerHTML=''">Clear
+                    Response</button>
+                <div id="regResponse"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📚 API Endpoints</h2>
+            <div class="endpoint">
+                <strong>POST</strong> /api/auth/login<br />
+                Body: { username, password }
+            </div>
+            <div class="endpoint">
+                <strong>POST</strong> /api/auth/register<br />
+                Body: { nama, username, password }
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const consoleEl = document.getElementById('console');
+
+        function addLog(msg, type = 'info') {
+            const time = new Date().toLocaleTimeString();
+            const log = document.createElement('div');
+            log.className = `log ${type}`;
+            log.textContent = `[${time}] ${msg}`;
+            consoleEl.appendChild(log);
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+
+        function clearConsole() {
+            consoleEl.innerHTML = '';
+        }
+
+        async function checkBackendStatus() {
+            const statusBox = document.getElementById('statusBox');
+            const apiUrl = document.getElementById('apiUrl').value || 'http://localhost:3000';
+
+            statusBox.className = 'status checking';
+            statusBox.textContent = '🔄 Checking backend...';
+            addLog('Checking backend at: ' + apiUrl, 'info');
+
+            try {
+                const response = await fetch(`${apiUrl}/api/health`, {
+                    method: 'GET',
+                    timeout: 5000
+                });
+
+                if (response.ok) {
+                    statusBox.className = 'status connected';
+                    statusBox.textContent = '✅ Backend Connected!';
+                    addLog('✅ Backend is running!', 'success');
+                } else {
+                    statusBox.className = 'status disconnected';
+                    statusBox.textContent = `❌ Backend Error: ${response.status}`;
+                    addLog(`❌ Backend returned ${response.status}`, 'error');
+                }
+            } catch (err) {
+                statusBox.className = 'status disconnected';
+                statusBox.textContent = '❌ Backend Not Running';
+                addLog(`❌ Cannot connect to backend: ${err.message}`, 'error');
+                addLog('Make sure backend is running and URL is correct', 'warn');
+            }
+        }
+
+        async function testLogin() {
+            const apiUrl = document.getElementById('apiUrl').value || 'http://localhost:3000';
+            const username = document.getElementById('loginUser').value;
+            const password = document.getElementById('loginPass').value;
+            const responseEl = document.getElementById('loginResponse');
+
+            if (!username || !password) {
+                addLog('❌ Username dan password harus diisi!', 'error');
+                return;
+            }
+
+            addLog(`📤 Testing login: ${username}...`, 'info');
+
+            try {
+                const response = await fetch(`${apiUrl}/api/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    addLog(`✅ Login success!`, 'success');
+                    responseEl.innerHTML = `<pre style="background:#0f172a; padding:10px; border-radius:4px; color:#22c55e; margin-top:10px; overflow:auto;">${JSON.stringify(data, null, 2)}</pre>`;
+                } else {
+                    addLog(`❌ Login failed: ${data.message || response.statusText}`, 'error');
+                    responseEl.innerHTML = `<pre style="background:#0f172a; padding:10px; border-radius:4px; color:#ef4444; margin-top:10px; overflow:auto;">${JSON.stringify(data, null, 2)}</pre>`;
+                }
+            } catch (err) {
+                addLog(`❌ Error: ${err.message}`, 'error');
+                responseEl.innerHTML = `<pre style="background:#0f172a; padding:10px; border-radius:4px; color:#ef4444; margin-top:10px;">${err.message}</pre>`;
+            }
+        }
+
+        async function testRegister() {
+            const apiUrl = document.getElementById('apiUrl2').value || 'http://localhost:3000';
+            const nama = document.getElementById('regNama').value;
+            const username = document.getElementById('regUser').value;
+            const password = document.getElementById('regPass').value;
+            const responseEl = document.getElementById('regResponse');
+
+            if (!nama || !username || !password) {
+                addLog('❌ Semua field harus diisi!', 'error');
+                return;
+            }
+
+            addLog(`📝 Testing register: ${username}...`, 'info');
+
+            try {
+                const response = await fetch(`${apiUrl}/api/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nama, username, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    addLog(`✅ Register success!`, 'success');
+                    responseEl.innerHTML = `<pre style="background:#0f172a; padding:10px; border-radius:4px; color:#22c55e; margin-top:10px; overflow:auto;">${JSON.stringify(data, null, 2)}</pre>`;
+                } else {
+                    addLog(`❌ Register failed: ${data.message || response.statusText}`, 'error');
+                    responseEl.innerHTML = `<pre style="background:#0f172a; padding:10px; border-radius:4px; color:#ef4444; margin-top:10px; overflow:auto;">${JSON.stringify(data, null, 2)}</pre>`;
+                }
+            } catch (err) {
+                addLog(`❌ Error: ${err.message}`, 'error');
+                responseEl.innerHTML = `<pre style="background:#0f172a; padding:10px; border-radius:4px; color:#ef4444; margin-top:10px;">${err.message}</pre>`;
+            }
+        }
+
+        // Auto check on load
+        window.addEventListener('load', () => {
+            addLog('🚀 Debugger loaded', 'info');
+            setTimeout(checkBackendStatus, 500);
+        });
+    </script>
+
+</body>
+
+</html>

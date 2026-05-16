@@ -10,48 +10,8 @@ const EDUVIX = {
     XP_PER_LEVEL: 100,
     KEY_USER: 'eduvix_user',
     KEY_USERS: 'eduvix_users',
-    API_URL: 'http://localhost:3000/api'
+    API_URL: 'http://localhost:5000'
 };
-
-// ── Helper API (Fetch dengan Token) ───────
-async function eduvixApi(endpoint, method = 'GET', data = null) {
-    const token = localStorage.getItem('eduvix_token');
-    const headers = { 'Content-Type': 'application/json' };
-    if (token) headers['Authorization'] = `Bearer ${token}`;
-
-    const config = { method, headers };
-    if (data) config.body = JSON.stringify(data);
-
-    try {
-        const response = await fetch(`${EDUVIX.API_URL}${endpoint}`, config);
-        const result = await response.json();
-        if (!response.ok) throw new Error(result.error || 'Terjadi kesalahan');
-        return result;
-    } catch (err) {
-        console.error('API Error:', err.message);
-        // Jika token tidak valid, logout
-        if (err.message.includes('Token')) {
-            eduvixLogout();
-        }
-        throw err;
-    }
-};
-
-// ── Ambil user aktif ──────────────────────
-function eduvixGetUser() {
-    const raw = localStorage.getItem(EDUVIX.KEY_USER);
-    if (!raw) return null;
-    try { return JSON.parse(raw); } catch (e) { return null; }
-}
-
-// ── Simpan perubahan user ────────────────
-function eduvixSaveUser(user) {
-    localStorage.setItem(EDUVIX.KEY_USER, JSON.stringify(user));
-    // Sync ke daftar users juga
-    const users = eduvixGetAllUsers();
-    const idx = users.findIndex(u => u.username === user.username);
-    if (idx !== -1) { users[idx] = user; eduvixSaveAllUsers(users); }
-}
 
 function eduvixGetAllUsers() {
     try { return JSON.parse(localStorage.getItem(EDUVIX.KEY_USERS) || '[]'); } catch (e) { return []; }
@@ -71,26 +31,18 @@ function eduvixXpPct(xp) {
 }
 
 // ── Tambah XP ─────────────────────────────
-async function eduvixTambahXP(jumlah, alasan) {
-    const user = eduvixGetUser();
+async function eduvixTambahXP(jumlah, alasan) { // Ini tidak lagi digunakan, pakai EduvixAPI.tambahXP
+    console.warn("eduvixTambahXP deprecated. Use EduvixAPI.tambahXP instead.");
+    const user = EduvixAPI.getUser();
     if (!user) return;
-    const xpLama = user.xp || 0;
-    const xpBaru = xpLama + jumlah;
-    const lvlLama = eduvixHitungLevel(xpLama);
-    const lvlBaru = eduvixHitungLevel(xpBaru);
+    const oldLvl = user.level;
+    const data = await EduvixAPI.tambahXP(jumlah, alasan);
+    if (data.level > oldLvl) EduvixAPI.showLevelUp(data.level);
+    EduvixAPI.updateUI();
+    if (alasan) console.log(`[EDUVIX] +${jumlah} XP — ${alasan}`);
+}
 
-    // Sync ke Backend
-    try {
-        const res = await eduvixApi('/user/xp', 'POST', { jumlah, alasan });
-        if (res.xp) {
-            user.xp = res.xp;
-            user.level = res.level;
-            eduvixSaveUser(user);
-        }
-    } catch (e) {
-        console.error("Gagal sync XP ke server");
-    }
-
+async function eduvixUpdateUIFromAPI() { // Helper untuk update UI setelah operasi API
     // Update semua elemen UI
     eduvixUpdateUI();
 
@@ -98,20 +50,20 @@ async function eduvixTambahXP(jumlah, alasan) {
     eduvixShowXPPopup(jumlah);
 
     // Level up?
-    if (lvlBaru > lvlLama) {
-        setTimeout(() => eduvixShowLevelUp(lvlBaru), 700);
+    const user = EduvixAPI.getUser();
+    if (user && user.level > oldLvl) {
+        setTimeout(() => EduvixAPI.showLevelUp(user.level), 700);
     }
-
-    if (alasan) console.log(`[EDUVIX] +${jumlah} XP — ${alasan}`);
 }
 
 // ── Update Streak Harian ─────────────────
-function eduvixUpdateStreak() {
-    const user = eduvixGetUser();
+async function eduvixUpdateStreak() { // Ini tidak lagi digunakan, pakai EduvixAPI.updateStreak
+    console.warn("eduvixUpdateStreak deprecated. Use EduvixAPI.updateStreak instead.");
+    const user = EduvixAPI.getUser();
     if (!user) return;
-    const today = new Date().toDateString();
-    const yesterday = new Date(Date.now() - 86400000).toDateString();
-    const last = user.lastLogin || '';
+    const today = new Date().toISOString().split('T')[0];
+    const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+    const last = user.last_login ? user.last_login.split('T')[0] : null;
 
     if (last === today) return; // Sudah update hari ini
 
@@ -121,10 +73,10 @@ function eduvixUpdateStreak() {
     } else {
         streak = 1; // Reset
     }
-    user.streak = streak;
-    user.lastLogin = today;
-    eduvixSaveUser(user);
-
+    // Update via API
+    const streakData = await EduvixAPI.updateStreak();
+    EduvixAPI.setUser({ ...user, streak: streakData.streak });
+    EduvixAPI.updateUI();
     if (streak > 1) {
         setTimeout(() => eduvixShowToast(`🔥 ${streak} hari streak! Pertahankan!`, 'streak'), 1000);
     }
@@ -133,103 +85,104 @@ function eduvixUpdateStreak() {
 // ── Simpan Hasil Quiz ─────────────────────
 function eduvixSimpanQuiz(data) {
     // data: { skor, benar, salah, total }
-    const user = eduvixGetUser();
-    if (!user) return;
-    if (!user.quizHistory) user.quizHistory = [];
-
-    const xpDapat = data.benar * 10;
-    user.quizHistory.push({
-        ...data,
-        xpDapat,
-        tanggal: new Date().toISOString()
-    });
-    eduvixSaveUser(user);
-    eduvixTambahXP(xpDapat, `Quiz selesai — skor ${data.skor}%`);
+    console.warn("eduvixSimpanQuiz deprecated. Use EduvixAPI.simpanHasilQuiz instead.");
+    EduvixAPI.simpanHasilQuiz('default', data.skor, data.benar, data.salah, data.total);
 }
 
 // ── Selesaikan Materi ─────────────────────
-function eduvixSelesaikanMateri(materiId, xpMateri) {
-    xpMateri = xpMateri || 50;
-    const user = eduvixGetUser();
+async function eduvixSelesaikanMateri(materiId, xpMateri) { // Ini tidak lagi digunakan, pakai EduvixAPI.selesaikanMateri
+    console.warn("eduvixSelesaikanMateri deprecated. Use EduvixAPI.selesaikanMateri instead.");
+    const user = EduvixAPI.getUser();
     if (!user) return;
-    if (!user.materiSelesai) user.materiSelesai = [];
-
-    const sudah = user.materiSelesai.includes(String(materiId));
-    if (sudah) return; // Tidak kasih XP dua kali
-
-    user.materiSelesai.push(String(materiId));
-    const nextLesson = Math.max(user.unlockedLesson || 1, parseInt(materiId) + 1);
-    user.unlockedLesson = nextLesson;
-    eduvixSaveUser(user);
-    eduvixTambahXP(xpMateri, `Selesai materi: ${materiId}`);
-    // Bonus koin
-    eduvixTambahKoin(25, `Selesai materi: ${materiId}`);
+    const res = await EduvixAPI.selesaikanMateri(materiId, xpMateri);
+    if (res.xpDapat > 0) {
+        EduvixAPI.tambahKoin(25, `Bonus materi: ${materiId}`); // Bonus koin
+    }
 }
 
 // ── Tambah Koin ───────────────────────────
 async function eduvixTambahKoin(jumlah, alasan) {
-    const user = eduvixGetUser();
-    if (!user) return;
-    const koinLama = user.coins || 0;
-    user.coins = koinLama + jumlah;
-    eduvixSaveUser(user);
-
-    // Sync ke Backend
-    try { await eduvixApi('/user/coins', 'POST', { jumlah, alasan }); } catch (e) { }
-
-    eduvixUpdateUI();
-
+    console.warn("eduvixTambahKoin deprecated. Use EduvixAPI.tambahKoin instead.");
+    await EduvixAPI.tambahKoin(jumlah, alasan);
+    EduvixAPI.updateUI();
     if (alasan) console.log(`[EDUVIX] +${jumlah} Koin — ${alasan}`);
 }
 
 // ── Gunakan Koin ──────────────────────────
-function eduvixGunakanKoin(jumlah, alasan) {
-    const user = eduvixGetUser();
-    if (!user) return false;
-    const koinLama = user.coins || 0;
-    if (koinLama < jumlah) return false;
+async function eduvixGunakanKoin(jumlah, alasan) {
+    const user = EduvixAPI.getUser();
+    if (!user || (user.coins || 0) < jumlah) return false;
 
-    user.coins = koinLama - jumlah;
-    eduvixSaveUser(user);
-    eduvixUpdateUI();
-
+    // Untuk mengurangi koin, kita perlu endpoint baru di backend atau modifikasi yang ada.
+    // Untuk sementara, kita akan mengurangi secara lokal dan update UI.
+    // TODO: Implement backend endpoint for spending coins.
+    user.coins = (user.coins || 0) - jumlah;
+    EduvixAPI.setUser(user);
+    EduvixAPI.updateUI();
     if (alasan) console.log(`[EDUVIX] -${jumlah} Koin — ${alasan}`);
     return true;
 }
 
 // ── Set Avatar ────────────────────────────
-function eduvixSetAvatar(type, value) {
-    const user = eduvixGetUser();
+async function eduvixSetAvatar(type, value) {
+    const user = EduvixAPI.getUser();
     if (!user) return;
-    user.avatarType = type; // 'icon' atau 'image'
-    user.avatarValue = value; // class font-awesome atau URL
-    eduvixSaveUser(user);
-    eduvixUpdateUI();
+    try {
+        await EduvixAPI.apiFetch('/api/user/avatar', {
+            method: 'POST',
+            body: JSON.stringify({ avatarType: type, avatarValue: value })
+        });
+        user.avatarType = type;
+        user.avatarValue = value;
+        EduvixAPI.setUser(user);
+        EduvixAPI.updateUI();
+        EduvixAPI.showApiToast('Avatar berhasil diupdate!', 'success');
+    } catch (e) {
+        EduvixAPI.showApiToast('Gagal update avatar: ' + e.message, 'error');
+    }
 }
 
 // ── Set Border Avatar ─────────────────────
-function eduvixSetBorder(value) {
-    const user = eduvixGetUser();
+async function eduvixSetBorder(value) {
+    const user = EduvixAPI.getUser();
     if (!user) return;
-    user.avatarBorder = value;
-    eduvixSaveUser(user);
-    eduvixUpdateUI();
+    try {
+        await EduvixAPI.apiFetch('/api/user/border', {
+            method: 'POST',
+            body: JSON.stringify({ avatarBorder: value })
+        });
+        user.avatarBorder = value;
+        EduvixAPI.setUser(user);
+        EduvixAPI.updateUI();
+        EduvixAPI.showApiToast('Border profil berhasil diubah!', 'success');
+    } catch (e) {
+        EduvixAPI.showApiToast('Gagal update border: ' + e.message, 'error');
+    }
 }
 
 // ── Set Badge ─────────────────────────────
-function eduvixSetBadge(value) {
-    const user = eduvixGetUser();
+async function eduvixSetBadge(value) {
+    const user = EduvixAPI.getUser();
     if (!user) return;
-    user.badge = value;
-    eduvixSaveUser(user);
-    eduvixUpdateUI();
+    try {
+        await EduvixAPI.apiFetch('/api/user/badge', {
+            method: 'POST',
+            body: JSON.stringify({ badge: value })
+        });
+        user.badge = value;
+        EduvixAPI.setUser(user);
+        EduvixAPI.updateUI();
+        EduvixAPI.showApiToast('Badge berhasil diupdate!', 'success');
+    } catch (e) {
+        EduvixAPI.showApiToast('Gagal update badge: ' + e.message, 'error');
+    }
 }
 
 // ── Leaderboard Data (DUMMY) ──────────────
 async function eduvixGetLeaderboard() {
     try {
-        const data = await eduvixApi('/leaderboard');
-        const current = eduvixGetUser();
+        const data = await EduvixAPI.getLeaderboard();
+        const current = EduvixAPI.getUser();
 
         return data.map(u => ({
             nama: u.nama,
@@ -246,8 +199,7 @@ async function eduvixGetLeaderboard() {
 
 // ── Logout ────────────────────────────────
 function eduvixLogout() {
-    localStorage.removeItem(EDUVIX.KEY_USER);
-    localStorage.removeItem('eduvix_token');
+    EduvixAPI.clearAuth();
     localStorage.removeItem('eduvix_logged_in');
     window.location.href = 'login.html';
 }
@@ -255,7 +207,8 @@ function eduvixLogout() {
 // ── Guard: Cek sudah login ────────────────
 //    Panggil di halaman yang perlu login
 function eduvixRequireLogin() {
-    if (!eduvixGetUser()) {
+    if (!EduvixAPI.getUser()) {
+        console.warn("[JalanJS] requireLogin failed: User not found in storage.");
         window.location.href = 'login.html';
         return false;
     }
@@ -267,7 +220,7 @@ function eduvixRequireLogin() {
 //   Elemen HTML cukup pakai atribut data-*
 // ============================================
 function eduvixUpdateUI() {
-    const user = eduvixGetUser();
+    const user = EduvixAPI.getUser();
     if (!user) return;
 
     const nama = user.nama || user.username || 'User';
@@ -305,29 +258,20 @@ function eduvixUpdateUI() {
     setAll('data-streak', el => el.textContent = streak);
     setAll('data-streak-label', el => el.textContent = streak + ' hari');
     setAll('data-user-avatar', el => {
-        const border = user.avatarBorder || 'none';
-        el.style.border = border === 'none' ? 'none' : `3px solid ${border}`;
-
-        if (user.avatarType === 'icon') {
-            el.innerHTML = `<i class="${user.avatarValue}"></i>`;
-            el.style.background = 'linear-gradient(135deg, #1BAAED, #7c3aed)';
-        } else {
-            el.textContent = nama.charAt(0).toUpperCase();
-            el.style.background = '#6366f1';
-        }
+        // Ini akan dihandle oleh EduvixAPI.updateUI() langsung
+        // Pastikan elemen avatar di HTML memiliki data-user-avatar
+        // dan EduvixAPI.updateUI() sudah diperbarui untuk menangani avatarType/Value/Border
     });
 
     setAll('data-user-badge', el => el.textContent = user.badge || 'Pelajar Aktif');
 
     // Koin
     const koin = user.coins || 0;
-    setAll('data-user-coins', el => el.textContent = koin);
-    const userCoinsEl = document.getElementById('userCoins');
-    if (userCoinsEl) userCoinsEl.textContent = koin;
+    setAll('data-user-coins', el => el.textContent = koin); // Ini sudah dihandle oleh EduvixAPI.updateUI
 
     // Streak icon color
     setAll('data-streak-icon', el => {
-        el.style.color = streak >= 7 ? '#ef4444' : streak >= 3 ? '#f97316' : '#94a3b8';
+        el.style.color = streak >= 7 ? '#ef4444' : streak >= 3 ? '#f97316' : '#94a3b8'; // Ini juga sudah dihandle oleh EduvixAPI.updateUI
     });
 
     // XP ring SVG
@@ -450,7 +394,28 @@ function eduvixShowToast(msg, type) {
 
 // ── Injek Panel Notif & Profil ke HTML ─────
 function eduvixInitGlobalUI() {
-    const user = eduvixGetUser() || { nama: 'User', username: 'guest' };
+    const user = EduvixAPI.getUser() || { nama: 'User', username: 'guest' };
+
+    // Injek CSS untuk Notif & Modal jika belum ada
+    if (!document.getElementById('_eduvix_global_css')) {
+        const style = document.createElement('style');
+        style.id = '_eduvix_global_css';
+        style.textContent = `
+            .notif-panel { position: fixed; top: 75px; right: 20px; width: 320px; background: #fff; border-radius: 16px;
+                          box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; z-index: 99999 !important;
+                          display: none; flex-direction: column; overflow: hidden; }
+            .notif-panel.show { display: flex !important; }
+            .notif-header { padding: 15px 20px; border-bottom: 1px solid #f1f5f9; background: #f8fafc; }
+            .notif-header h4 { margin: 0; font-size: 14px; color: #1e293b; }
+            .notif-item { padding: 12px 20px; font-size: 13px; color: #475569; border-bottom: 1px solid #f1f5f9; }
+            .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+                            display: none; align-items: center; justify-content: center; z-index: 100000 !important; }
+            .modal-overlay.open { display: flex !important; }
+            .modal-close { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 24px; cursor: pointer; color: #94a3b8; }
+            @keyframes _lvlFadeIn{from{opacity:0}to{opacity:1}}
+        `;
+        document.head.appendChild(style);
+    }
 
     // Panel Notifikasi
     if (!document.getElementById('notifPanel')) {
@@ -459,7 +424,7 @@ function eduvixInitGlobalUI() {
         panel.className = 'notif-panel';
         panel.innerHTML = `
             <div class="notif-header"><h4>Pusat Notifikasi</h4></div>
-            <div class="notif-list" id="globalNotifList">
+            <div class="notif-list" id="globalNotifList" style="max-height: 300px; overflow-y: auto;">
                 <div class="notif-item">👋 Halo <span data-user-name></span>, selamat datang kembali!</div>
                 <div class="notif-item">🔥 Streak harian kamu: <span data-streak>0</span> hari.</div>
             </div>`;
@@ -472,7 +437,7 @@ function eduvixInitGlobalUI() {
         modal.id = 'profileModal';
         modal.className = 'modal-overlay';
         modal.innerHTML = `
-            <div class="modal profile-modal" style="max-height: 90vh; overflow-y: auto;">
+            <div class="modal profile-modal" style="max-height: 90vh; overflow-y: auto; background: var(--card); border-radius: 16px; padding: 30px; width: 90%; max-width: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
                 <button class="modal-close" id="closeProfileModal">×</button>
                 <h2 style="margin-bottom:5px;">Informasi Akun</h2>
                 <p style="margin-bottom:20px;">Detail statistik belajar kamu di EDUVIX.</p>
@@ -493,72 +458,85 @@ function eduvixInitGlobalUI() {
                 </div>
                 <div class="custom-section">
                     <h4>Kustomisasi Avatar</h4>
-                    <div class="avatar-options">
+                    <div class="avatar-options" style="display:flex; flex-wrap:wrap; gap:10px; margin-top:10px;">
                         <div class="avatar-opt" data-avatar="initial">A</div>
                         <div class="avatar-opt" data-avatar="fas fa-user-astronaut"><i class="fas fa-user-astronaut"></i></div>
                         <div class="avatar-opt" data-avatar="fas fa-user-ninja"><i class="fas fa-user-ninja"></i></div>
                         <div class="avatar-opt" data-avatar="fas fa-robot"><i class="fas fa-robot"></i></div>
+                        <div class="avatar-opt" data-avatar="fas fa-ghost"><i class="fas fa-ghost"></i></div>
+                        <div class="avatar-opt" data-avatar="fas fa-dragon"><i class="fas fa-dragon"></i></div>
                     </div>
                 </div>
                 <div class="custom-section">
                     <h4>Kustomisasi Border</h4>
-                    <div class="border-options">
-                        <div class="border-opt" data-border="none" style="background:#ddd"></div>
-                        <div class="border-opt" data-border="#1BAAED" style="background:#1BAAED"></div>
-                        <div class="border-opt" data-border="gold" style="background:linear-gradient(gold, yellow)"></div>
+                    <div class="border-options" style="display:flex; flex-wrap:wrap; gap:10px; margin-top:10px;">
+                        <div class="border-opt" data-border="none" style="background:#ddd; width:30px; height:30px; border-radius:50%; cursor:pointer; border:2px solid #ccc;"></div>
+                        <div class="border-opt" data-border="#1BAAED" style="background:#1BAAED; width:30px; height:30px; border-radius:50%; cursor:pointer; border:2px solid #ccc;"></div>
+                        <div class="border-opt" data-border="gold" style="background:linear-gradient(gold, yellow); width:30px; height:30px; border-radius:50%; cursor:pointer; border:2px solid #ccc;"></div>
+                        <div class="border-opt" data-border="#f59e0b" style="background:#f59e0b; width:30px; height:30px; border-radius:50%; cursor:pointer; border:2px solid #ccc;"></div>
+                        <div class="border-opt" data-border="#ef4444" style="background:#ef4444; width:30px; height:30px; border-radius:50%; cursor:pointer; border:2px solid #ccc;"></div>
                     </div>
                 </div>
-                <div class="custom-section">
-                    <h4>Badge Spesial</h4>
-                    <div class="badge-options">
-                        <div class="badge-opt" data-badge="Pelajar Aktif">Pelajar Aktif</div>
-                        <div class="badge-opt" data-badge="Juara Quiz">Juara Quiz</div>
-                        <div class="badge-opt" data-badge="Top 10%">Top 10%</div>
-                    </div>
-                </div>
+                <!-- Badge options can be added here if needed -->
             </div>`;
         document.body.appendChild(modal);
     }
 
-    // Event Click Notifikasi (Mencari tombol lonceng di header-actions)
-    const notifBtn = document.querySelector('.notif-btn') || document.querySelector('.header-actions .icon-btn');
-    if (notifBtn) {
-        notifBtn.onclick = (e) => {
+    // Perbaikan Event Click: Pastikan selector tepat dan tidak bentrok
+    document.addEventListener('click', (e) => {
+        // Klik Tombol Notifikasi
+        if (e.target.closest('.notif-btn')) {
+            e.preventDefault();
             e.stopPropagation();
-            document.getElementById('notifPanel').classList.toggle('show');
-        };
-    }
-
-    // Event Click Profil
-    const profileBtn = document.querySelector('.user-profile');
-    if (profileBtn) {
-        profileBtn.onclick = () => document.getElementById('profileModal').classList.add('open');
-    }
+            document.getElementById('notifPanel')?.classList.toggle('show');
+        }
+        // Klik Tombol Akun / Profil
+        else if (e.target.closest('.user-profile')) {
+            e.preventDefault();
+            e.stopPropagation();
+            document.getElementById('profileModal')?.classList.add('open');
+        }
+    });
 
     // Tutup Modal & Panel
     const closeBtn = document.getElementById('closeProfileModal');
-    if (closeBtn) closeBtn.onclick = () => document.getElementById('profileModal').classList.remove('open');
+    if (closeBtn) {
+        closeBtn.onclick = () => document.getElementById('profileModal').classList.remove('open');
+    }
 
-    window.onclick = (e) => {
-        if (e.target.className === 'modal-overlay') e.target.classList.remove('open');
+    window.addEventListener('click', (e) => {
+        if (e.target.classList.contains('modal-overlay')) e.target.classList.remove('open');
         if (!e.target.closest('.notif-btn') && !e.target.closest('.notif-panel')) {
             document.getElementById('notifPanel')?.classList.remove('show');
         }
-    };
+    });
 
     // Handle Border Selection
     document.querySelectorAll('.border-opt').forEach(opt => {
-        opt.onclick = () => eduvixSetBorder(opt.dataset.border);
+        opt.onclick = () => {
+            eduvixSetBorder(opt.dataset.border);
+            EduvixAPI.showApiToast('Border profil berhasil diubah!', 'success');
+        };
     });
 
     // Handle Avatar Selection
     document.querySelectorAll('.avatar-opt').forEach(opt => {
         opt.onclick = () => {
             const val = opt.dataset.avatar;
-            if (val === 'initial') eduvixSetAvatar('initial', '');
-            else eduvixSetAvatar('icon', val);
+            if (val === 'initial') {
+                eduvixSetAvatar('initial', null);
+            } else {
+                eduvixSetAvatar('icon', val);
+            }
+            EduvixAPI.showApiToast('Avatar profil berhasil diubah!', 'success');
         };
     });
+
+    // Handle Image Upload from Gallery
+    const avatarUpload = document.getElementById('avatarUpload');
+    if (avatarUpload) {
+        avatarUpload.addEventListener('change', handleAvatarUpload);
+    }
 
     // Handle Badge Selection
     document.querySelectorAll('.badge-opt').forEach(opt => {
@@ -566,24 +544,35 @@ function eduvixInitGlobalUI() {
     });
 
     // Pastikan data terbaru terisi ke modal yang baru disuntikkan
-    eduvixUpdateUI();
+    const currentUser = EduvixAPI.getUser();
+    if (currentUser) {
+        EduvixAPI.updateUI(currentUser);
+        eduvixUpdateUI();
+    }
+}
+
+function handleAvatarUpload(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (evt) {
+            eduvixSetAvatar('image', evt.target.result);
+            EduvixAPI.showApiToast('Foto profil berhasil diunggah!', 'success');
+        };
+        reader.readAsDataURL(file);
+    }
 }
 
 // ============================================
 //   AUTO-INIT saat DOM siap
 // ============================================
+
 document.addEventListener('DOMContentLoaded', () => {
     // Halaman login & register tidak butuh guard
     const isAuthPage = window.location.pathname.includes('login');
     if (isAuthPage) return;
 
-    // Cek login
-    if (!eduvixRequireLogin()) return;
-
-    // Update streak harian
-    eduvixUpdateStreak();
-
-    // Update semua elemen UI
+    // Update semua elemen UI (sudah dipanggil oleh EduvixAPI.initPage())
     eduvixUpdateUI();
 
     // Jalankan interaksi tombol
@@ -628,17 +617,17 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Export ke window agar bisa dipanggil dari file JS lain
-window.eduvixGetUser = eduvixGetUser;
-window.eduvixSaveUser = eduvixSaveUser;
-window.eduvixTambahXP = eduvixTambahXP;
-window.eduvixSimpanQuiz = eduvixSimpanQuiz;
-window.eduvixSelesaikanMateri = eduvixSelesaikanMateri;
+window.eduvixGetUser = EduvixAPI.getUser;
+window.eduvixSaveUser = EduvixAPI.setUser; // Alias ke EduvixAPI.setUser
+window.eduvixTambahXP = EduvixAPI.tambahXP; // Alias ke EduvixAPI.tambahXP
+window.eduvixSimpanQuiz = EduvixAPI.simpanHasilQuiz; // Alias ke EduvixAPI.simpanHasilQuiz
+window.eduvixSelesaikanMateri = EduvixAPI.selesaikanMateri; // Alias ke EduvixAPI.selesaikanMateri
 window.eduvixLogout = eduvixLogout;
-window.eduvixUpdateUI = eduvixUpdateUI;
+window.eduvixUpdateUI = EduvixAPI.updateUI; // Alias ke EduvixAPI.updateUI
 window.eduvixHitungLevel = eduvixHitungLevel;
 window.eduvixXpPct = eduvixXpPct;
 window.eduvixShowToast = eduvixShowToast;
-window.eduvixTambahKoin = eduvixTambahKoin;
+window.eduvixTambahKoin = EduvixAPI.tambahKoin; // Alias ke EduvixAPI.tambahKoin
 window.eduvixGunakanKoin = eduvixGunakanKoin;
 window.useCoins = eduvixGunakanKoin; // Alias for store.html
 window.addCoins = eduvixTambahKoin; // Alias for compatibility
@@ -646,22 +635,3 @@ window.eduvixSetAvatar = eduvixSetAvatar;
 window.eduvixSetBorder = eduvixSetBorder;
 window.eduvixSetBadge = eduvixSetBadge;
 window.eduvixGetLeaderboard = eduvixGetLeaderboard;
-
-const passwordInput = document.getElementById('passwordInput');
-const toggleBtn = document.getElementById('toggleBtn');
-const eyeIcon = document.getElementById('eyeIcon');
-
-toggleBtn.addEventListener('click', function () {
-    // Cek tipe input sekarang
-    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-
-    // Ganti tipe input
-    passwordInput.setAttribute('type', type);
-
-    // Ganti ikon mata
-    if (type === 'text') {
-        eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
-    } else {
-        eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
-    }
-});
