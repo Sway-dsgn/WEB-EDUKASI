@@ -203,6 +203,39 @@
             transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
         }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .progress-layout {
+                grid-template-columns: 1fr;
+            }
+            .stats-sidebar {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            .progress-widget, .widget {
+                flex: 1;
+                min-width: 280px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .curriculum-section {
+                padding: 24px 16px;
+            }
+            .lesson-card {
+                padding: 16px;
+                gap: 12px;
+            }
+            .l-index {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+            .stats-sidebar {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 
@@ -320,8 +353,14 @@
             <div class="progress-layout">
                 <div class="curriculum-section">
                     <div class="lesson-list" id="lessonList">
-                        <!-- Lessons will be dynamically updated by JS -->
-                        <div class="lesson-card active" onclick="location.href='materi.html?modul=1'">
+                        <!-- Folder Kritis -->
+                        <div class="folder-header" style="display: flex; align-items: center; gap: 8px; margin-top: 10px; margin-bottom: 12px;">
+                            <i class="fa-solid fa-folder-open" style="color: var(--indigo); font-size: 18px;"></i>
+                            <span style="font-weight: 800; font-family: 'Sora', sans-serif; font-size: 16px; color: var(--text);">Berpikir Kritis</span>
+                        </div>
+                        
+                        <!-- Materi 1 -->
+                        <div id="materi_01" class="lesson-card active" onclick="location.href='materi.html#page-1'">
                             <div class="l-index">01</div>
                             <div class="l-content">
                                 <h4>Dasar Berpikir Kritis</h4>
@@ -329,15 +368,9 @@
                             </div>
                             <div class="l-status-icon status-play"><i class="fa-solid fa-play"></i></div>
                         </div>
-                        <div class="lesson-card locked">
-                            <div class="l-index">02</div>
-                            <div class="l-content">
-                                <h4>Tes Kemampuan Akademik (TKA)</h4>
-                                <p>Latihan penalaran verbal dan numerik.</p>
-                            </div>
-                            <div class="l-status-icon status-lock"><i class="fa-solid fa-lock"></i></div>
-                        </div>
-                        <div class="lesson-card locked">
+                        
+                        <!-- Materi 3 -->
+                        <div id="materi_03" class="lesson-card locked" onclick="location.href='materi.html#page-3'">
                             <div class="l-index">03</div>
                             <div class="l-content">
                                 <h4>Anatomi Argumen</h4>
@@ -345,7 +378,9 @@
                             </div>
                             <div class="l-status-icon status-lock"><i class="fa-solid fa-lock"></i></div>
                         </div>
-                        <div class="lesson-card locked">
+                        
+                        <!-- Materi 4 -->
+                        <div id="materi_04" class="lesson-card locked" onclick="location.href='materi.html#page-4'">
                             <div class="l-index">04</div>
                             <div class="l-content">
                                 <h4>Logical Fallacies</h4>
@@ -353,11 +388,29 @@
                             </div>
                             <div class="l-status-icon status-lock"><i class="fa-solid fa-lock"></i></div>
                         </div>
-                        <div class="lesson-card locked">
+                        
+                        <!-- Materi 5 -->
+                        <div id="materi_05" class="lesson-card locked" onclick="location.href='materi.html#page-5'">
                             <div class="l-index">05</div>
                             <div class="l-content">
                                 <h4>Syllogism Logic</h4>
                                 <p>Memahami struktur logika deduktif klasik.</p>
+                            </div>
+                            <div class="l-status-icon status-lock"><i class="fa-solid fa-lock"></i></div>
+                        </div>
+
+                        <!-- Folder TKA -->
+                        <div class="folder-header" style="display: flex; align-items: center; gap: 8px; margin-top: 24px; margin-bottom: 12px;">
+                            <i class="fa-solid fa-folder-open" style="color: var(--indigo); font-size: 18px;"></i>
+                            <span style="font-weight: 800; font-family: 'Sora', sans-serif; font-size: 16px; color: var(--text);">Tes Kemampuan Akademik (TKA)</span>
+                        </div>
+                        
+                        <!-- Materi 2 -->
+                        <div id="materi_02" class="lesson-card locked" onclick="location.href='materi.html#page-2'">
+                            <div class="l-index">02</div>
+                            <div class="l-content">
+                                <h4>Tes Kemampuan Akademik (TKA)</h4>
+                                <p>Latihan penalaran verbal dan numerik.</p>
                             </div>
                             <div class="l-status-icon status-lock"><i class="fa-solid fa-lock"></i></div>
                         </div>
@@ -375,7 +428,7 @@
                         </div>
                         <h4 style="font-family:'Sora'; margin-bottom:8px;">Total Progres</h4>
                         <p style="font-size:13px; color:var(--text-soft); line-height:1.5;">Kamu telah menyelesaikan
-                            <strong id="doneCount" style="color:var(--indigo);">0</strong> dari 6 materi.
+                            <strong id="doneCount" style="color:var(--indigo);">0</strong> dari 5 materi.
                         </p>
                         <button class="btn-continue" onclick="location.href='materi.html'">Lanjutkan Belajar</button>
                     </div>
@@ -386,12 +439,12 @@
                         </div>
                         <div class="stats-widget">
                             <div class="stat-box">
-                                <span class="stat-box-val">120</span>
-                                <div class="stat-box-lbl">Menit Belajar</div>
+                                <span class="stat-box-val" data-stat-materi>0</span>
+                                <div class="stat-box-lbl">Materi Selesai</div>
                             </div>
                             <div class="stat-box">
-                                <span class="stat-box-val">4.8</span>
-                                <div class="stat-box-lbl">Avg Quiz Score</div>
+                                <span class="stat-box-val" data-stat-akurasi>0%</span>
+                                <div class="stat-box-lbl">Akurasi Quiz</div>
                             </div>
                         </div>
                     </div>
@@ -407,9 +460,13 @@
             const user = await EduvixAPI.initPage();
             if (!user) return;
 
+            // Ambil progress materi terbaru
+            const materiProgress = await EduvixAPI.getProgressMateri();
+            const completedIds = materiProgress.map(m => m.materi_id);
+
             const syncProgress = () => {
-                const totalMateri = 6;
-                const doneCount = (user.materiSelesai || []).length;
+                const totalMateri = 5;
+                const doneCount = completedIds.length;
                 const pct = Math.round((doneCount / totalMateri) * 100);
 
                 document.getElementById('progPct').innerText = pct;
@@ -417,10 +474,52 @@
 
                 // Update Circle
                 const circle = document.getElementById('progCircle');
-                const circumference = 2 * Math.PI * 70;
-                const offset = circumference - (pct / 100) * circumference;
-                circle.style.strokeDasharray = circumference;
-                circle.style.strokeDashoffset = offset;
+                if (circle) {
+                    const circumference = 2 * Math.PI * 70;
+                    const offset = circumference - (pct / 100) * circumference;
+                    circle.style.strokeDasharray = circumference;
+                    circle.style.strokeDashoffset = offset;
+                }
+                
+                // Update lesson list status
+                updateLessonList(completedIds);
+            };
+
+            const updateLessonList = (completedIds) => {
+                // Modul 1: materi_01, Modul 2: materi_02, dst.
+                const lessons = [
+                    { id: 'materi_01', el: document.getElementById('materi_01') },
+                    { id: 'materi_02', el: document.getElementById('materi_02') },
+                    { id: 'materi_03', el: document.getElementById('materi_03') },
+                    { id: 'materi_04', el: document.getElementById('materi_04') },
+                    { id: 'materi_05', el: document.getElementById('materi_05') },
+                ];
+
+                lessons.forEach((lesson, index) => {
+                    if (!lesson.el) return;
+                    const isDone = completedIds.includes(lesson.id);
+                    const isNext = index === 0 || completedIds.includes(lessons[index-1].id);
+
+                    if (isDone) {
+                        lesson.el.classList.remove('locked', 'active');
+                        lesson.el.classList.add('done');
+                        const icon = lesson.el.querySelector('.l-status-icon');
+                        if (icon) icon.className = 'l-status-icon status-done';
+                        if (icon) icon.innerHTML = '<i class="fa-solid fa-check"></i>';
+                    } else if (isNext) {
+                        lesson.el.classList.remove('locked');
+                        lesson.el.classList.add('active');
+                        const icon = lesson.el.querySelector('.l-status-icon');
+                        if (icon) icon.className = 'l-status-icon status-play';
+                        if (icon) icon.innerHTML = '<i class="fa-solid fa-play"></i>';
+                    } else {
+                        lesson.el.classList.add('locked');
+                        lesson.el.classList.remove('active', 'done');
+                        const icon = lesson.el.querySelector('.l-status-icon');
+                        if (icon) icon.className = 'l-status-icon status-lock';
+                        if (icon) icon.innerHTML = '<i class="fa-solid fa-lock"></i>';
+                    }
+                });
             };
 
             syncProgress();

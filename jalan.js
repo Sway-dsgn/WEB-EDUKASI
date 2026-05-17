@@ -20,15 +20,8 @@ function eduvixSaveAllUsers(users) {
     localStorage.setItem(EDUVIX.KEY_USERS, JSON.stringify(users));
 }
 
-// ── Hitung Level dari XP ──────────────────
-function eduvixHitungLevel(xp) {
-    return Math.floor(xp / EDUVIX.XP_PER_LEVEL) + 1;
-}
+// Logic leveling sudah dipindahkan ke api.js agar tersedia di semua halaman.
 
-// ── XP % dalam level saat ini (0–100) ────
-function eduvixXpPct(xp) {
-    return ((xp % EDUVIX.XP_PER_LEVEL) / EDUVIX.XP_PER_LEVEL) * 100;
-}
 
 // ── Tambah XP ─────────────────────────────
 async function eduvixTambahXP(jumlah, alasan) { // Ini tidak lagi digunakan, pakai EduvixAPI.tambahXP
@@ -392,6 +385,67 @@ function eduvixShowToast(msg, type) {
     }, 3000);
 }
 
+// ============================================
+//   STREAK RECOVERY MODAL
+// ============================================
+function eduvixShowStreakRecovery(oldStreak) {
+    let el = document.getElementById('_eduvix_streak_recover');
+    if (!el) {
+        el = document.createElement('div');
+        el.id = '_eduvix_streak_recover';
+        el.style.cssText = `
+      position:fixed; inset:0; z-index:99998;
+      background:rgba(0,0,0,.65); backdrop-filter:blur(6px);
+      display:flex; align-items:center; justify-content:center;
+      animation:_lvlFadeIn .3s ease;
+    `;
+        document.body.appendChild(el);
+    }
+    el.innerHTML = `
+    <div style="background:linear-gradient(135deg,#1e1b4b,#0f172a);border:1.5px solid rgba(245,158,11,.4);
+      border-radius:24px;padding:40px 32px;text-align:center;max-width:340px;width:90%;
+      box-shadow:0 24px 60px rgba(0,0,0,.5);animation:_lvlPop .45s cubic-bezier(.34,1.56,.64,1);">
+      <div style="font-size:56px;margin-bottom:16px;">🔥</div>
+      <div style="font-size:13px;font-weight:700;letter-spacing:2px;color:#f97316;text-transform:uppercase;margin-bottom:8px;">Streak Putus!</div>
+      <div style="font-size:36px;font-weight:900;color:#fff;margin-bottom:8px;">${oldStreak} Hari</div>
+      <p style="color:#94a3b8;font-size:14px;margin-bottom:24px;">Kamu tidak login kemarin. Mau pulihkan streak kamu pakai 100 koin?</p>
+      <div style="display:flex; gap:10px; justify-content:center;">
+          <button id="recoverStreakBtn"
+            style="padding:12px 20px;background:linear-gradient(135deg,#f97316,#ea580c);
+              color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;
+              cursor:pointer;font-family:inherit;flex:1;">Bayar 100 Koin</button>
+          <button id="skipStreakBtn"
+            style="padding:12px 20px;background:#334155;
+              color:#94a3b8;border:none;border-radius:12px;font-size:15px;font-weight:700;
+              cursor:pointer;font-family:inherit;flex:1;">Ikhlasin Aja</button>
+      </div>
+    </div>
+  `;
+
+    document.getElementById('recoverStreakBtn').onclick = async () => {
+        try {
+            const response = await EduvixAPI.apiFetch('/api/streak/recover', { method: 'POST' });
+            EduvixAPI.showApiToast(response.message, 'success');
+            const user = EduvixAPI.getUser();
+            user.streak = response.streak;
+            user.coins = response.coins;
+            user.last_streak = 0;
+            EduvixAPI.setUser(user);
+            EduvixAPI.updateUI();
+            el.remove();
+        } catch (error) {
+            EduvixAPI.showApiToast(error.message, 'error');
+        }
+    };
+
+    document.getElementById('skipStreakBtn').onclick = () => {
+        const user = EduvixAPI.getUser();
+        user.last_streak = 0;
+        EduvixAPI.setUser(user);
+        el.remove();
+    };
+}
+
 // ── Injek Panel Notif & Profil ke HTML ─────
 function eduvixInitGlobalUI() {
     const user = EduvixAPI.getUser() || { nama: 'User', username: 'guest' };
@@ -413,6 +467,41 @@ function eduvixInitGlobalUI() {
             .modal-overlay.open { display: flex !important; }
             .modal-close { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 24px; cursor: pointer; color: #94a3b8; }
             @keyframes _lvlFadeIn{from{opacity:0}to{opacity:1}}
+
+            /* Feedback Styles */
+            .feedback-fab { position: fixed; bottom: 25px; right: 25px; width: 56px; height: 56px; 
+                           background: linear-gradient(135deg, #6366f1, #8b5cf6);
+                           border-radius: 50%; display: flex; align-items: center; justify-content: center;
+                           color: white; font-size: 22px; cursor: pointer; z-index: 9999;
+                           box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+            .feedback-fab:hover { transform: scale(1.1) rotate(5deg); box-shadow: 0 12px 32px rgba(99, 102, 241, 0.5); }
+            .feedback-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
+                             display: none; align-items: center; justify-content: center; z-index: 100001; animation: _lvlFadeIn 0.3s ease; }
+            .feedback-modal.open { display: flex !important; }
+            .fb-card { background: white; border-radius: 24px; padding: 32px; width: 90%; max-width: 400px; 
+                      box-shadow: 0 20px 50px rgba(0,0,0,0.3); position: relative; border: 1px solid #e2e8f0; }
+            .fb-header { margin-bottom: 20px; text-align: center; }
+            .fb-header h3 { font-family: 'Sora', sans-serif; font-size: 20px; font-weight: 800; color: #1e293b; margin-bottom: 8px; }
+            .fb-header p { font-size: 14px; color: #64748b; line-height: 1.5; }
+            .fb-body textarea { width: 100%; min-height: 120px; padding: 16px; border: 2px solid #e2e8f0; border-radius: 16px;
+                               font-family: inherit; font-size: 14px; resize: none; transition: border-color 0.2s; outline: none; margin-bottom: 20px;
+                               background: #f8fafc; }
+            .fb-body textarea:focus { border-color: #6366f1; background: #fff; }
+            .fb-btn { width: 100%; padding: 14px; background: #6366f1; color: white; border: none; 
+                     border-radius: 12px; font-weight: 700; font-size: 15px; cursor: pointer; transition: all 0.2s;
+                     box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); }
+            .fb-btn:hover { background: #4f46e5; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4); }
+
+            /* Options Styling */
+            .avatar-opt, .border-opt { 
+                width: 42px !important; height: 42px !important; border-radius: 12px; 
+                background: #f1f5f9; display: flex !important; align-items: center !important; 
+                justify-content: center !important; cursor: pointer; transition: all 0.2s;
+                border: 2px solid transparent; flex-shrink: 0;
+            }
+            .avatar-opt i { font-size: 18px; margin: 0 !important; }
+            .avatar-opt:hover, .border-opt:hover { background: #e2e8f0; transform: translateY(-2px); }
+            .avatar-opt.active, .border-opt.active { border-color: #6366f1; background: #fff; box-shadow: 0 4px 12px rgba(99,102,241,0.15); }
         `;
         document.head.appendChild(style);
     }
@@ -459,30 +548,167 @@ function eduvixInitGlobalUI() {
                 <div class="custom-section">
                     <h4>Kustomisasi Avatar</h4>
                     <div class="avatar-options" style="display:flex; flex-wrap:wrap; gap:10px; margin-top:10px;">
-                        <div class="avatar-opt" data-avatar="initial">A</div>
-                        <div class="avatar-opt" data-avatar="fas fa-user-astronaut"><i class="fas fa-user-astronaut"></i></div>
-                        <div class="avatar-opt" data-avatar="fas fa-user-ninja"><i class="fas fa-user-ninja"></i></div>
-                        <div class="avatar-opt" data-avatar="fas fa-robot"><i class="fas fa-robot"></i></div>
-                        <div class="avatar-opt" data-avatar="fas fa-ghost"><i class="fas fa-ghost"></i></div>
-                        <div class="avatar-opt" data-avatar="fas fa-dragon"><i class="fas fa-dragon"></i></div>
+                        <div class="avatar-opt" data-avatar="initial" style="color:#1e293b;">A</div>
+                        <div class="avatar-opt" data-avatar="fas fa-user-astronaut" style="color:#1e293b;"><i class="fas fa-user-astronaut"></i></div>
+                        <div class="avatar-opt" data-avatar="fas fa-robot" style="color:#1e293b;"><i class="fas fa-robot"></i></div>
+                        <div class="avatar-opt" data-avatar="fas fa-dragon" style="color:#1e293b;"><i class="fas fa-dragon"></i></div>
+                        
+                        <!-- Premium Avatars -->
+                        <div class="avatar-opt avatar-premium" data-avatar="fas fa-user-ninja" style="display:none; color:#1e293b;" title="Cyber Ninja (Premium)"><i class="fas fa-user-ninja"></i></div>
+                        <div class="avatar-opt avatar-premium" data-avatar="fas fa-ghost" style="display:none; color:#1e293b;" title="Ghost Hunter (Premium)"><i class="fas fa-ghost"></i></div>
                     </div>
                 </div>
                 <div class="custom-section">
                     <h4>Kustomisasi Border</h4>
                     <div class="border-options" style="display:flex; flex-wrap:wrap; gap:10px; margin-top:10px;">
-                        <div class="border-opt" data-border="none" style="background:#ddd; width:30px; height:30px; border-radius:50%; cursor:pointer; border:2px solid #ccc;"></div>
-                        <div class="border-opt" data-border="#1BAAED" style="background:#1BAAED; width:30px; height:30px; border-radius:50%; cursor:pointer; border:2px solid #ccc;"></div>
-                        <div class="border-opt" data-border="gold" style="background:linear-gradient(gold, yellow); width:30px; height:30px; border-radius:50%; cursor:pointer; border:2px solid #ccc;"></div>
-                        <div class="border-opt" data-border="#f59e0b" style="background:#f59e0b; width:30px; height:30px; border-radius:50%; cursor:pointer; border:2px solid #ccc;"></div>
-                        <div class="border-opt" data-border="#ef4444" style="background:#ef4444; width:30px; height:30px; border-radius:50%; cursor:pointer; border:2px solid #ccc;"></div>
+                        <div class="border-opt" data-border="none" style="background:#ddd;" title="Default"></div>
+                        <div class="border-opt" data-border="#1BAAED" style="background:#1BAAED;" title="Indigo"></div>
+                        <div class="border-opt" data-border="gold" style="background:linear-gradient(gold, yellow);" title="Gold"></div>
+                        <div class="border-opt" data-border="#ef4444" style="background:#ef4444;" title="Red"></div>
+                        
+                        <!-- Premium Borders (Only show if owned) -->
+                        <div class="border-opt border-premium" data-border="fa-fire" style="display:none; background:linear-gradient(45deg, #f97316, #fbbf24);" title="Lava Aura (Premium)"></div>
+                        <div class="border-opt border-premium" data-border="fa-circle-notch" style="display:none; background:linear-gradient(45deg, #ff0000, #00ff00, #0000ff);" title="Rainbow Infinity (Premium)"></div>
                     </div>
                 </div>
-                <!-- Badge options can be added here if needed -->
+                <div class="custom-section" id="premiumInventorySection" style="display:none; margin-top:15px; padding-top:15px; border-top:1px dashed #e2e8f0;">
+                    <h4 style="color:#6366f1;">Koleksi Premium Kamu</h4>
+                    <div id="premiumItemsList" style="display:flex; gap:8px; margin-top:8px;"></div>
+                </div>
+                
+                <div style="margin-top:30px; border-top:1px solid #f1f5f9; pt:20px;">
+                    <button id="modalLogoutBtn" style="width:100%; padding:12px; background:#fff1f2; color:#ef4444; border:1.5px solid #ffe4e6; border-radius:12px; font-weight:700; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:8px;">
+                        <i class="fas fa-sign-out-alt"></i> Keluar dari Eduvix
+                    </button>
+                </div>
             </div>`;
         document.body.appendChild(modal);
     }
 
-    // Perbaikan Event Click: Pastikan selector tepat dan tidak bentrok
+    // --- Tombol Feedback FAB ---
+    if (!document.getElementById('feedbackFab')) {
+        const fab = document.createElement('div');
+        fab.id = 'feedbackFab';
+        fab.className = 'feedback-fab';
+        fab.innerHTML = '<i class="fas fa-comment-dots"></i>';
+        fab.title = 'Kirim Feedback';
+        document.body.appendChild(fab);
+    }
+
+    // --- Modal Feedback ---
+    if (!document.getElementById('feedbackModal')) {
+        const fbModal = document.createElement('div');
+        fbModal.id = 'feedbackModal';
+        fbModal.className = 'feedback-modal';
+        fbModal.innerHTML = `
+            <div class="fb-card">
+                <button class="modal-close" id="closeFbModal">×</button>
+                <div class="fb-header">
+                    <h3>Kirim Feedback 🚀</h3>
+                    <p>Saran atau masukan kamu sangat berarti bagi pengembangan Eduvix.</p>
+                </div>
+                <div class="fb-body">
+                    <textarea id="fbText" placeholder="Tulis pesan atau saran kamu di sini..."></textarea>
+                    <button class="fb-btn" id="sendFbBtn">Kirim Feedback</button>
+                </div>
+            </div>`;
+        document.body.appendChild(fbModal);
+    }
+
+    // --- Logic Feedback ---
+    const fbFab = document.getElementById('feedbackFab');
+    const fbModal = document.getElementById('feedbackModal');
+    const closeFb = document.getElementById('closeFbModal');
+    const sendFb = document.getElementById('sendFbBtn');
+    const fbText = document.getElementById('fbText');
+
+    if (fbFab) fbFab.onclick = () => fbModal.classList.add('open');
+    if (closeFb) closeFb.onclick = () => fbModal.classList.remove('open');
+    if (fbModal) {
+        fbModal.onclick = (e) => {
+            if (e.target === fbModal) fbModal.classList.remove('open');
+        };
+    }
+
+    if (sendFb) {
+        sendFb.onclick = async () => {
+            const msg = fbText.value.trim();
+            if (!msg) {
+                if (window.EduvixAPI && EduvixAPI.showApiToast) {
+                    EduvixAPI.showApiToast('Tulis pesan dulu ya!', 'error');
+                } else if (window.eduvixShowToast) {
+                    eduvixShowToast('Tulis pesan dulu ya!', 'error');
+                }
+                return;
+            }
+            
+            try {
+                const response = await EduvixAPI.apiFetch('/api/feedback', {
+                    method: 'POST',
+                    body: JSON.stringify({ pesan: msg })
+                });
+                
+                fbModal.classList.remove('open');
+                fbText.value = '';
+                
+                if (window.EduvixAPI && EduvixAPI.showApiToast) {
+                    EduvixAPI.showApiToast(response.message || 'Feedback berhasil dikirim!', 'success');
+                } else if (window.eduvixShowToast) {
+                    eduvixShowToast(response.message || 'Feedback berhasil dikirim!', 'success');
+                }
+            } catch (error) {
+                if (window.EduvixAPI && EduvixAPI.showApiToast) {
+                    EduvixAPI.showApiToast('Gagal mengirim feedback: ' + error.message, 'error');
+                }
+            }
+        };
+    }
+
+    // --- Sinkronkan Inventory Premium ---
+    function syncPremiumInventory() {
+        const user = EduvixAPI.getUser();
+        if (!user || !user.inventory) return;
+
+        const inventory = user.inventory;
+        const premiumBorders = document.querySelectorAll('.border-opt.border-premium');
+        const premiumSection = document.getElementById('premiumInventorySection');
+        const premiumList = document.getElementById('premiumItemsList');
+
+        let hasPremium = false;
+        premiumBorders.forEach(opt => {
+            const borderId = opt.dataset.border;
+            const map = { 'rainbow_infinity': 'fa-circle-notch', 'fire_border': 'fa-fire' };
+            const itemId = Object.keys(map).find(key => map[key] === borderId);
+            if (inventory.includes(itemId) || inventory.includes(borderId)) {
+                opt.style.display = 'block';
+                hasPremium = true;
+            }
+        });
+
+        const premiumAvatars = document.querySelectorAll('.avatar-opt.avatar-premium');
+        premiumAvatars.forEach(opt => {
+            const avatarId = opt.dataset.avatar;
+            const map = { 'ninja_avatar': 'fas fa-user-ninja', 'ghost_avatar': 'fas fa-ghost' };
+            const itemId = Object.keys(map).find(key => map[key] === avatarId);
+            if (inventory.includes(itemId) || inventory.includes(avatarId)) {
+                opt.style.display = 'block';
+                hasPremium = true;
+            }
+        });
+
+        if (hasPremium) premiumSection.style.display = 'block';
+    }
+
+    // Klik Tombol Logout di Modal
+    document.addEventListener('click', (e) => {
+        if (e.target.id === 'modalLogoutBtn' || e.target.closest('#modalLogoutBtn')) {
+            if (confirm('Apakah kamu yakin ingin keluar?')) {
+                if (window.EduvixAPI) EduvixAPI.logout();
+            }
+        }
+    });
+
+    // Klik Tombol Akun / Profil / Notifikasi
     document.addEventListener('click', (e) => {
         // Klik Tombol Notifikasi
         if (e.target.closest('.notif-btn')) {
@@ -495,6 +721,29 @@ function eduvixInitGlobalUI() {
             e.preventDefault();
             e.stopPropagation();
             document.getElementById('profileModal')?.classList.add('open');
+            syncPremiumInventory();
+        }
+    });
+
+    // Handle Selection (Lanjutkan logic yang ada)
+    document.addEventListener('click', async (e) => {
+        const borderOpt = e.target.closest('.border-opt');
+        if (borderOpt) {
+            const val = borderOpt.dataset.border;
+            await eduvixSetBorder(val);
+            if (window.EduvixAPI && EduvixAPI.showApiToast) {
+                EduvixAPI.showApiToast('Border profil berhasil diubah!', 'success');
+            }
+        }
+
+        const avatarOpt = e.target.closest('.avatar-opt');
+        if (avatarOpt) {
+            const val = avatarOpt.dataset.avatar;
+            if (val === 'initial') await eduvixSetAvatar('initial', null);
+            else await eduvixSetAvatar('icon', val);
+            if (window.EduvixAPI && EduvixAPI.showApiToast) {
+                EduvixAPI.showApiToast('Avatar profil berhasil diubah!', 'success');
+            }
         }
     });
 
@@ -577,6 +826,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Jalankan interaksi tombol
     eduvixInitGlobalUI();
+
+    // Cek apakah ada streak yang bisa dipulihkan
+    const user = EduvixAPI.getUser();
+    if (user && user.last_streak > 1) {
+        setTimeout(() => eduvixShowStreakRecovery(user.last_streak), 1500);
+    }
 
     // Pasang logout handler di semua tombol logout
     document.querySelectorAll('[data-logout], .logout-btn').forEach(btn => {

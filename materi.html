@@ -439,6 +439,48 @@
         .page-dot:not(.active) {
             width: 6px;
         }
+
+        @media (max-width: 768px) {
+            .materi-container {
+                padding: 24px 16px;
+                margin-top: 16px;
+            }
+            .materi-header {
+                margin-bottom: 24px;
+                padding-bottom: 20px;
+            }
+            .materi-header h1 {
+                font-size: 20px;
+            }
+            .materi-header p {
+                font-size: 14px;
+            }
+            .interactive-grid, .tips-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            .mh-badge {
+                padding: 4px 12px;
+                font-size: 11px;
+            }
+            .materi-section h2 {
+                font-size: 16px;
+                margin-bottom: 12px;
+            }
+            .materi-section p {
+                font-size: 14px;
+                line-height: 1.6;
+            }
+            .btn-quiz {
+                padding: 14px;
+                font-size: 14px;
+                margin-top: 24px;
+            }
+            .info-box {
+                padding: 16px;
+                margin: 20px 0;
+            }
+        }
     </style>
 </head>
 
@@ -826,17 +868,114 @@
                  MODUL 03 — Coming Soon
             ════════════════════════════════════════ -->
             <div class="materi-container lesson-page" id="page-3" style="display:none;">
-                <div style="text-align:center; padding: 60px 20px;">
-                    <div style="font-size:56px; margin-bottom:20px;">🔒</div>
-                    <span class="mh-badge" style="background: #f3f4f6; color: #6b7280;">Modul 03</span>
-                    <h2
-                        style="font-family:'Sora',sans-serif; font-size:28px; font-weight:800; margin: 16px 0 10px; color: var(--text);">
-                        Anatomi Argumen</h2>
-                    <p style="color: var(--text-mid); font-size:15px; margin-bottom:32px;">Konten modul ini sedang dalam
-                        pengembangan. Pantau terus ya!</p>
+                <div class="materi-header">
+                    <span class="mh-badge">Modul 03</span>
+                    <h1>Anatomi Argumen</h1>
+                    <p>Mengenal struktur dasar sebuah argumen: Premis, Konklusi, dan Validitas.</p>
+                </div>
+
+                <div class="materi-section">
+                    <h2><i class="fa-solid fa-shapes"></i> Apa itu Argumen?</h2>
+                    <p>Dalam dunia logika, "argumen" bukanlah pertengkaran atau debat kusir. Argumen adalah sekumpulan pernyataan yang saling berhubungan, di mana beberapa pernyataan (Premis) digunakan untuk mendukung pernyataan lainnya (Konklusi).</p>
+                    <p>Memahami anatomi argumen adalah kunci untuk membedakan mana alasan yang masuk akal dan mana yang cuma sekadar omong kosong.</p>
+                </div>
+
+                <div class="interactive-grid">
+                    <div class="interactive-card">
+                        <div class="ic-icon"><i class="fa-solid fa-arrow-right-to-bracket"></i></div>
+                        <h3>1. Premis</h3>
+                        <p>Pernyataan dasar yang menjadi landasan atau alasan untuk mendukung sebuah kesimpulan. Argumen bisa punya satu atau lebih premis.</p>
+                    </div>
+                    <div class="interactive-card">
+                        <div class="ic-icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
+                        <h3>2. Konklusi</h3>
+                        <p>Kesimpulan akhir atau klaim utama yang ingin dibuktikan oleh si pembicara berdasarkan premis-premis yang ada.</p>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h4><i class="fa-solid fa-scale-balanced"></i> Contoh Sederhana</h4>
+                    <p><strong>Premis 1:</strong> Semua manusia butuh minum air agar hidup.</p>
+                    <p><strong>Premis 2:</strong> Andi adalah seorang manusia.</p>
+                    <p><strong>Konklusi:</strong> Maka, Andi butuh minum air agar hidup.</p>
+                    <p>Ini adalah contoh argumen yang sempurna karena premisnya benar dan kesimpulannya logis!</p>
+                </div>
+
+                <div class="materi-section">
+                    <h2><i class="fa-solid fa-brain"></i> Validitas vs Kebenaran (Biar Seru!)</h2>
+                    <p>Banyak orang bingung bedanya argumen yang **Valid** dan yang **Benar**. Biar gampang, kita pakai contoh ekstrem ini:</p>
+                    
+                    <div class="interactive-grid">
+                        <div class="interactive-card">
+                            <h3>🚀 Valid tapi Salah</h3>
+                            <p><strong>Premis 1:</strong> Semua kucing bisa terbang.</p>
+                            <p><strong>Premis 2:</strong> Meong adalah kucing.</p>
+                            <p><strong>Konklusi:</strong> Maka, Meong bisa terbang.</p>
+                            <p><em>Secara struktur logika ini VALID (masuk akal jika premisnya benar), tapi faktanya SALAH karena kucing ngga bisa terbang!</em></p>
+                        </div>
+                        <div class="interactive-card">
+                            <h3>🤯 Gak Valid tapi Benar</h3>
+                            <p><strong>Premis 1:</strong> Bumi itu bulat.</p>
+                            <p><strong>Premis 2:</strong> Es itu dingin.</p>
+                            <p><strong>Konklusi:</strong> Maka, kucing adalah mamalia.</p>
+                            <p><em>Semua pernyataannya BENAR sesuai fakta, tapi argumennya GAK VALID karena ngga nyambung sama sekali! Kesimpulannya ngga ditarik dari premis.</em></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 16px; margin-top: 32px; justify-content: center;">
                     <a href="#" class="btn-quiz" onclick="goToPage(2); return false;"
-                        style="background: var(--indigo-l); color: var(--indigo); box-shadow: none; max-width: 280px; margin: 0 auto;">
-                        <i class="fa-solid fa-arrow-left"></i> Kembali ke Modul 02
+                        style="background: var(--indigo-l); color: var(--indigo); box-shadow: none; width: auto; padding: 12px 24px; margin-top: 0;">
+                        <i class="fa-solid fa-arrow-left"></i> Kembali
+                    </a>
+                    <a href="#" class="btn-quiz" onclick="EduvixAPI.selesaikanMateri('materi_03', 50).then(() => EduvixAPI.showApiToast('XP & Koin Berhasil Diambil!', 'success')).catch(err => EduvixAPI.showApiToast('Gagal: ' + err.message, 'error')); return false;"
+                        style="width: auto; padding: 12px 24px; margin-top: 0;">
+                        <i class="fa-solid fa-check"></i> Selesaikan Modul & Ambil XP
+                    </a>
+                </div>
+            </div>
+
+            <!-- ═══════════════════════════════════════
+                 MODUL 04 — Logical Fallacies
+            ════════════════════════════════════════ -->
+            <div class="materi-container lesson-page" id="page-4" style="display:none;">
+                <div class="materi-header">
+                    <span class="mh-badge">Modul 04</span>
+                    <h1>Logical Fallacies</h1>
+                    <p>Mengenal kesesatan berpikir yang sering menjebak kita dalam berargumen.</p>
+                </div>
+
+                <div class="materi-section">
+                    <h2><i class="fa-solid fa-mask"></i> Apa itu Logical Fallacy?</h2>
+                    <p>Logical Fallacy (Kesesatan Berpikir) adalah argumen yang terdengar benar atau meyakinkan, tapi sebenarnya mengandung cacat logika. Ini sering digunakan (sengaja atau tidak) untuk memenangkan perdebatan.</p>
+                </div>
+
+                <div class="interactive-grid">
+                    <div class="interactive-card">
+                        <div class="ic-icon"><i class="fa-solid fa-user-slash"></i></div>
+                        <h3>1. Ad Hominem</h3>
+                        <p>Menyerang pribadi atau karakter lawan bicara, bukan argumennya. Contoh: "Kamu kan masih bocah, tau apa soal politik!"</p>
+                    </div>
+                    <div class="interactive-card">
+                        <div class="ic-icon"><i class="fa-solid fa-wheat-awn-circle-exclamation"></i></div>
+                        <h3>2. Strawman</h3>
+                        <p>Memelintir argumen lawan menjadi posisi yang ekstrem atau konyol, lalu menyerang argumen baru tersebut. Contoh: "Kamu ngga suka kucing? Berarti kamu benci hewan!"</p>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h4><i class="fa-solid fa-lightbulb"></i> Tips Pemikir Kritis</h4>
+                    <p>Jika kamu menemukan fallacy dalam argumen orang lain, jangan langsung emosi. Cukup tunjukkan letak kesalahannya secara tenang. Fokus pada data dan logika, bukan ego!</p>
+                </div>
+
+                <div style="display: flex; gap: 16px; margin-top: 32px; justify-content: center;">
+                    <a href="#" class="btn-quiz" onclick="goToPage(3); return false;"
+                        style="background: var(--indigo-l); color: var(--indigo); box-shadow: none; width: auto; padding: 12px 24px; margin-top: 0;">
+                        <i class="fa-solid fa-arrow-left"></i> Kembali
+                    </a>
+                    <a href="#" class="btn-quiz" onclick="EduvixAPI.selesaikanMateri('materi_04', 50).then(() => EduvixAPI.showApiToast('XP & Koin Berhasil Diambil!', 'success')).catch(err => EduvixAPI.showApiToast('Gagal: ' + err.message, 'error')); return false;"
+                        style="width: auto; padding: 12px 24px; margin-top: 0;">
+                        <i class="fa-solid fa-check"></i> Selesaikan Modul & Ambil XP
                     </a>
                 </div>
             </div>
@@ -845,7 +984,7 @@
     </div>
 
     <script>
-        const TOTAL_PAGES = 3;
+        const TOTAL_PAGES = 4;
 
         // Build nav dots
         const navBar = document.getElementById('pageNavBar');
@@ -879,8 +1018,10 @@
         // Check URL hash on load
         window.addEventListener('DOMContentLoaded', () => {
             const hash = window.location.hash;
-            if (hash === '#page-2') goToPage(2);
-            else if (hash === '#page-3') goToPage(3);
+            if (hash.startsWith('#page-')) {
+                const num = parseInt(hash.replace('#page-', ''));
+                if (num) goToPage(num);
+            }
         });
 
         // Contoh soal interaktif

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peringkat Global - EDUVIX.ID</title>
+    <link rel="stylesheet" href="beranda.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" type="image/png" href="WhatsApp Image 2026-05-05 at 18.33.04.png">
+    <style>
+        /* TEMA TERANG & FULL WIDTH */
+        body {
+            background: #f8fafc !important;
+            /* Latar belakang terang */
+            color: #0f172a !important;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .main-content {
+            margin-left: 0 !important;
+            padding: 40px !important;
+            max-width: 1200px !important;
+            /* Lebar maksimal diperbesar */
+            width: 100% !important;
+            margin: 0 auto !important;
+        }
+
+        .leaderboard-container {
+            background: #ffffff !important;
+            /* Card putih bersih */
+            border-radius: 20px !important;
+            padding: 32px !important;
+            border: 1px solid #e2e8f0 !important;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05) !important;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            background: #f8fafc !important;
+            /* Item agak abu muda */
+            border-radius: 16px !important;
+            border: 1px solid #e2e8f0 !important;
+            transition: all 0.2s ease;
+        }
+
+        .leaderboard-item:hover {
+            transform: translateX(4px);
+            background: #f1f5f9 !important;
+            border-color: #cbd5e1 !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+        }
+
+        .rank-badge {
+            font-weight: 900;
+            font-size: 20px;
+            width: 40px;
+            text-align: center;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-meta h4 {
+            font-family: 'Sora', sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            color: #0f172a !important;
+            /* Teks gelap */
+        }
+
+        .user-meta span {
+            font-size: 13px;
+            color: #64748b !important;
+            /* Teks abu-abu */
+        }
+
+        .value-display {
+            font-weight: 900;
+            color: #4f46e5 !important;
+            /* Indigo terang */
+            font-size: 18px;
+            font-family: 'Sora', sans-serif;
+        }
+
+        /* Tabs Styling Terang */
+        .leaderboard-tabs {
+            display: flex;
+            gap: 8px;
+        }
+
+        .tab-btn {
+            background: #f1f5f9 !important;
+            color: #475569 !important;
+            border: 1px solid #e2e8f0 !important;
+            padding: 10px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            background: #e2e8f0 !important;
+            color: #1e293b !important;
+            border-color: #cbd5e1 !important;
+        }
+
+        .tab-btn.active {
+            background: #4f46e5 !important;
+            /* Indigo Terang */
+            color: #fff !important;
+            border-color: #4f46e5 !important;
+            box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2) !important;
+        }
+
+        .btn-kembali {
+            background: #ffffff !important;
+            color: #0f172a !important;
+            border: 1px solid #e2e8f0 !important;
+            padding: 12px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+        }
+
+        .btn-kembali:hover {
+            background: #f8fafc !important;
+            border-color: #cbd5e1 !important;
+            transform: translateX(-2px);
+        }
+
+        .coin-badge {
+            background: #fef3c7 !important;
+            /* Kuning terang */
+            border: 1px solid #fde68a !important;
+        }
+
+        .coin-badge span {
+            color: #b45309 !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container" style="display: block;">
+        <main class="main-content">
+            <!-- Header Ringkas -->
+            <header class="top-header"
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; background: transparent; padding: 0; border: none;">
+                <a href="dashboard.html" class="btn-kembali">
+                    <i class="fa-solid fa-arrow-left"></i> Kembali ke Dashboard
+                </a>
+
+                <div class="header-actions" style="display: flex; align-items: center; gap: 12px;">
+                    <div class="coin-badge"
+                        style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 12px;">
+                        <i class="fa-solid fa-coins" style="color: #d97706;"></i>
+                        <span data-user-coins style="font-weight: 800; font-size: 15px;">0</span>
+                    </div>
+                    <div class="user-profile" style="display: flex; align-items: center; gap: 10px;">
+                        <div class="avatar-wrapper">
+                            <div class="avatar" data-user-avatar
+                                style="width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #4f46e5; color: white; font-weight: bold; font-size: 16px;">
+                                U</div>
+                        </div>
+                        <span class="user-name" data-user-name
+                            style="font-weight: 700; color: #0f172a; font-size: 14px;"></span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="with-logo"
+                style="margin-bottom: 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <img src="WhatsApp Image 2026-05-05 at 18.33.04.png" alt="Logo" class="title-logo"
+                        style="width: 48px; height: 48px;">
+                    <h3 class="section-title"
+                        style="margin-bottom: 0; font-size: 28px; color: #0f172a; font-weight: 900;">Peringkat Global
+                    </h3>
+                </div>
+
+                <div class="leaderboard-tabs">
+                    <button class="tab-btn active" data-sort="xp">XP</button>
+                    <button class="tab-btn" data-sort="nilai">Nilai</button>
+                    <button class="tab-btn" data-sort="akurasi">Akurasi</button>
+                </div>
+            </div>
+
+            <div class="leaderboard-container">
+                <div class="leaderboard-list" style="display: flex; flex-direction: column; gap: 12px;">
+                    <div style="text-align: center; color: #64748b; font-size: 16px; padding: 40px;">Memuat peringkat...
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="api.js"></script>
+    <script src="jalan.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = await EduvixAPI.initPage();
+            if (!user) return;
+
+            // Isi nama user di header
+            const nameEl = document.querySelector('[data-user-name]');
+            if (nameEl) nameEl.innerText = user.nama || user.username;
+
+            // Handle Tab Clicks
+            const tabs = document.querySelectorAll('.tab-btn');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    initLeaderboard(tab.dataset.sort);
+                });
+            });
+
+            initLeaderboard('xp');
+        });
+
+        async function initLeaderboard(sortBy = 'xp') {
+            const listEl = document.querySelector('.leaderboard-list');
+
+            try {
+                listEl.innerHTML = '<div style="text-align: center; color: #64748b; font-size: 16px; padding: 40px;">Memuat peringkat...</div>';
+
+                const response = await EduvixAPI.apiFetch(`/api/leaderboard?sort=${sortBy}`);
+                listEl.innerHTML = '';
+
+                if (!response || response.length === 0) {
+                    listEl.innerHTML = '<div style="text-align: center; color: #64748b; font-size: 16px; padding: 40px;">Belum ada data peringkat.</div>';
+                    return;
+                }
+
+                response.forEach((u, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'leaderboard-item';
+
+                    const rankColors = ['#f59e0b', '#94a3b8', '#b45309'];
+                    const rankColor = rankColors[index] || '#64748b';
+
+                    const displayName = u.nama || u.username || 'Anonim';
+
+                    const isPioneer = u.id <= 5;
+                    const titleHtml = isPioneer ? `<span style="background: #ec4899; color: #ffffff !important; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-left: 8px; font-weight: 800;">Pelopor</span>` : '';
+
+                    let valueLabel = `${u.value || 0} XP`;
+                    if (sortBy === 'nilai') valueLabel = `${u.value || 0} Poin`;
+                    if (sortBy === 'akurasi') valueLabel = `${u.value || 0}`;
+
+                    item.innerHTML = `
+                        <div class="user-info">
+                            <span class="rank-badge" style="color: ${rankColor};">#${index + 1}</span>
+                            <div class="user-meta">
+                                <h4>${displayName}${titleHtml}</h4>
+                                <span>Level ${u.level || 1}</span>
+                            </div>
+                        </div>
+                        <div class="value-display" style="color: ${index < 3 ? rankColor : '#4f46e5'}">${valueLabel}</div>
+                    `;
+                    listEl.appendChild(item);
+                });
+            } catch (error) {
+                listEl.innerHTML = '<div style="text-align: center; color: #ef4444; font-size: 16px; padding: 40px;">Gagal memuat peringkat.</div>';
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -137,6 +137,50 @@
             color: var(--text-soft);
             font-weight: 600;
         }
+
+        @media (max-width: 768px) {
+            .summary-stats {
+                grid-template-columns: 1fr;
+                gap: 8px;
+                margin-bottom: 16px;
+            }
+            .summary-item {
+                padding: 12px;
+                gap: 12px;
+            }
+            .sum-icon {
+                width: 44px;
+                height: 44px;
+                font-size: 18px;
+            }
+            .sum-info h3 {
+                font-size: 18px;
+            }
+            .achievements-grid {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns for better density */
+                gap: 10px;
+            }
+            .badge-card {
+                padding: 16px 12px;
+            }
+            .badge-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+                margin-bottom: 12px;
+            }
+            .badge-info h4 {
+                font-size: 13px;
+            }
+            .badge-info p {
+                font-size: 10px;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+        }
     </style>
 </head>
 
@@ -339,11 +383,11 @@
                 </div>
                 <div class="stats-widget">
                     <div class="stat-box">
-                        <span class="stat-box-val">6/20</span>
+                        <span id="badgeCount" class="stat-box-val">0/6</span>
                         <div class="stat-box-lbl">Lencana Didapat</div>
                     </div>
                     <div class="stat-box">
-                        <span class="stat-box-val">85%</span>
+                        <span id="completionRate" class="stat-box-val">0%</span>
                         <div class="stat-box-lbl">Completion Rate</div>
                     </div>
                 </div>
@@ -371,10 +415,53 @@
             const user = await EduvixAPI.initPage();
             if (!user) return;
             
-            const done = (user.materiSelesai || []).length;
+            // Ambil data progress terbaru dari API
+            const progress = await EduvixAPI.getProgressMateri() || [];
+            const done = progress.length;
+            
+            // Ambil riwayat kuis
+            const quizRiwayat = await EduvixAPI.getRiwayatQuiz() || [];
+            
+            // Hitung kuis dengan nilai sempurna (100)
+            const bestScores = {};
+            quizRiwayat.forEach(q => {
+                const qid = q.quiz_id || 'default';
+                if (!bestScores[qid] || q.skor > bestScores[qid]) {
+                    bestScores[qid] = q.skor;
+                }
+            });
+            const perfectQuizzes = Object.values(bestScores).filter(s => s === 100).length;
+            
             document.getElementById('totalMedals').innerText = done;
-            const badges = document.querySelectorAll('.badge-card');
-            badges.forEach((b, i) => { if (i < done) b.classList.add('earned'); });
+            
+            const isPioneer = user.id <= 5;
+            const streak = user.streak || 0;
+            
+            const badgeCards = document.querySelectorAll('.badge-card');
+            
+            // Kondisi asli untuk masing-masing lencana
+            const conditions = [
+                done >= 1,            // Pemula
+                streak >= 7,          // 7 Hari Belajar
+                done >= 5,            // Ahli Logika
+                perfectQuizzes >= 3,  // Skor Tertinggi
+                done >= 20,           // Raja Belajar
+                isPioneer             // Pelopor EDUVIX
+            ];
+            
+            badgeCards.forEach((card, i) => {
+                if (conditions[i]) {
+                    card.classList.add('earned');
+                }
+            });
+
+            // Update Statistik di Widget Kanan
+            const earnedCount = document.querySelectorAll('.badge-card.earned').length;
+            const totalCount = badgeCards.length;
+            const percent = Math.round((earnedCount / totalCount) * 100);
+            
+            document.getElementById('badgeCount').innerText = `${earnedCount}/${totalCount}`;
+            document.getElementById('completionRate').innerText = `${percent}%`;
         });
     </script>
 </body>

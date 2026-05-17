@@ -7,9 +7,16 @@
   <title>Materi Komunitas - EDUVIX.ID</title>
   <link rel="stylesheet" href="beranda.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Document viewers -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <link rel="icon" type="image/png" href="WhatsApp Image 2026-05-05 at 18.33.04.png">
   <script src="beranda.js" defer></script>
   <style>
+    .app-container {
+      grid-template-columns: var(--sb-w) 1fr;
+    }
+
     .community-header {
       display: flex;
       justify-content: space-between;
@@ -47,10 +54,11 @@
       background: rgba(0, 0, 0, 0.5);
       backdrop-filter: blur(4px);
       display: none;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
       z-index: 1000;
-      padding: 20px;
+      padding: 40px 20px;
+      overflow-y: auto;
     }
 
     .modal-card {
@@ -316,6 +324,1261 @@
       border: 1.5px solid var(--border) !important;
       box-shadow: var(--shadow-sm);
     }
+
+    /* ── QUIZ PLAYER MODAL ─────────────────── */
+    .quiz-player-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .55);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 20px;
+    }
+
+    .quiz-player-card {
+      background: var(--card);
+      width: 100%;
+      max-width: 560px;
+      border-radius: 28px;
+      padding: 36px 32px 32px;
+      box-shadow: var(--shadow-lg);
+      animation: modalFadeUp .35s cubic-bezier(.16, 1, .3, 1);
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .quiz-progress-bar {
+      width: 100%;
+      height: 6px;
+      background: var(--border);
+      border-radius: 99px;
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+
+    .quiz-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--indigo), var(--violet));
+      border-radius: 99px;
+      transition: width .4s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    .quiz-question-num {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--indigo);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 8px;
+    }
+
+    .quiz-question-text {
+      font-family: 'Sora', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .quiz-option-btn {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      cursor: pointer;
+      transition: var(--tr);
+      text-align: left;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      width: 100%;
+    }
+
+    .quiz-option-btn:hover:not(:disabled) {
+      border-color: var(--indigo);
+      background: var(--indigo-l);
+      transform: translateX(4px);
+    }
+
+    .quiz-option-btn .opt-letter {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 13px;
+      color: var(--indigo);
+      flex-shrink: 0;
+      transition: var(--tr);
+    }
+
+    .quiz-option-btn.correct {
+      border-color: var(--emerald);
+      background: #d1fae5;
+    }
+
+    .quiz-option-btn.correct .opt-letter {
+      background: var(--emerald);
+      color: #fff;
+      border-color: var(--emerald);
+    }
+
+    .quiz-option-btn.wrong {
+      border-color: var(--red);
+      background: #fee2e2;
+    }
+
+    .quiz-option-btn.wrong .opt-letter {
+      background: var(--red);
+      color: #fff;
+      border-color: var(--red);
+    }
+
+    .quiz-feedback {
+      margin-top: 16px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      display: none;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .quiz-feedback.show {
+      display: flex;
+    }
+
+    .quiz-feedback.correct-fb {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .quiz-feedback.wrong-fb {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .quiz-next-btn {
+      width: 100%;
+      margin-top: 20px;
+      padding: 14px;
+      background: var(--indigo);
+      color: #fff;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 15px;
+      transition: var(--tr);
+      display: none;
+    }
+
+    .quiz-next-btn:hover {
+      background: var(--indigo-d);
+      transform: translateY(-2px);
+    }
+
+    .quiz-next-btn.show {
+      display: block;
+    }
+
+    .quiz-result-view {
+      text-align: center;
+      padding: 16px 0;
+    }
+
+    .quiz-result-score {
+      font-family: 'Sora', sans-serif;
+      font-size: 64px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--indigo), var(--violet));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .quiz-result-label {
+      font-size: 14px;
+      color: var(--text-soft);
+      margin-bottom: 24px;
+    }
+
+    .quiz-score-ring {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 20px;
+    }
+
+    .btn-quiz-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      color: var(--text-mid);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--tr);
+    }
+
+    .btn-quiz-close:hover {
+      background: var(--red);
+      color: #fff;
+      border-color: var(--red);
+    }
+
+    /* ── MATERI VIEWER MODAL ──────────────────── */
+    .materi-viewer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .55);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      z-index: 2000;
+      padding: 32px 20px;
+      overflow-y: auto;
+      transition: padding .3s ease;
+    }
+
+    .materi-viewer-card {
+      background: var(--card);
+      width: 100%;
+      max-width: 720px;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      animation: modalFadeUp .35s cubic-bezier(.16, 1, .3, 1);
+      margin-bottom: 32px;
+      transition: max-width .3s ease, border-radius .3s ease, margin .3s ease;
+    }
+
+    /* ══════════════════════════════════════════════════
+       FULLSCREEN MODE — card menjadi position:fixed sendiri
+       tidak bergantung pada parent overlay sama sekali
+    ══════════════════════════════════════════════════ */
+    .materi-viewer-overlay.doc-fullscreen {
+      padding: 0 !important;
+      overflow: hidden !important;
+    }
+
+    .materi-viewer-card.doc-fullscreen {
+      /* posisi absolut menutupi seluruh layar */
+      position: fixed !important;
+      inset: 0 !important;
+      z-index: 2100 !important;
+      /* ukuran penuh */
+      width: 100vw !important;
+      height: 100vh !important;
+      max-width: none !important;
+      border-radius: 0 !important;
+      margin: 0 !important;
+      /* layout flex kolom */
+      display: flex !important;
+      flex-direction: column !important;
+      overflow: hidden !important;
+      animation: none !important;
+    }
+
+    /* Hero hilang */
+    .materi-viewer-card.doc-fullscreen .materi-viewer-hero {
+      display: none !important;
+    }
+
+    /* Body = sisa tinggi penuh */
+    .materi-viewer-card.doc-fullscreen .materi-viewer-body {
+      flex: 1 !important;
+      min-height: 0 !important;
+      overflow: hidden !important;
+      padding: 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+    }
+
+    /* Sembunyikan elemen non-file */
+    .materi-viewer-card.doc-fullscreen .materi-desc-box,
+    .materi-viewer-card.doc-fullscreen .materi-viewer-meta,
+    .materi-viewer-card.doc-fullscreen .materi-viewer-body>span,
+    .materi-viewer-card.doc-fullscreen .materi-viewer-body>h2,
+    .materi-viewer-card.doc-fullscreen .materi-content-section:not(:has(.file-viewer-box)) {
+      display: none !important;
+    }
+
+    /* Section dengan file viewer mengisi sisa */
+    .materi-viewer-card.doc-fullscreen .materi-content-section:has(.file-viewer-box) {
+      flex: 1 !important;
+      min-height: 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      margin: 0 !important;
+    }
+
+    .materi-viewer-card.doc-fullscreen .materi-content-section:has(.file-viewer-box)>h4 {
+      display: none !important;
+    }
+
+    /* File viewer box mengisi sisa */
+    .materi-viewer-card.doc-fullscreen .file-viewer-box {
+      flex: 1 !important;
+      min-height: 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      border-radius: 0 !important;
+      border: none !important;
+    }
+
+    /* Toolbar fixed height */
+    .materi-viewer-card.doc-fullscreen .fv-toolbar {
+      flex-shrink: 0 !important;
+    }
+
+    /* iframe / object mengisi sisa — pakai height:100% karena parent sudah flex */
+    .materi-viewer-card.doc-fullscreen .file-viewer-box iframe,
+    .materi-viewer-card.doc-fullscreen .file-viewer-box object {
+      flex: 1 !important;
+      width: 100% !important;
+      height: 0 !important;
+      /* height:0 + flex:1 = mengisi sisa di flex container */
+      min-height: 0 !important;
+      display: block !important;
+    }
+
+    /* DOCX render area */
+    .materi-viewer-card.doc-fullscreen .docx-render-area {
+      flex: 1 !important;
+      min-height: 0 !important;
+      max-height: none !important;
+      overflow-y: auto !important;
+    }
+
+    /* PPT inner box */
+    .materi-viewer-card.doc-fullscreen [id^="pptBox_"] {
+      flex: 1 !important;
+      min-height: 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+    }
+
+
+
+    /* Compact header bar in fullscreen */
+    .fv-fullscreen-bar {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      background: var(--card);
+      border-bottom: 1.5px solid var(--border);
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .materi-viewer-card.doc-fullscreen .fv-fullscreen-bar {
+      display: flex;
+    }
+
+    .fv-fullscreen-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ══ CSS saat Native Fullscreen API aktif ══════════════════ */
+    /* Card mengisi penuh layar (browser sudah handle ukurannya) */
+    #materiViewerCard:fullscreen,
+    #materiViewerCard:-webkit-full-screen,
+    #materiViewerCard:-moz-full-screen,
+    #materiViewerCard:-ms-fullscreen {
+      display: flex !important;
+      flex-direction: column !important;
+      width: 100% !important;
+      height: 100% !important;
+      overflow: hidden !important;
+      border-radius: 0 !important;
+      background: var(--card) !important;
+    }
+
+    /* Hero hilang */
+    #materiViewerCard:fullscreen .materi-viewer-hero,
+    #materiViewerCard:-webkit-full-screen .materi-viewer-hero {
+      display: none !important;
+    }
+
+    /* Fullscreen bar muncul */
+    #materiViewerCard:fullscreen .fv-fullscreen-bar,
+    #materiViewerCard:-webkit-full-screen .fv-fullscreen-bar {
+      display: flex !important;
+    }
+
+    /* Body mengisi sisa */
+    #materiViewerCard:fullscreen .materi-viewer-body,
+    #materiViewerCard:-webkit-full-screen .materi-viewer-body {
+      flex: 1 !important;
+      min-height: 0 !important;
+      overflow: hidden !important;
+      padding: 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+    }
+
+    /* Sembunyikan non-file */
+    #materiViewerCard:fullscreen .materi-desc-box,
+    #materiViewerCard:fullscreen .materi-viewer-meta,
+    #materiViewerCard:fullscreen .materi-viewer-body>span,
+    #materiViewerCard:fullscreen .materi-viewer-body>h2,
+    #materiViewerCard:fullscreen .materi-content-section:not(:has(.file-viewer-box)),
+    #materiViewerCard:-webkit-full-screen .materi-desc-box,
+    #materiViewerCard:-webkit-full-screen .materi-viewer-meta,
+    #materiViewerCard:-webkit-full-screen .materi-viewer-body>span,
+    #materiViewerCard:-webkit-full-screen .materi-viewer-body>h2,
+    #materiViewerCard:-webkit-full-screen .materi-content-section:not(:has(.file-viewer-box)) {
+      display: none !important;
+    }
+
+    /* Section file mengisi sisa */
+    #materiViewerCard:fullscreen .materi-content-section:has(.file-viewer-box),
+    #materiViewerCard:-webkit-full-screen .materi-content-section:has(.file-viewer-box) {
+      flex: 1 !important;
+      min-height: 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      margin: 0 !important;
+    }
+
+    #materiViewerCard:fullscreen .materi-content-section:has(.file-viewer-box)>h4,
+    #materiViewerCard:-webkit-full-screen .materi-content-section:has(.file-viewer-box)>h4 {
+      display: none !important;
+    }
+
+    /* File viewer box */
+    #materiViewerCard:fullscreen .file-viewer-box,
+    #materiViewerCard:-webkit-full-screen .file-viewer-box {
+      flex: 1 !important;
+      min-height: 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      border: none !important;
+      border-radius: 0 !important;
+    }
+
+    /* Toolbar shrink: 0 */
+    #materiViewerCard:fullscreen .fv-toolbar,
+    #materiViewerCard:-webkit-full-screen .fv-toolbar {
+      flex-shrink: 0 !important;
+    }
+
+    /* iframe / object mengisi sisa penuh */
+    #materiViewerCard:fullscreen .file-viewer-box iframe,
+    #materiViewerCard:fullscreen .file-viewer-box object,
+    #materiViewerCard:-webkit-full-screen .file-viewer-box iframe,
+    #materiViewerCard:-webkit-full-screen .file-viewer-box object {
+      flex: 1 !important;
+      width: 100% !important;
+      height: 0 !important;
+      min-height: 0 !important;
+      display: block !important;
+    }
+
+    /* DOCX area */
+    #materiViewerCard:fullscreen .docx-render-area,
+    #materiViewerCard:-webkit-full-screen .docx-render-area {
+      flex: 1 !important;
+      min-height: 0 !important;
+      max-height: none !important;
+      overflow-y: auto !important;
+    }
+
+    /* PPT box */
+    #materiViewerCard:fullscreen [id^="pptBox_"],
+    #materiViewerCard:-webkit-full-screen [id^="pptBox_"] {
+      flex: 1 !important;
+      min-height: 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+    }
+
+
+
+    .materi-viewer-hero {
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 64px;
+      color: rgba(255, 255, 255, .9);
+      position: relative;
+    }
+
+    .materi-viewer-hero-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .2);
+      backdrop-filter: blur(4px);
+      border: 1.5px solid rgba(255, 255, 255, .3);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--tr);
+    }
+
+    .materi-viewer-hero-close:hover {
+      background: rgba(255, 255, 255, .4);
+    }
+
+    .materi-viewer-body {
+      padding: 32px;
+    }
+
+    /* Fullscreen expand button in toolbar */
+    .fv-btn.fv-expand {
+      background: linear-gradient(135deg, var(--indigo), var(--violet));
+      color: #fff;
+      border-color: var(--indigo);
+    }
+
+    .fv-btn.fv-expand:hover {
+      opacity: .85;
+    }
+
+    .materi-viewer-body h2 {
+      font-family: 'Sora', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .materi-viewer-meta {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .materi-viewer-meta span {
+      font-size: 12px;
+      color: var(--text-soft);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .materi-desc-box {
+      background: var(--bg);
+      border-radius: 14px;
+      padding: 18px 20px;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text-mid);
+      margin-bottom: 20px;
+      border-left: 4px solid var(--indigo);
+    }
+
+    .materi-content-section {
+      margin-bottom: 24px;
+    }
+
+    .materi-content-section h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-mid);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .materi-content-section h4::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── FILE VIEWER INLINE ───────────────────── */
+    .file-viewer-box {
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--bg);
+      position: relative;
+    }
+
+    /* Toolbar */
+    .fv-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: var(--card);
+      border-bottom: 1.5px solid var(--border);
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .fv-toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .fv-toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .fv-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      color: var(--text-mid);
+      transition: var(--tr);
+      text-decoration: none;
+    }
+
+    .fv-btn:hover {
+      background: var(--indigo);
+      color: #fff;
+      border-color: var(--indigo);
+    }
+
+    .fv-btn.primary {
+      background: var(--indigo);
+      color: #fff;
+      border-color: var(--indigo);
+    }
+
+    .fv-btn.primary:hover {
+      opacity: .85;
+    }
+
+    .fv-filename {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-mid);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 200px;
+    }
+
+    /* iframe / object embed */
+    .file-viewer-box iframe,
+    .file-viewer-box object {
+      width: 100%;
+      height: 540px;
+      border: none;
+      display: block;
+    }
+
+    /* DOCX rendered HTML */
+    .docx-render-area {
+      padding: 28px 32px;
+      max-height: 560px;
+      overflow-y: auto;
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--text);
+      background: #fff;
+    }
+
+    .docx-render-area h1,
+    .docx-render-area h2,
+    .docx-render-area h3 {
+      font-family: 'Sora', sans-serif;
+      color: var(--indigo);
+      margin: 16px 0 8px;
+    }
+
+    .docx-render-area p {
+      margin-bottom: 10px;
+    }
+
+    .docx-render-area table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 12px;
+    }
+
+    .docx-render-area td,
+    .docx-render-area th {
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      font-size: 13px;
+    }
+
+    /* Loading spinner */
+    .fv-loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 220px;
+      gap: 14px;
+      color: var(--text-soft);
+      font-size: 13px;
+    }
+
+    .fv-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--border);
+      border-top-color: var(--indigo);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* No preview fallback */
+    .file-viewer-box .no-preview {
+      padding: 40px;
+      text-align: center;
+      color: var(--text-soft);
+    }
+
+    .file-viewer-box .no-preview i {
+      font-size: 48px;
+      margin-bottom: 12px;
+      display: block;
+      color: var(--indigo);
+    }
+
+    /* Link section */
+    .materi-link-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 20px;
+      background: var(--indigo-l);
+      border-radius: 14px;
+      border: 1.5px solid var(--indigo);
+      cursor: pointer;
+      transition: var(--tr);
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .materi-link-card:hover {
+      background: #c7d2fe;
+      transform: translateY(-2px);
+    }
+
+    .materi-link-card .link-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: var(--indigo);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .materi-link-card .link-info strong {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--indigo);
+      display: block;
+    }
+
+    .materi-link-card .link-info span {
+      font-size: 11px;
+      color: var(--text-soft);
+      word-break: break-all;
+    }
+
+    /* Default content blocks for default materials */
+    .content-block {
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 12px;
+    }
+
+    .content-block h5 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .content-block p {
+      font-size: 13px;
+      color: var(--text-mid);
+      line-height: 1.6;
+    }
+
+    .content-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--indigo-l);
+      color: var(--indigo);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 99px;
+      margin-right: 6px;
+      margin-bottom: 6px;
+    }
+
+    /* ── FIX: tombol sejajar di semua card ── */
+    .course-card {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .course-info {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .course-meta {
+      flex: 1;
+    }
+
+    .course-info>div:last-child {
+      margin-top: auto !important;
+    }
+
+    .btn-upgrade {
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    /* ── Visibility Toggle (Publik / Privat) ── */
+    .visibility-toggle {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      background: var(--bg);
+      border-radius: 14px;
+      border: 1.5px solid var(--border);
+      margin-bottom: 20px;
+      user-select: none;
+    }
+
+    .visibility-toggle label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-mid);
+      flex: 1;
+      margin: 0;
+    }
+
+    .visibility-toggle label span {
+      display: block;
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--text-soft);
+      margin-top: 2px;
+    }
+
+    .vis-pill {
+      display: flex;
+      background: var(--border);
+      border-radius: 99px;
+      padding: 3px;
+      gap: 2px;
+    }
+
+    .vis-pill button {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 14px;
+      border-radius: 99px;
+      border: none;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .2s;
+      background: transparent;
+      color: var(--text-soft);
+    }
+
+    .vis-pill button.active-pub {
+      background: var(--emerald, #10b981);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(16, 185, 129, .3);
+    }
+
+    .vis-pill button.active-priv {
+      background: var(--indigo);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(99, 102, 241, .3);
+    }
+
+    /* Badge kunci pada card privat */
+    .badge-private {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 99px;
+      background: #eef2ff;
+      color: var(--indigo);
+      border: 1px solid #c7d2fe;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    /* ══════════════════════════════════════════════════
+       RESPONSIVE — Tablet & Mobile
+    ══════════════════════════════════════════════════ */
+
+    /* ── Tablet (≤ 900px) ── */
+    @media (max-width: 900px) {
+      .app-container {
+        grid-template-columns: 1fr !important;
+      }
+
+      .sidebar {
+        display: none !important;
+      }
+
+      .main-content {
+        padding: 16px !important;
+      }
+
+      .courses-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 16px !important;
+      }
+
+      .modal-card {
+        max-width: 100% !important;
+        border-radius: 20px !important;
+        padding: 24px !important;
+      }
+    }
+
+    /* ── Mobile (≤ 600px) ── */
+    @media (max-width: 600px) {
+
+      /* Layout utama */
+      .main-content {
+        padding: 12px !important;
+        padding-bottom: 90px !important;
+        /* ruang untuk bottom nav */
+      }
+
+      /* Header atas */
+      .top-header {
+        padding: 10px 0 !important;
+        gap: 10px !important;
+        flex-wrap: wrap !important;
+      }
+
+      .search-box {
+        flex: 1 !important;
+        min-width: 0 !important;
+      }
+
+      .search-box input {
+        font-size: 13px !important;
+      }
+
+      .user-name {
+        display: none !important;
+      }
+
+      /* Community header */
+      .community-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 12px !important;
+        margin-bottom: 16px !important;
+      }
+
+      .community-header>div:last-child {
+        width: 100% !important;
+        display: flex !important;
+        gap: 8px !important;
+      }
+
+      .btn-upload {
+        flex: 1 !important;
+        padding: 10px 12px !important;
+        font-size: 13px !important;
+        justify-content: center !important;
+        border-radius: 12px !important;
+      }
+
+      /* Cards grid — 1 kolom */
+      .courses-grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+      }
+
+      /* Modal */
+      .modal-overlay {
+        padding: 0 !important;
+        align-items: flex-end !important;
+      }
+
+      .modal-card {
+        max-width: 100% !important;
+        width: 100% !important;
+        border-radius: 24px 24px 0 0 !important;
+        padding: 20px 16px 32px !important;
+        max-height: 92vh !important;
+        overflow-y: auto !important;
+      }
+
+      .modal-header h2 {
+        font-size: 18px !important;
+      }
+
+      /* Quiz option grid — 1 kolom di HP */
+      .option-group {
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
+      }
+
+      /* Modal footer tombol vertikal */
+      .modal-footer {
+        flex-direction: column !important;
+        gap: 8px !important;
+      }
+
+      .btn-cancel,
+      .btn-submit {
+        flex: unset !important;
+        width: 100% !important;
+      }
+
+      /* Quiz player */
+      .quiz-player-overlay {
+        padding: 0 !important;
+        align-items: flex-end !important;
+      }
+
+      .quiz-player-card {
+        border-radius: 24px 24px 0 0 !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        max-height: 92vh !important;
+        padding: 28px 16px 24px !important;
+      }
+
+      .quiz-question-text {
+        font-size: 15px !important;
+      }
+
+      /* Materi viewer — full screen di HP */
+      .materi-viewer-overlay {
+        padding: 0 !important;
+        align-items: flex-end !important;
+      }
+
+      .materi-viewer-card {
+        border-radius: 24px 24px 0 0 !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        max-height: 96vh !important;
+        overflow-y: auto !important;
+        margin-bottom: 0 !important;
+      }
+
+      .materi-viewer-hero {
+        height: 120px !important;
+        font-size: 48px !important;
+      }
+
+      .materi-viewer-body {
+        padding: 20px 16px !important;
+      }
+
+      /* PDF / file viewer di HP */
+      .file-viewer-box iframe,
+      .file-viewer-box object {
+        height: 420px !important;
+      }
+
+      /* fv-toolbar wrapping */
+      .fv-toolbar {
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+        padding: 8px 10px !important;
+      }
+
+      .fv-toolbar-right {
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+      }
+
+      .fv-btn {
+        padding: 6px 10px !important;
+        font-size: 11px !important;
+      }
+
+      .fv-filename {
+        max-width: 140px !important;
+        font-size: 11px !important;
+      }
+
+      /* Quiz form — label pertanyaan muat */
+      .question-entry {
+        padding: 16px !important;
+      }
+
+      /* Visibility toggle */
+      .visibility-toggle {
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+      }
+
+      /* Section title */
+      .section-title {
+        font-size: 16px !important;
+      }
+
+      .with-logo img {
+        width: 28px !important;
+        height: 28px !important;
+      }
+    }
+
+    /* ── Bottom Navigation Bar (mobile only) ── */
+    .mobile-bottom-nav {
+      display: none;
+    }
+
+    @media (max-width: 600px) {
+      .mobile-bottom-nav {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--card);
+        border-top: 1.5px solid var(--border);
+        z-index: 500;
+        padding: 8px 0 max(8px, env(safe-area-inset-bottom));
+        gap: 0;
+        justify-content: space-around;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, .08);
+      }
+
+      .mobile-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        padding: 6px 12px;
+        color: var(--text-soft);
+        text-decoration: none;
+        font-size: 10px;
+        font-weight: 700;
+        transition: var(--tr);
+        flex: 1;
+        cursor: pointer;
+        background: none;
+        border: none;
+      }
+
+      .mobile-nav-item svg,
+      .mobile-nav-item i {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+
+      .mobile-nav-item.active,
+      .mobile-nav-item:hover {
+        color: var(--indigo);
+      }
+
+      .mobile-nav-fab {
+        position: fixed;
+        bottom: 72px;
+        right: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        z-index: 501;
+      }
+
+      .mobile-fab-btn {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        color: #fff;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, .2);
+        cursor: pointer;
+        border: none;
+        transition: var(--tr);
+      }
+
+      .mobile-fab-btn:active {
+        transform: scale(0.92);
+      }
+    }
   </style>
 </head>
 
@@ -395,7 +1658,9 @@
 
         <div class="header-actions">
           <div class="user-profile">
-            <div class="avatar" data-user-avatar style="width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #6366f1; color: white; font-weight: bold;">U</div>
+            <div class="avatar" data-user-avatar
+              style="width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #6366f1; color: white; font-weight: bold;">
+              U</div>
             <span class="user-name" data-user-name>User EDUVIX</span>
           </div>
         </div>
@@ -443,7 +1708,7 @@
       <form id="uploadForm">
         <div class="form-group">
           <label>Judul Materi</label>
-          <input type="text" id="materiTitle" placeholder="Contoh: Dasar Pemrograman Python" required>
+          <input type="text" id="materiTitle" placeholder="Contoh: Materi Pelajaran...." required>
         </div>
         <div class="form-group">
           <label>Kategori</label>
@@ -470,6 +1735,20 @@
             <span class="upload-text" id="fileNameDisplay">Pilih File Word/PPT atau seret ke sini</span>
             <p class="upload-hint">Format: .doc, .docx, .ppt, .pptx, .pdf</p>
             <input type="file" id="materiFile" accept=".doc,.docx,.ppt,.pptx,.pdf" onchange="handleFileSelect(this)">
+          </div>
+        </div>
+        <div class="visibility-toggle" id="materiVisToggle">
+          <label>
+            Visibilitas
+            <span id="materiVisDesc">Siapa yang bisa melihat materi ini?</span>
+          </label>
+          <div class="vis-pill">
+            <button type="button" id="btnMateriPub" class="active-pub" onclick="setVisibility('materi','public')">
+              <i class="fa-solid fa-globe"></i> Publik
+            </button>
+            <button type="button" id="btnMateriPriv" onclick="setVisibility('materi','private')">
+              <i class="fa-solid fa-lock"></i> Privat
+            </button>
           </div>
         </div>
         <div class="modal-footer">
@@ -534,6 +1813,20 @@
         <button type="button" class="btn-cancel"
           style="width: 100%; margin-bottom: 20px; border: 1.5px dashed var(--indigo); color: var(--indigo);"
           onclick="addQuestion()">+ Tambah Pertanyaan</button>
+        <div class="visibility-toggle" id="quizVisToggle">
+          <label>
+            Visibilitas
+            <span id="quizVisDesc">Siapa yang bisa melihat quiz ini?</span>
+          </label>
+          <div class="vis-pill">
+            <button type="button" id="btnQuizPub" class="active-pub" onclick="setVisibility('quiz','public')">
+              <i class="fa-solid fa-globe"></i> Publik
+            </button>
+            <button type="button" id="btnQuizPriv" onclick="setVisibility('quiz','private')">
+              <i class="fa-solid fa-lock"></i> Privat
+            </button>
+          </div>
+        </div>
         <div class="modal-footer">
           <button type="button" class="btn-cancel" onclick="toggleModal('quizModal', false)">Batal</button>
           <button type="submit" class="btn-submit">Publikasikan Quiz</button>
@@ -542,9 +1835,86 @@
     </div>
   </div>
 
+  <!-- ===== QUIZ PLAYER MODAL ===== -->
+  <div class="quiz-player-overlay" id="quizPlayerOverlay" onclick="if(event.target===this) closeQuizPlayer()">
+    <div class="quiz-player-card" id="quizPlayerCard">
+      <button class="btn-quiz-close" onclick="closeQuizPlayer()"><i class="fa-solid fa-xmark"></i></button>
+      <div class="quiz-progress-bar">
+        <div class="quiz-progress-fill" id="quizProgressFill" style="width:0%"></div>
+      </div>
+      <div id="quizPlayerContent"></div>
+    </div>
+  </div>
+
+  <!-- ===== MATERI VIEWER MODAL ===== -->
+  <div class="materi-viewer-overlay" id="materiViewerOverlay" onclick="if(event.target===this) closeMateriViewer()">
+    <div class="materi-viewer-card" id="materiViewerCard">
+      <div id="materiViewerInner"></div>
+    </div>
+  </div>
+
+  <!-- ===== DEDICATED FULLSCREEN DOC VIEWER ===== -->
+  <div id="docFsOverlay"
+    style="display:none; position:fixed; inset:0; z-index:9999; flex-direction:column; background:#0f172a;">
+    <!-- Header bar -->
+    <div id="docFsHeader" style="
+      height:56px; flex-shrink:0;
+      display:flex; align-items:center; gap:14px;
+      padding:0 20px;
+      background:linear-gradient(135deg,#1e293b,#0f172a);
+      border-bottom:1px solid rgba(255,255,255,.08);
+    ">
+      <i id="docFsIcon" class="fa-solid fa-file-lines" style="font-size:18px;color:#818cf8;"></i>
+      <span id="docFsTitle"
+        style="flex:1; font-size:14px; font-weight:700; color:#f1f5f9; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"></span>
+      <button id="docFsDlBtn" style="
+        display:flex; align-items:center; gap:6px;
+        padding:8px 16px; border-radius:10px; border:1px solid rgba(255,255,255,.15);
+        background:rgba(255,255,255,.07); color:#cbd5e1;
+        font-size:12px; font-weight:700; cursor:pointer;
+        transition:.2s;
+      " onmouseover="this.style.background='rgba(99,102,241,.3)'"
+        onmouseout="this.style.background='rgba(255,255,255,.07)'">
+        <i class="fa-solid fa-download"></i> Unduh
+      </button>
+      <button onclick="closeFsViewer()" style="
+        display:flex; align-items:center; gap:6px;
+        padding:8px 16px; border-radius:10px; border:1px solid rgba(239,68,68,.35);
+        background:rgba(239,68,68,.1); color:#f87171;
+        font-size:12px; font-weight:700; cursor:pointer;
+        transition:.2s;
+      " onmouseover="this.style.background='rgba(239,68,68,.25)'"
+        onmouseout="this.style.background='rgba(239,68,68,.1)'">
+        <i class="fa-solid fa-compress"></i> Keluar Fullscreen
+      </button>
+    </div>
+    <!-- Content area: iframe or docx HTML fills this -->
+    <div id="docFsContent" style="flex:1; min-height:0; display:flex; flex-direction:column; overflow:hidden;"></div>
+  </div>
+
   <script>
     function toggleModal(id, show) {
       document.getElementById(id).style.display = show ? 'flex' : 'none';
+    }
+
+    // ── Device ID (pengenal unik per browser) ────────────────────────
+    function getDeviceId() {
+      let id = localStorage.getItem('eduvix_device_id');
+      if (!id) {
+        id = 'dev_' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+        localStorage.setItem('eduvix_device_id', id);
+      }
+      return id;
+    }
+
+    // Visibility logic
+    let currentVis = { materi: 'public', quiz: 'public' };
+    function setVisibility(type, mode) {
+      currentVis[type] = mode;
+      const pubBtn = document.getElementById(type === 'materi' ? 'btnMateriPub' : 'btnQuizPub');
+      const privBtn = document.getElementById(type === 'materi' ? 'btnMateriPriv' : 'btnQuizPriv');
+      pubBtn.className = (mode === 'public' ? 'active-pub' : '');
+      privBtn.className = (mode === 'private' ? 'active-priv' : '');
     }
 
     function addQuestion() {
@@ -590,24 +1960,63 @@
 
     const defaultMaterials = [
       {
-        id: 1,
+        id: 'def_1',
         type: 'materi',
         title: "Biologi: Struktur Sel",
         category: "Sains",
         desc: "Pelajari blok bangunan dasar kehidupan dengan ilustrasi mendalam.",
         author: "Dr. Aris",
-        color: "#6366f1"
+        color: "#6366f1",
+        visibility: 'public'
       },
       {
-        id: 2,
+        id: 'def_2',
         type: 'materi',
         title: "Algoritma Javascript",
         category: "Teknologi",
         desc: "Kuasai struktur data dan logika dalam pemrograman Javascript.",
         author: "DevTeam",
-        color: "#10b981"
+        color: "#10b981",
+        visibility: 'public'
       }
     ];
+
+    const defaultQuizzes = [
+      {
+        id: 'dq_1',
+        type: 'quiz',
+        title: "Quiz Biologi: Sel",
+        desc: "Uji pemahamanmu tentang struktur dan fungsi sel.",
+        author: "Dr. Aris",
+        color: "#6366f1",
+        visibility: 'public',
+        questions: [
+          { question: "Organel sel yang berfungsi sebagai 'powerhouse' penghasil energi ATP adalah?", options: ["Nukleus", "Ribosom", "Mitokondria", "Lisosom"], correct: 2 },
+          { question: "Perbedaan utama sel tumbuhan dan sel hewan adalah sel tumbuhan memiliki...", options: ["Mitokondria", "Membran sel", "Dinding sel dan kloroplas", "Nukleus"], correct: 2 },
+          { question: "Organel yang berfungsi sebagai pusat kendali aktivitas sel adalah?", options: ["Mitokondria", "Nukleus", "Vakuola", "Aparatus Golgi"], correct: 1 },
+          { question: "Lapisan tipis yang mengatur keluar-masuknya zat pada sel disebut?", options: ["Dinding sel", "Sitoplasma", "Membran plasma", "Retikulum endoplasma"], correct: 2 },
+          { question: "Proses pembelahan sel disebut?", options: ["Respirasi", "Fotosintesis", "Mitosis", "Difusi"], correct: 2 }
+        ]
+      },
+      {
+        id: 'dq_2',
+        type: 'quiz',
+        title: "Quiz JavaScript Dasar",
+        desc: "Tes pengetahuanmu tentang dasar-dasar pemrograman JavaScript.",
+        author: "DevTeam",
+        color: "#10b981",
+        visibility: 'public',
+        questions: [
+          { question: "Cara yang benar untuk mendeklarasikan variabel di ES6 adalah?", options: ["var x = 5", "let x = 5", "x := 5", "int x = 5"], correct: 1 },
+          { question: "Apa output dari: console.log(typeof [])?", options: ["array", "list", "object", "undefined"], correct: 2 },
+          { question: "Arrow function yang benar untuk menjumlahkan dua angka adalah?", options: ["function(a,b) => a+b", "const add = (a,b) => a+b", "const add = a,b -> a+b", "add(a,b) = a+b"], correct: 1 },
+          { question: "Method array untuk mengiterasi setiap elemen adalah?", options: ["filter()", "map()", "forEach()", "find()"], correct: 2 },
+          { question: "Big O Notation O(1) berarti?", options: ["Kompleksitas linear", "Kompleksitas kuadratik", "Kompleksitas konstan", "Kompleksitas logaritmik"], correct: 2 }
+        ]
+      }
+    ];
+
+    let allItemsCache = [];
 
     function loadMaterials() {
       const grid = document.getElementById('communityGrid');
@@ -615,11 +2024,28 @@
       const custom = customRaw ? JSON.parse(customRaw) : [];
 
       const quizzesRaw = localStorage.getItem('eduvix_community_quizzes');
-      const quizzes = quizzesRaw ? JSON.parse(quizzesRaw) : [];
+      const userQuizzes = quizzesRaw ? JSON.parse(quizzesRaw) : [];
 
-      const allItems = [...defaultMaterials, ...custom, ...quizzes];
+      const rawUser = localStorage.getItem('eduvix_user');
+      const currentUser = rawUser ? JSON.parse(rawUser) : null;
+      const currentName = currentUser ? (currentUser.nama || currentUser.username || '') : '';
 
-      grid.innerHTML = allItems.map(m => `
+      allItemsCache = [...defaultMaterials, ...custom, ...defaultQuizzes, ...userQuizzes];
+
+      // Filter: publik = semua bisa lihat; privat = hanya device yg upload
+      const myDeviceId = getDeviceId();
+      const visibleItems = allItemsCache.filter(m => {
+        if (!m.visibility || m.visibility === 'public') return true;
+        // Privat: cocokkan ownerId (device ID saat upload)
+        if (m.ownerId) return m.ownerId === myDeviceId;
+        // Fallback lama: cocokkan nama author (untuk item yang sudah tersimpan)
+        const rawUser = localStorage.getItem('eduvix_user');
+        const u = rawUser ? JSON.parse(rawUser) : null;
+        const myName = u ? (u.nama || u.username || '') : '';
+        return myName && m.author === myName;
+      });
+
+      grid.innerHTML = visibleItems.map((m, idx) => `
                 <div class="course-card">
                     <div class="course-thumbnail">
                         <div style="height: 120px; background: ${m.color || '#e0e7ff'}; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 48px;">
@@ -630,18 +2056,22 @@
                         <span class="badge-category" style="${m.type === 'quiz' ? 'background: var(--indigo); color: #fff;' : ''}">
                             ${m.type === 'quiz' ? 'QUIZ' : m.category}
                         </span>
-                        <h4>${m.title}</h4>
+                        <h4>
+                          ${m.title}
+                          ${m.visibility === 'private' ? '<span class="badge-private"><i class="fa-solid fa-lock"></i> Privat</span>' : ''}
+                        </h4>
                         <p style="font-size: 12px; color: var(--text-soft); margin-bottom: 12px;">${m.desc}</p>
                         <div class="course-meta">
                             <span class="meta-item">Oleh <strong>${m.author}</strong></span>
                             ${m.fileName ? `<span class="meta-item" style="color: var(--indigo);"><i class="fa-solid ${getFileIcon(m.fileName)}"></i> ${m.fileName}</span>` : ''}
                             ${m.type === 'quiz' ? `<span class="meta-item" style="color: var(--indigo);"><i class="fa-solid fa-list-check"></i> ${m.questions.length} Pertanyaan</span>` : ''}
                         </div>
-                        <div style="display: flex; gap: 8px; margin-top: 15px;">
-                            <button class="btn-upgrade" style="flex: 2;" onclick="openItem('${m.id}', '${m.type}')">
+                        <div style="display: flex; gap: 8px; margin-top: 15px; align-items: stretch;">
+                            <button class="btn-upgrade" style="flex: 1; min-height: 45px; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="openItem(${allItemsCache.indexOf(m)})">
+                                <i class="fa-solid ${m.type === 'quiz' ? 'fa-play' : 'fa-book-open'}"></i>
                                 ${m.type === 'quiz' ? 'Mulai Quiz' : 'Buka Materi'}
                             </button>
-                            ${m.fileName ? `<button class="icon-btn" style="border-radius: 12px; width: 45px; height: 45px;" onclick="alert('Mengekspor/Mengunduh: ${m.fileName}')" title="Export ke Dokumen"><i class="fa-solid fa-file-export"></i></button>` : ''}
+                            ${m.fileDataUrl && m.fileName ? `<a class="icon-btn" style="border-radius: 12px; width: 45px; min-height: 45px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;" href="${m.fileDataUrl}" download="${m.fileName}" title="Unduh File"><i class="fa-solid fa-download"></i></a>` : ''}
                         </div>
                     </div>
                 </div>
@@ -665,6 +2095,528 @@
       }
     }
 
+    // ─── DEFAULT MATERI CONTENT ──────────────────────────────────
+    const defaultMateriContent = {
+      1: {
+        blocks: [
+          { title: "Apa itu Sel?", body: "Sel adalah unit terkecil penyusun makhluk hidup yang memiliki kemampuan untuk menjalankan fungsi-fungsi kehidupan secara mandiri. Setiap organisme tersusun dari satu atau banyak sel." },
+          { title: "Membran Sel", body: "Membran sel (membran plasma) adalah lapisan tipis yang mengelilingi sel, terdiri dari fosfolipid bilayer. Fungsinya adalah mengatur keluar-masuknya zat dari dan ke dalam sel." },
+          { title: "Inti Sel (Nukleus)", body: "Nukleus adalah organel terbesar dalam sel eukariotik yang mengandung DNA. Ia berperan sebagai pusat kendali aktivitas sel, termasuk pembelahan dan sintesis protein." },
+          { title: "Mitokondria", body: "Dijuluki 'powerhouse of the cell', mitokondria menghasilkan energi dalam bentuk ATP melalui proses respirasi seluler. Mitokondria memiliki membran ganda." },
+          { title: "Perbedaan Sel Hewan & Tumbuhan", body: "Sel tumbuhan memiliki dinding sel, kloroplas, dan vakuola besar yang tidak dimiliki sel hewan. Sebaliknya, sel hewan memiliki sentriol yang tidak ada pada sel tumbuhan." }
+        ],
+        tags: ['Biologi', 'Sains', 'Sel', 'Nukleus', 'Mitokondria']
+      },
+      2: {
+        blocks: [
+          { title: "Apa itu Algoritma?", body: "Algoritma adalah serangkaian langkah logis dan terurut untuk menyelesaikan suatu masalah. Dalam pemrograman, algoritma adalah inti dari setiap program yang kita tulis." },
+          { title: "Array & Object di JavaScript", body: "Array menyimpan kumpulan data berurutan: const arr = [1,2,3]. Object menyimpan data dengan pasangan key-value: const obj = {nama: 'Andi', umur: 20}. Keduanya sangat fundamental dalam JS." },
+          { title: "Perulangan (Looping)", body: "Loop digunakan untuk mengulang blok kode. JavaScript memiliki for, while, do-while, forEach, dan for...of. Pilih sesuai kebutuhan untuk efisiensi kode." },
+          { title: "Fungsi & Arrow Function", body: "Fungsi mengelompokkan kode agar dapat dipakai ulang. Arrow function (=>) adalah syntax modern ES6: const tambah = (a, b) => a + b. Lebih ringkas dan tidak memiliki konteks 'this' sendiri." },
+          { title: "Big O Notation", body: "Big O digunakan untuk mengukur kompleksitas algoritma. O(1) = konstan, O(n) = linear, O(n²) = kuadratik. Semakin kecil Big O, semakin efisien algoritmamu." }
+        ],
+        tags: ['JavaScript', 'Teknologi', 'Algoritma', 'Pemrograman', 'ES6']
+      }
+    };
+
+    // ─── OPEN ITEM ROUTER ────────────────────────────────────────
+    function openItem(idx) {
+      const m = allItemsCache[idx];
+      if (!m) return;
+      if (m.type === 'quiz') {
+        startQuizPlayer(m);
+      } else {
+        openMateriViewer(m);
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // QUIZ PLAYER
+    // ═══════════════════════════════════════════════════════════
+    let quizState = { quiz: null, current: 0, score: 0, answered: false };
+
+    function startQuizPlayer(quiz) {
+      if (!quiz || !quiz.questions || quiz.questions.length === 0) return;
+      quizState = { quiz, current: 0, score: 0, answered: false };
+      document.getElementById('quizPlayerOverlay').style.display = 'flex';
+      renderQuizQuestion();
+    }
+
+    function renderQuizQuestion() {
+      const { quiz, current } = quizState;
+      const total = quiz.questions.length;
+      const q = quiz.questions[current];
+      const letters = ['A', 'B', 'C', 'D'];
+
+      document.getElementById('quizProgressFill').style.width = (current / total * 100) + '%';
+
+      document.getElementById('quizPlayerContent').innerHTML = `
+        <div class="quiz-question-num">Soal ${current + 1} dari ${total} • ${quiz.title}</div>
+        <div class="quiz-question-text">${q.question}</div>
+        <div class="quiz-options" id="quizOptions">
+          ${q.options.map((opt, i) => `
+            <button class="quiz-option-btn" id="opt_${i}" onclick="selectAnswer(${i})">
+              <span class="opt-letter">${letters[i]}</span>
+              <span>${opt}</span>
+            </button>
+          `).join('')}
+        </div>
+        <div class="quiz-feedback" id="quizFeedback"></div>
+        <button class="quiz-next-btn" id="quizNextBtn" onclick="nextQuestion()">
+          ${current + 1 < total ? 'Soal Berikutnya <i class="fa-solid fa-arrow-right" style="margin-left:8px;"></i>' : 'Lihat Hasil <i class="fa-solid fa-flag-checkered" style="margin-left:8px;"></i>'}
+        </button>
+      `;
+      quizState.answered = false;
+    }
+
+    function selectAnswer(idx) {
+      if (quizState.answered) return;
+      quizState.answered = true;
+
+      const correct = quizState.quiz.questions[quizState.current].correct;
+      const isCorrect = idx === correct;
+      if (isCorrect) quizState.score++;
+
+      // Style buttons
+      document.querySelectorAll('.quiz-option-btn').forEach((btn, i) => {
+        btn.disabled = true;
+        if (i === correct) btn.classList.add('correct');
+        else if (i === idx && !isCorrect) btn.classList.add('wrong');
+      });
+
+      // Show feedback
+      const fb = document.getElementById('quizFeedback');
+      fb.className = 'quiz-feedback show ' + (isCorrect ? 'correct-fb' : 'wrong-fb');
+      fb.innerHTML = isCorrect
+        ? '<i class="fa-solid fa-circle-check"></i> <span>Jawaban kamu <strong>BENAR</strong>! Lanjutkan ya 🎉</span>'
+        : `<i class="fa-solid fa-circle-xmark"></i> <span>Kurang tepat. Jawaban yang benar: <strong>${['A', 'B', 'C', 'D'][correct]}. ${quizState.quiz.questions[quizState.current].options[correct]}</strong></span>`;
+
+      document.getElementById('quizNextBtn').classList.add('show');
+    }
+
+    function nextQuestion() {
+      const total = quizState.quiz.questions.length;
+      quizState.current++;
+
+      if (quizState.current >= total) {
+        showQuizResult();
+      } else {
+        renderQuizQuestion();
+      }
+    }
+
+    function showQuizResult() {
+      const { quiz, score } = quizState;
+      const total = quiz.questions.length;
+      const pct = Math.round(score / total * 100);
+      document.getElementById('quizProgressFill').style.width = '100%';
+
+      let emoji = pct >= 80 ? '🏆' : pct >= 60 ? '😊' : '💪';
+      let msg = pct >= 80 ? 'Luar biasa!' : pct >= 60 ? 'Kerja bagus!' : 'Tetap semangat!';
+
+      document.getElementById('quizPlayerContent').innerHTML = `
+        <div class="quiz-result-view">
+          <div style="font-size:56px; margin-bottom:8px;">${emoji}</div>
+          <div class="quiz-result-score">${pct}%</div>
+          <div class="quiz-result-label">${msg} Kamu menjawab <strong>${score} dari ${total}</strong> soal dengan benar.</div>
+          <div style="display:flex; flex-direction:column; gap: 10px; margin-top: 16px;">
+            <button class="quiz-next-btn show" style="margin-top:0;" onclick="startQuizPlayer(quizState.quiz)">
+              <i class="fa-solid fa-rotate-right"></i> Ulangi Quiz
+            </button>
+            <button class="quiz-next-btn show" style="margin-top:0; background: var(--bg); color: var(--text-mid);" onclick="closeQuizPlayer()">
+              Kembali ke Komunitas
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function closeQuizPlayer() {
+      document.getElementById('quizPlayerOverlay').style.display = 'none';
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // MATERI VIEWER
+    // ═══════════════════════════════════════════════════════════
+    function openMateriViewer(m) {
+      if (!m) return;
+      const content = defaultMateriContent[m.id];
+      const icon = getIcon(m.category);
+      const fileIcon = m.fileName ? getFileIcon(m.fileName) : null;
+
+      // ── Build file viewer section ─────────────────────────────
+      const viewerBoxId = 'fvBox_' + Date.now();
+      let fileSection = '';
+
+      if (m.fileDataUrl) {
+        const ext = m.fileName.split('.').pop().toLowerCase();
+        const fname = m.fileName;
+        const dataUrl = m.fileDataUrl;
+        const colorMap = { doc: '#2b7cd3', docx: '#2b7cd3', ppt: '#d04423', pptx: '#d04423', pdf: '#ef4444' };
+        const iconColor = colorMap[ext] || 'var(--indigo)';
+        const mimeMap = {
+          pdf: 'application/pdf',
+          doc: 'application/msword',
+          docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          ppt: 'application/vnd.ms-powerpoint',
+          pptx: 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+        };
+        const mime = mimeMap[ext] || 'application/octet-stream';
+
+        // Helper: base64 dataURL → Blob → Object URL
+        function dataUrlToBlob(du, mimeType) {
+          const b64 = du.split(',')[1];
+          const bin = atob(b64);
+          const arr = new Uint8Array(bin.length);
+          for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+          return new Blob([arr], { type: mimeType });
+        }
+
+        // Download helper
+        const dlFnId = 'dlFile_' + Date.now();
+        window[dlFnId] = function () {
+          const a = document.createElement('a');
+          a.href = dataUrl; a.download = fname; a.click();
+        };
+
+        // ── PDF ─────────────────────────────────────────────────
+        if (ext === 'pdf') {
+          const blob = dataUrlToBlob(dataUrl, 'application/pdf');
+          const blobUrl = URL.createObjectURL(blob);
+
+          fileSection = `
+            <div class="materi-content-section">
+              <h4><i class="fa-solid fa-file-pdf" style="color:#ef4444;"></i> Dokumen PDF</h4>
+              <div class="file-viewer-box">
+                <div class="fv-toolbar">
+                  <div class="fv-toolbar-left">
+                    <i class="fa-solid fa-file-pdf" style="color:#ef4444; font-size:16px;"></i>
+                    <span class="fv-filename">${fname}</span>
+                  </div>
+                  <div class="fv-toolbar-right">
+                    <button class="fv-btn fv-expand" onclick="openFsViewer('${blobUrl}','pdf','${fname}','${dlFnId}',null)" title="Fullscreen">
+                      <i class="fa-solid fa-expand"></i> Fullscreen
+                    </button>
+                    <a class="fv-btn" href="${blobUrl}" target="_blank" title="Buka di tab baru">
+                      <i class="fa-solid fa-arrow-up-right-from-square"></i> Buka Tab
+                    </a>
+                    <button class="fv-btn" onclick="window['${dlFnId}']()"><i class="fa-solid fa-download"></i> Unduh</button>
+                  </div>
+                </div>
+                <iframe src="${blobUrl}" title="${fname}"></iframe>
+              </div>
+            </div>`;
+
+          // ── DOCX / DOC ──────────────────────────────────────────
+        } else if (ext === 'docx' || ext === 'doc') {
+          const renderAreaId = 'docxArea_' + Date.now();
+
+          fileSection = `
+            <div class="materi-content-section">
+              <h4><i class="fa-solid fa-file-word" style="color:#2b7cd3;"></i> Dokumen Word</h4>
+              <div class="file-viewer-box">
+                <div class="fv-toolbar">
+                  <div class="fv-toolbar-left">
+                    <i class="fa-solid fa-file-word" style="color:#2b7cd3; font-size:16px;"></i>
+                    <span class="fv-filename">${fname}</span>
+                  </div>
+                  <div class="fv-toolbar-right">
+                    <button class="fv-btn fv-expand" onclick="openFsViewer(null,'docx','${fname}','${dlFnId}','${renderAreaId}')" title="Fullscreen">
+                      <i class="fa-solid fa-expand"></i> Fullscreen
+                    </button>
+                    <button class="fv-btn" onclick="window['${dlFnId}']()"><i class="fa-solid fa-download"></i> Unduh</button>
+                  </div>
+                </div>
+                <div id="${renderAreaId}" class="docx-render-area">
+                  <div class="fv-loading"><div class="fv-spinner"></div><span>Memuat dokumen...</span></div>
+                </div>
+              </div>
+            </div>`;
+
+          // Render DOCX async after DOM insertion
+          setTimeout(async () => {
+            const area = document.getElementById(renderAreaId);
+            if (!area) return;
+            try {
+              const blob = dataUrlToBlob(dataUrl, mime);
+              const arrBuf = await blob.arrayBuffer();
+              const result = await mammoth.convertToHtml({ arrayBuffer: arrBuf });
+              area.innerHTML = result.value || '<p style="color:var(--text-soft);text-align:center;padding:20px;">Dokumen kosong atau tidak dapat dirender.</p>';
+            } catch (err) {
+              area.innerHTML = `
+                <div class="no-preview">
+                  <i class="fa-solid fa-triangle-exclamation" style="color:#f59e0b;"></i>
+                  <strong>Gagal memuat dokumen</strong>
+                  <p style="font-size:12px;">Format tidak didukung untuk preview. Silakan unduh file.</p>
+                  <button class="fv-btn primary" style="margin-top:12px;" onclick="window['${dlFnId}']()"><i class="fa-solid fa-download"></i> Unduh File</button>
+                </div>`;
+            }
+          }, 100);
+
+          // ── PPTX / PPT ──────────────────────────────────────────
+        } else if (ext === 'pptx' || ext === 'ppt') {
+          const pptBoxId = 'pptBox_' + Date.now();
+          const blobPpt = dataUrlToBlob(dataUrl, mime);
+          const blobUrlPpt = URL.createObjectURL(blobPpt);
+
+          fileSection = `
+            <div class="materi-content-section">
+              <h4><i class="fa-solid fa-file-powerpoint" style="color:#d04423;"></i> Presentasi PowerPoint</h4>
+              <div class="file-viewer-box">
+                <div class="fv-toolbar">
+                  <div class="fv-toolbar-left">
+                    <i class="fa-solid fa-file-powerpoint" style="color:#d04423; font-size:16px;"></i>
+                    <span class="fv-filename">${fname}</span>
+                  </div>
+                  <div class="fv-toolbar-right">
+                    <button class="fv-btn fv-expand" onclick="openFsViewer('${blobUrlPpt}','pptx','${fname}','${dlFnId}',null)" title="Fullscreen">
+                      <i class="fa-solid fa-expand"></i> Fullscreen
+                    </button>
+                    <button class="fv-btn primary" onclick="window.open('${blobUrlPpt}','_blank')">
+                      <i class="fa-solid fa-arrow-up-right-from-square"></i> Buka Tab Baru
+                    </button>
+                    <button class="fv-btn" onclick="window['${dlFnId}']()"><i class="fa-solid fa-download"></i> Unduh</button>
+                  </div>
+                </div>
+                <div id="${pptBoxId}" style="position:relative;">
+                  <div class="fv-loading" id="${pptBoxId}_load"><div class="fv-spinner"></div><span>Memuat presentasi...</span></div>
+                  <object data="${blobUrlPpt}" type="${mime}" style="width:100%;height:540px;border:none;display:none;" id="${pptBoxId}_obj"
+                    onload="document.getElementById('${pptBoxId}_load').style.display='none'; this.style.display='block';"
+                    onerror="showPptFallback('${pptBoxId}','${blobUrlPpt}','${dlFnId}')"
+                  ></object>
+                </div>
+              </div>
+            </div>`;
+
+          // Check after 2.5s — if object didn't load, show fallback
+          setTimeout(() => {
+            const loadEl = document.getElementById(pptBoxId + '_load');
+            if (loadEl && loadEl.style.display !== 'none') {
+              showPptFallback(pptBoxId, blobUrlPpt, dlFnId, fname, iconColor);
+            }
+          }, 2500);
+        }
+
+      } else if (m.fileName) {
+        fileSection = `
+          <div class="materi-content-section">
+            <h4><i class="fa-solid ${fileIcon}" style="color:var(--indigo);"></i> Dokumen Terlampir</h4>
+            <div class="file-viewer-box">
+              <div class="no-preview">
+                <i class="fa-solid ${fileIcon}"></i>
+                <strong style="display:block; margin-bottom:6px; font-size:14px;">${m.fileName}</strong>
+                <p style="font-size:12px;">File ini tidak tersedia untuk preview online karena belum diunggah dengan data file.</p>
+              </div>
+            </div>
+          </div>`;
+      }
+
+      // Build link section
+      let linkSection = '';
+      if (m.link && m.link !== '-' && m.link.trim()) {
+        const isYoutube = m.link.includes('youtube.com') || m.link.includes('youtu.be');
+        linkSection = `
+          <div class="materi-content-section">
+            <h4><i class="fa-solid ${isYoutube ? 'fa-brands fa-youtube' : 'fa-link'}" style="color:${isYoutube ? '#ef4444' : 'var(--indigo)'};"></i> Sumber Video / Web</h4>
+            <a class="materi-link-card" href="${m.link}" target="_blank" rel="noopener">
+              <div class="link-icon"><i class="fa-solid ${isYoutube ? 'fa-play' : 'fa-arrow-up-right-from-square'}"></i></div>
+              <div class="link-info">
+                <strong>${isYoutube ? 'Tonton di YouTube' : 'Buka Tautan Eksternal'}</strong>
+                <span>${m.link}</span>
+              </div>
+            </a>
+          </div>`;
+      }
+
+      // Build content blocks (for default materials or as placeholder)
+      let contentSection = '';
+      if (content) {
+        contentSection = `
+          <div class="materi-content-section">
+            <h4><i class="fa-solid fa-book-open-reader" style="color:var(--indigo);"></i> Ringkasan Materi</h4>
+            ${content.blocks.map(b => `
+              <div class="content-block">
+                <h5>${b.title}</h5>
+                <p>${b.body}</p>
+              </div>
+            `).join('')}
+            <div style="margin-top:12px;">
+              ${content.tags.map(t => `<span class="content-tag"><i class="fa-solid fa-tag"></i>${t}</span>`).join('')}
+            </div>
+          </div>`;
+      } else if (!fileSection && !linkSection) {
+        contentSection = `
+          <div class="materi-content-section">
+            <h4><i class="fa-solid fa-circle-info" style="color:var(--indigo);"></i> Tentang Materi</h4>
+            <div class="content-block">
+              <p>Materi ini dibagikan oleh komunitas EDUVIX. Detail konten tersedia melalui dokumen atau tautan yang dilampirkan.</p>
+            </div>
+          </div>`;
+      }
+
+      const hasFile = !!m.fileDataUrl;
+
+      document.getElementById('materiViewerInner').innerHTML = `
+        <!-- Slim bar shown only in fullscreen mode -->
+        <div class="fv-fullscreen-bar" id="fvBar">
+          <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+            ${m.fileName ? `<i class="fa-solid ${fileIcon || 'fa-file'}"></i>` : `<i class="fa-solid fa-book-open"></i>`}
+            <span class="fv-fullscreen-title">${m.title}${m.fileName ? ' — ' + m.fileName : ''}</span>
+          </div>
+          <div style="display:flex;gap:8px;flex-shrink:0;">
+            <button class="fv-btn fv-expand" id="fsToggleBtn" onclick="toggleDocFullscreen(this)" title="Keluar Fullscreen">
+              <i class="fa-solid fa-compress"></i> Keluar Fullscreen
+            </button>
+            <button class="fv-btn" onclick="closeMateriViewer()" style="border-color:var(--red);color:var(--red);">
+              <i class="fa-solid fa-xmark"></i> Tutup
+            </button>
+          </div>
+        </div>
+
+        <div class="materi-viewer-hero" style="background: linear-gradient(135deg, ${m.color || '#6366f1'}, ${m.color ? m.color + 'aa' : '#8b5cf6'});">
+          <i class="fa-solid ${icon}"></i>
+          <button class="materi-viewer-hero-close" onclick="closeMateriViewer()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="materi-viewer-body">
+          <span class="badge-category" style="margin-bottom:10px;">${m.category || 'Materi'}</span>
+          <h2>${m.title}</h2>
+          <div class="materi-viewer-meta">
+            <span><i class="fa-solid fa-user-circle"></i> Oleh <strong>${m.author}</strong></span>
+            ${m.fileName ? `<span><i class="fa-solid ${fileIcon}"></i> ${m.fileName}</span>` : ''}
+          </div>
+          <div class="materi-desc-box">${m.desc}</div>
+          ${contentSection}
+          ${fileSection}
+          ${linkSection}
+        </div>
+      `;
+
+
+      document.getElementById('materiViewerOverlay').style.display = 'flex';
+    }
+
+    function closeMateriViewer() {
+      // Keluar dari native fullscreen jika aktif
+      if (document.fullscreenElement) document.exitFullscreen();
+      const overlay = document.getElementById('materiViewerOverlay');
+      overlay.style.display = 'none';
+    }
+
+    // ══════════════════════════════════════════════════
+    //  DEDICATED FULLSCREEN VIEWER
+    //  Overlay terpisah — position:fixed inset:0 z-index:9999
+    //  100% reliable, tidak ada masalah flex-chain
+    // ══════════════════════════════════════════════════
+    function openFsViewer(blobUrl, type, fname, dlFnId, renderAreaId) {
+      const ov = document.getElementById('docFsOverlay');
+      const cnt = document.getElementById('docFsContent');
+      const title = document.getElementById('docFsTitle');
+      const dlBtn = document.getElementById('docFsDlBtn');
+      const icon = document.getElementById('docFsIcon');
+
+      title.textContent = fname || '';
+
+      // Set file type icon + color
+      const iconMap = {
+        pdf: { cls: 'fa-file-pdf', col: '#ef4444' },
+        docx: { cls: 'fa-file-word', col: '#2b7cd3' },
+        doc: { cls: 'fa-file-word', col: '#2b7cd3' },
+        pptx: { cls: 'fa-file-powerpoint', col: '#d04423' },
+        ppt: { cls: 'fa-file-powerpoint', col: '#d04423' },
+      };
+      const im = iconMap[type] || { cls: 'fa-file-lines', col: '#818cf8' };
+      icon.className = `fa-solid ${im.cls}`;
+      icon.style.color = im.col;
+
+      // Bind download button
+      dlBtn.onclick = () => window[dlFnId] && window[dlFnId]();
+
+      // cnt must be flex column so children can flex:1
+      cnt.style.cssText = 'flex:1; min-height:0; display:flex; flex-direction:column; overflow:hidden;';
+      cnt.innerHTML = '';
+
+      if (type === 'pdf' || type === 'pptx' || type === 'ppt') {
+        // iframe inside a flex column: use flex:1 + height:0 trick
+        const iframe = document.createElement('iframe');
+        iframe.src = blobUrl;
+        iframe.title = fname;
+        iframe.style.cssText = 'flex:1; width:100%; height:0; border:none; display:block;';
+        cnt.appendChild(iframe);
+
+      } else if (type === 'docx' || type === 'doc') {
+        const wrap = document.createElement('div');
+        wrap.style.cssText = 'flex:1; overflow-y:auto; padding:40px 56px; background:#fff; font-size:15px; line-height:1.9; color:#1e293b; min-height:0;';
+
+        const srcArea = renderAreaId ? document.getElementById(renderAreaId) : null;
+        if (srcArea && srcArea.innerHTML.trim() && !srcArea.querySelector('.fv-spinner')) {
+          wrap.innerHTML = srcArea.innerHTML;
+          cnt.appendChild(wrap);
+        } else {
+          // Loading state
+          wrap.style.cssText = 'flex:1; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:14px; background:#f8fafc; color:#64748b; min-height:0;';
+          wrap.innerHTML = '<div class="fv-spinner"></div><span style="font-size:13px;">Memuat dokumen...</span>';
+          cnt.appendChild(wrap);
+          const timer = setInterval(() => {
+            const area = renderAreaId ? document.getElementById(renderAreaId) : null;
+            if (area && !area.querySelector('.fv-spinner')) {
+              wrap.style.cssText = 'flex:1; overflow-y:auto; padding:40px 56px; background:#fff; font-size:15px; line-height:1.9; color:#1e293b; min-height:0;';
+              wrap.innerHTML = area.innerHTML;
+              clearInterval(timer);
+            }
+          }, 200);
+        }
+      }
+
+      ov.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeFsViewer() {
+      const ov = document.getElementById('docFsOverlay');
+      const cnt = document.getElementById('docFsContent');
+      ov.style.display = 'none';
+      cnt.innerHTML = ''; // free memory
+      document.body.style.overflow = '';
+    }
+
+    // ESC juga tutup dedicated fullscreen
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && document.getElementById('docFsOverlay')?.style.display === 'flex') {
+        closeFsViewer();
+      }
+    });
+
+    // PPT fallback UI when browser can't render natively
+    function showPptFallback(boxId, blobUrl, dlFnId, fname, iconColor) {
+      const loadEl = document.getElementById(boxId + '_load');
+      const objEl = document.getElementById(boxId + '_obj');
+      if (loadEl) loadEl.style.display = 'none';
+      if (objEl) objEl.style.display = 'none';
+      const box = document.getElementById(boxId);
+      if (!box) return;
+      box.innerHTML = `
+        <div class="no-preview" style="padding:40px 24px;">
+          <i class="fa-solid fa-file-powerpoint" style="font-size:52px; color:#d04423; margin-bottom:14px; display:block;"></i>
+          <strong style="display:block; margin-bottom:8px; font-size:15px;">Preview PowerPoint</strong>
+          <p style="font-size:13px; color:var(--text-soft); max-width:340px; margin:0 auto 20px; line-height:1.7;">
+            Browser kamu tidak mendukung preview PPT secara langsung.
+            Klik <strong>Buka di Tab Baru</strong> untuk melihat file — jika Microsoft Office terinstall, file akan terbuka otomatis.
+            Atau unduh dan buka dengan PowerPoint / Google Slides.
+          </p>
+          <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+            <button class="fv-btn primary" onclick="window.open('${blobUrl}','_blank')" style="padding:11px 22px; font-size:13px;">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> Buka di Tab Baru
+            </button>
+            <button class="fv-btn" onclick="window['${dlFnId}']()" style="padding:11px 22px; font-size:13px;">
+              <i class="fa-solid fa-download"></i> Unduh PPT
+            </button>
+          </div>
+          <p style="font-size:11px; color:var(--text-soft); margin-top:16px;">
+            💡 Tip: Upload ke Google Drive lalu bagikan link untuk preview yang lebih baik.
+          </p>
+        </div>`;
+    }
+
     document.getElementById('quizForm').addEventListener('submit', (e) => {
       e.preventDefault();
       const rawUser = localStorage.getItem('eduvix_user');
@@ -686,7 +2638,9 @@
         desc: `Quiz interaktif dengan ${questions.length} pertanyaan.`,
         questions: questions,
         author: user.nama || user.username || 'User EDUVIX',
-        color: '#6366f1'
+        color: '#6366f1',
+        visibility: document.getElementById('btnQuizPriv').classList.contains('active-priv') ? 'private' : 'public',
+        ownerId: getDeviceId()
       };
 
       const quizzesRaw = localStorage.getItem('eduvix_community_quizzes');
@@ -696,6 +2650,8 @@
 
       toggleModal('quizModal', false);
       e.target.reset();
+      // Reset toggle ke Publik
+      setVisibility('quiz', 'public');
       loadMaterials();
       alert('Quiz berhasil dipublikasikan ke komunitas!');
     });
@@ -707,29 +2663,47 @@
       const user = rawUser ? JSON.parse(rawUser) : { nama: 'Anonim' };
 
       const fileInput = document.getElementById('materiFile');
-      const fileName = fileInput.files.length > 0 ? fileInput.files[0].name : '';
+      const file = fileInput.files.length > 0 ? fileInput.files[0] : null;
 
-      const newMateri = {
-        id: Date.now(),
-        type: 'materi',
-        title: document.getElementById('materiTitle').value,
-        category: document.getElementById('materiCategory').value,
-        desc: document.getElementById('materiDesc').value,
-        link: document.getElementById('materiLink').value,
-        fileName: fileName,
-        author: user.nama || user.username || 'User EDUVIX',
-        color: '#10b981'
-      };
+      function saveMateri(fileDataUrl) {
+        const newMateri = {
+          id: Date.now(),
+          type: 'materi',
+          title: document.getElementById('materiTitle').value,
+          category: document.getElementById('materiCategory').value,
+          desc: document.getElementById('materiDesc').value,
+          link: document.getElementById('materiLink').value,
+          fileName: file ? file.name : '',
+          fileDataUrl: fileDataUrl || '',
+          author: user.nama || user.username || 'User EDUVIX',
+          color: '#10b981',
+          visibility: document.getElementById('btnMateriPriv').classList.contains('active-priv') ? 'private' : 'public',
+          ownerId: getDeviceId()
+        };
 
-      const customRaw = localStorage.getItem('eduvix_community_materi');
-      const custom = customRaw ? JSON.parse(customRaw) : [];
-      custom.push(newMateri);
-      localStorage.setItem('eduvix_community_materi', JSON.stringify(custom));
+        const customRaw = localStorage.getItem('eduvix_community_materi');
+        const custom = customRaw ? JSON.parse(customRaw) : [];
+        custom.push(newMateri);
+        localStorage.setItem('eduvix_community_materi', JSON.stringify(custom));
 
-      toggleModal('uploadModal', false);
-      e.target.reset();
-      loadMaterials();
-      alert('Materi berhasil diupload ke komunitas!');
+        toggleModal('uploadModal', false);
+        e.target.reset();
+        // Reset toggle ke Publik
+        setVisibility('materi', 'public');
+        document.getElementById('fileNameDisplay').textContent = 'Pilih File Word/PPT atau seret ke sini';
+        document.getElementById('fileNameDisplay').style.color = 'var(--text-mid)';
+        loadMaterials();
+        const visMsg = document.getElementById('btnMateriPriv')?.classList.contains('active-priv') ? 'privat (hanya kamu)' : 'komunitas';
+        alert('Materi berhasil diupload!');
+      }
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (ev) { saveMateri(ev.target.result); };
+        reader.readAsDataURL(file);
+      } else {
+        saveMateri('');
+      }
     });
 
     function handleFileSelect(input) {
@@ -752,6 +2726,71 @@
       }
     });
   </script>
+
+  <!-- ══ MOBILE BOTTOM NAV ══════════════════════════════════ -->
+  <nav class="mobile-bottom-nav">
+    <a href="dashboard.html" class="mobile-nav-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" />
+        <rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" />
+        <rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2" />
+        <rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2" />
+      </svg>
+      Dashboard
+    </a>
+    <a href="progress.html" class="mobile-nav-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M4 19.5C4 18.837 4.26339 18.2011 4.73223 17.7322C5.20107 17.2634 5.83696 17 6.5 17H20"
+          stroke="currentColor" stroke-width="2" />
+        <path
+          d="M6.5 2H20V22H6.5C5.83696 22 5.20107 21.7366 4.73223 21.2678C4.26339 20.7989 4 20.163 4 19.5V4.5C4 3.83696 4.26339 3.20107 4.73223 2.73223C5.20107 2.26339 5.83696 2 6.5 2Z"
+          stroke="currentColor" stroke-width="2" />
+      </svg>
+      Materi
+    </a>
+    <a href="materi komunitas.html" class="mobile-nav-item active">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" />
+        <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2" />
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87" stroke="currentColor" stroke-width="2" />
+        <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2" />
+      </svg>
+      Komunitas
+    </a>
+    <a href="pencapaian.html" class="mobile-nav-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M12 15l-2 5 2-1 2 1-2-5zm0-13C7.58 2 4 5.58 4 10c0 4.42 3.58 8 8 8s8-3.58 8-8c0-4.42-3.58-8-8-8z"
+          stroke="currentColor" stroke-width="2" />
+      </svg>
+      Capaian
+    </a>
+    <a href="store.html" class="mobile-nav-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z" stroke="currentColor" stroke-width="2" />
+        <path d="M9 22V12h6v10" stroke="currentColor" stroke-width="2" />
+      </svg>
+      Toko
+    </a>
+  </nav>
+
+  <!-- ══ MOBILE FAB BUTTONS ════════════════════════════════ -->
+  <div class="mobile-nav-fab">
+    <button class="mobile-fab-btn" style="background: var(--emerald);" onclick="toggleModal('uploadModal', true)"
+      title="Tambah Materi">
+      <i class="fa-solid fa-cloud-arrow-up"></i>
+    </button>
+    <button class="mobile-fab-btn" style="background: var(--indigo);" onclick="toggleModal('quizModal', true)"
+      title="Buat Quiz">
+      <i class="fa-solid fa-puzzle-piece"></i>
+    </button>
+  </div>
+
+  <script src="api.js"></script>
+  <script>
+    EduvixAPI.initPage();
+  </script>
+
+
 </body>
 
 </html>

@@ -104,4 +104,22 @@ function showToastMateri(msg, type, dur) {
 // ========== BIND EVENTS ==========
 document.addEventListener('DOMContentLoaded', () => {
   initMateriNav();
+  
+  // Auto-switch page based on URL hash (misal: #page-2)
+  const hash = window.location.hash;
+  if (hash && hash.startsWith('#page-')) {
+    const pageId = hash.substring(1);
+    const nextEl = document.getElementById(pageId);
+    const current = document.querySelector('.lesson-page.active');
+    if (nextEl && current) {
+      current.classList.remove('active');
+      current.style.display = 'none';
+      nextEl.classList.add('active');
+      nextEl.style.display = 'block';
+      
+      const pageNum = parseInt(pageId.split('-')[1]);
+      updateBreadcrumb(pageNum);
+      currentLesson = pageNum;
+    }
+  }
 });

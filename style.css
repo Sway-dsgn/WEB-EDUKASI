@@ -168,8 +168,10 @@ body {
 
 .nav-item.active {
   color: white;
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.25);
   font-weight: 700;
+  box-shadow: inset 4px 0 0 white;
+  /* Tambahan indikator garis di sisi kiri */
 }
 
 .nav-item.active::before {
@@ -282,11 +284,19 @@ body {
   height: 36px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--blue-main), var(--blue-dark));
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: white;
+  font-size: 15px;
+  overflow: hidden;
+}
+
+.avatar i {
+  margin: 0 !important;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
-  font-size: 15px;
 }
 
 .user-name {
@@ -1771,4 +1781,3 @@ a {
   border-color: var(--blue);
   background: var(--blue-light);
 }
-

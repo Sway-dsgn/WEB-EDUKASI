@@ -4,7 +4,29 @@
 //   Tambahkan ke semua halaman HTML
 // =============================================
 
-const API_URL = 'http://localhost:5000'; // Sesuaikan port (5000 atau 3000) dengan terminal backend Anda
+// URL Backend - Otomatis deteksi localhost atau production
+const API_URL = (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') 
+                ? 'http://localhost:5000' 
+                : window.location.origin;
+
+// ─── LEVELING LOGIC ───────────────────────────
+function eduvixHitungLevel(xp) {
+    return Math.floor((Math.sqrt(0.16 * xp + 9) - 1) / 2);
+}
+
+function eduvixTotalXpToReach(level) {
+    if (level <= 1) return 0;
+    return 25 * (level - 1) * (level + 2);
+}
+
+function eduvixXpPct(xp) {
+    const lvl = eduvixHitungLevel(xp);
+    const curXp = eduvixTotalXpToReach(lvl);
+    const nextXp = eduvixTotalXpToReach(lvl + 1);
+    if (nextXp === curXp) return 0;
+    const pct = ((xp - curXp) / (nextXp - curXp)) * 100;
+    return Math.min(100, Math.max(0, pct));
+}
 
 // ─── TOKEN & USER ─────────────────────────────
 const getToken = () => localStorage.getItem('eduvix_token');
@@ -88,9 +110,13 @@ async function requireLogin() {
     }
 
     try {
-        const userData = await apiFetch('/api/auth/me');
+        const [userData, inventory] = await Promise.all([
+            apiFetch('/api/auth/me'),
+            apiFetch('/api/shop/inventory')
+        ]);
+        userData.inventory = inventory.map(i => i.id);
         setUser(userData);
-        console.log("[EduvixAPI] Session valid for:", userData.username);
+        console.log("[EduvixAPI] Session valid for:", userData.username, "Inventory:", userData.inventory);
         return userData;
     } catch (error) {
         const errorMessage = error?.message || "Unknown Error";
@@ -146,11 +172,11 @@ async function updateStreak() {
 // ─── QUIZ ─────────────────────────────────────
 async function simpanHasilQuiz(quiz_id, skor, benar, salah, total) {
     const user = getUser();
-    const oldLvl = user ? (user.level || Math.floor((user.xp || 0) / 100) + 1) : 1;
+    const oldLvl = user ? (user.level || eduvixHitungLevel(user.xp || 0)) : 1;
 
     const data = await apiFetch('/api/quiz/hasil', {
         method: 'POST',
-        body: JSON.stringify({ quiz_id, skor, benar, salah, total })
+        body: JSON.stringify({ quizId: quiz_id, skor, benar, salah, total })
     });
 
     if (data.level > oldLvl) showLevelUp(data.level);
@@ -172,11 +198,11 @@ async function getRiwayatQuiz() {
 // ─── MATERI ───────────────────────────────────
 async function selesaikanMateri(materi_id, xp_materi) {
     const user = getUser();
-    const oldLvl = user ? (user.level || Math.floor((user.xp || 0) / 100) + 1) : 1;
+    const oldLvl = user ? (user.level || eduvixHitungLevel(user.xp || 0)) : 1;
 
     const data = await apiFetch('/api/materi/selesai', {
         method: 'POST',
-        body: JSON.stringify({ materi_id, xp_materi })
+        body: JSON.stringify({ materiId: materi_id, xpDapat: xp_materi })
     });
 
     if (data.level > oldLvl) showLevelUp(data.level);
@@ -200,16 +226,42 @@ async function getLeaderboard() {
     return await apiFetch('/api/leaderboard');
 }
 
+// ─── SHOP & INVENTORY ─────────────────────────
+async function getShopItems() {
+    return await apiFetch('/api/shop/items');
+}
+
+async function buyItem(itemId) {
+    const data = await apiFetch('/api/shop/buy', {
+        method: 'POST',
+        body: JSON.stringify({ itemId })
+    });
+    // Update local user coins
+    const user = getUser();
+    if (user) {
+        user.coins = data.coins;
+        user.inventory = user.inventory || [];
+        if (!user.inventory.includes(itemId)) user.inventory.push(itemId);
+        setUser(user);
+        updateUI(user);
+    }
+    return data;
+}
+
+async function getInventory() {
+    return await apiFetch('/api/shop/inventory');
+}
+
 // ─── UPDATE UI ────────────────────────────────
 function updateUI(user) {
     if (!user) return;
     const set = (sel, val) => document.querySelectorAll(sel).forEach(el => el.textContent = val);
     const nama = user.nama || user.username || 'User';
     const xp = user.xp || 0;
-    const level = user.level || Math.floor(xp / 100) + 1;
+    const level = user.level || eduvixHitungLevel(xp);
     const streak = user.streak || 0;
     const coins = user.coins || 0;
-    const xpPct = ((xp % 100) / 100) * 100;
+    const xpPct = eduvixXpPct(xp);
 
     set('[data-user-name]', nama);
     set('[data-user-xp]', xp + ' XP');
@@ -232,16 +284,25 @@ function updateUI(user) {
         el.innerHTML = nama.charAt(0).toUpperCase(); // Default initial
 
         // Apply custom avatar if set
+        el.classList.remove('avatar-ghost');
         if (user.avatarType === 'icon' && user.avatarValue) {
             el.innerHTML = `<i class="${user.avatarValue}"></i>`;
             el.style.background = 'linear-gradient(135deg, #1BAAED, #7c3aed)';
+            el.style.color = 'white'; // Icon jadi putih pas dipasang
         } else if (user.avatarType === 'image' && user.avatarValue) {
             el.innerHTML = `<img src="${user.avatarValue}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
             el.style.background = 'transparent';
         }
 
         // Apply border
-        if (user.avatarBorder && user.avatarBorder !== 'none') {
+        el.classList.remove('border-rainbow', 'border-fire');
+        if (user.avatarBorder === 'fa-circle-notch') {
+            el.classList.add('border-rainbow');
+            el.style.border = 'none';
+        } else if (user.avatarBorder === 'fa-fire') {
+            el.classList.add('border-fire');
+            el.style.border = 'none';
+        } else if (user.avatarBorder && user.avatarBorder !== 'none') {
             el.style.border = `3px solid ${user.avatarBorder}`;
         } else {
             el.style.border = 'none';
@@ -375,6 +436,8 @@ window.EduvixAPI = {
     selesaikanMateri, getProgressMateri,
     // Leaderboard
     getLeaderboard,
+    // Shop
+    getShopItems, buyItem, getInventory,
     // UI
     updateUI, initPage, showApiToast, showXPPopup, showLevelUp, apiFetch,
     // Data

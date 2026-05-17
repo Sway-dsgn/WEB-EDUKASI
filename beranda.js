@@ -11,7 +11,7 @@ function renderUserInfo(user, stats = {}) {
 
   const nama = user.nama || user.username || 'User';
   const xp = user.xp || 0;
-  const xpPct = ((xp % 100) / 100) * 100; // XP percentage within current level
+  const xpPct = eduvixXpPct(xp); // XP percentage within current level
 
   // Welcome banner
   const bannerH = document.querySelector('.banner-content h2');
@@ -40,7 +40,7 @@ function animateProgressBars(materiProgress = []) {
   const user = EduvixAPI.getUser();
   if (bannerFill) {
     bannerFill.style.width = '0%';
-    const xpPct = ((user.xp || 0) % 100);
+    const xpPct = eduvixXpPct(user.xp || 0);
     setTimeout(() => bannerFill.style.width = xpPct + '%', 300);
 
     const bannerPct = document.querySelector('.banner-pct');
@@ -75,6 +75,53 @@ function enhanceHTML() {
 
   // Modal profil dan Notifikasi sekarang dihandle sepenuhnya oleh jalan.js (eduvixInitGlobalUI)
   // Jadi kita tidak perlu menyuntikkan HTML duplikat di sini.
+
+  // Terapkan tema yang tersimpan saat halaman dimuat
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'dark') {
+    document.body.classList.add('dark-theme');
+  }
+
+  // Ganti Upgrade Card dengan Dark Mode Toggle di Sidebar
+  const sidebarFooter = document.querySelector('.sidebar-footer');
+  if (sidebarFooter) {
+    sidebarFooter.innerHTML = `
+      <div class="theme-card" style="background: var(--card); padding: 12px 16px; border-radius: var(--r-md); border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: space-between;">
+          <span style="font-size: 13px; font-weight: 600; color: var(--text);">Mode Gelap</span>
+          <div class="switch-toggle" id="sidebarThemeToggle" style="width: 46px; height: 24px; border-radius: 12px; background: var(--border); cursor: pointer; position: relative; transition: var(--tr);">
+              <div class="switch-thumb" style="width: 20px; height: 20px; border-radius: 50%; background: #fff; position: absolute; top: 2px; left: 2px; transition: var(--tr); display: flex; align-items: center; justify-content: center; font-size: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                  <i class="fa-solid fa-moon" style="color: #6366f1;"></i>
+              </div>
+          </div>
+      </div>
+    `;
+
+    const sBtn = document.getElementById('sidebarThemeToggle');
+    const thumb = sBtn.querySelector('.switch-thumb');
+    const savedTheme = localStorage.getItem('theme');
+    const isDark = savedTheme === 'dark';
+
+    function updateSwitchUI(dark) {
+      if (dark) {
+        sBtn.style.background = 'var(--indigo)';
+        thumb.style.left = '24px';
+        thumb.innerHTML = '<i class="fa-solid fa-sun" style="color: #f59e0b;"></i>';
+      } else {
+        sBtn.style.background = 'var(--border)';
+        thumb.style.left = '2px';
+        thumb.innerHTML = '<i class="fa-solid fa-moon" style="color: #6366f1;"></i>';
+      }
+    }
+
+    updateSwitchUI(isDark);
+
+    sBtn.addEventListener('click', () => {
+      const isCurrentlyDark = document.body.classList.toggle('dark-theme');
+      localStorage.setItem('theme', isCurrentlyDark ? 'dark' : 'light');
+      updateSwitchUI(isCurrentlyDark);
+      updateSwitchUI(isCurrentlyDark);
+    });
+  }
 
   // Tambah Streak Widget di right sidebar
   const rs = document.querySelector('.right-sidebar');
@@ -198,13 +245,20 @@ function initActivityGraph(materiProgress = []) {
 }
 
 // ─── CALENDAR INTERAKTIF ──────────────────────
-function initCalendar() {
+function initCalendar(materiProgress = [], quizRiwayat = []) {
   const calendarGrid = document.querySelector('.calendar-grid');
   const monthEl = document.querySelector('.month-nav span');
   const prevBtn = document.querySelector('.month-btn:first-child');
   const nextBtn = document.querySelector('.month-btn:last-child');
 
   if (!calendarGrid || !monthEl) return;
+
+  // Gabungkan semua tanggal aktivitas
+  const activities = {};
+  [...materiProgress, ...quizRiwayat].forEach(item => {
+    const dateStr = (item.selesai_at || item.created_at || '').substring(0, 10);
+    if (dateStr) activities[dateStr] = (activities[dateStr] || 0) + 1;
+  });
 
   const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
     'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
@@ -217,12 +271,9 @@ function initCalendar() {
     calendarGrid.innerHTML = '';
     monthEl.textContent = `${months[viewMonth]} ${viewYear} `;
 
-    // Ambil hari pertama bulan ini (0 = Minggu, 1 = Senin, dst)
     const firstDay = new Date(viewYear, viewMonth, 1).getDay();
-    // Ambil jumlah hari dalam bulan ini
     const lastDate = new Date(viewYear, viewMonth + 1, 0).getDate();
 
-    // Tambahkan slot kosong untuk hari sebelum tanggal 1
     for (let i = 0; i < firstDay; i++) {
       const empty = document.createElement('div');
       empty.className = 'day empty';
@@ -232,11 +283,20 @@ function initCalendar() {
     const todayReal = new Date();
     const isThisMonth = todayReal.getMonth() === viewMonth && todayReal.getFullYear() === viewYear;
 
-    // Generate tanggal 1 sampai terakhir
     for (let d = 1; d <= lastDate; d++) {
       const dayEl = document.createElement('div');
       dayEl.className = 'day';
       dayEl.textContent = d;
+
+      // Cek keaktifan berdasarkan tanggal
+      const curDate = `${viewYear}-${String(viewMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+      const count = activities[curDate] || 0;
+
+      if (count > 0) {
+        if (count >= 3) dayEl.classList.add('high');
+        else if (count >= 2) dayEl.classList.add('medium');
+        else dayEl.classList.add('low');
+      }
 
       if (isThisMonth && d === todayReal.getDate()) {
         dayEl.classList.add('today');
@@ -245,6 +305,7 @@ function initCalendar() {
       dayEl.addEventListener('click', () => {
         document.querySelectorAll('.calendar-grid .day').forEach(x => x.classList.remove('selected'));
         dayEl.classList.add('selected');
+        if (count > 0) showToast(`🔥 Ada ${count} aktivitas di tanggal ini!`, 'info', 1500);
       });
       calendarGrid.appendChild(dayEl);
     }
@@ -284,14 +345,8 @@ function initNav() {
 
 // ─── COURSE CARDS ─────────────────────────────
 function initCourseCards() {
-  document.querySelectorAll('.course-card:not(.add-course)').forEach((card, index) => {
-    card.addEventListener('click', () => {
-      // Mengarahkan ke quiz sesuai materi (0: Kritis, 1: TKA)
-      if (index === 0) window.location.href = 'quizz.html';
-      else if (index === 1) window.location.href = 'tka.html';
-      else window.location.href = 'progress.html';
-    });
-  });
+  // Click handler sudah diatur langsung di HTML (onclick="window.location.href='...'")
+  // Jadi di sini kosongkan saja biar nggak konflik.
 
   const addCard = document.querySelector('.course-card.add-course');
   if (addCard) {
@@ -397,6 +452,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Jalankan init UI dasar dulu supaya tombol-tombol bisa dipencet
   enhanceHTML();
+  unifySidebarNav();
   initSearch();
   initNav();
   initCourseCards();
@@ -405,29 +461,64 @@ document.addEventListener('DOMContentLoaded', async () => {
   initNotifProfile();
   initUpgrade();
   initCalendar();
+  initResponsiveMenu();
 
   // Baru ambil data dari API (pake try-catch supaya kaga ngerusak tombol)
   let stats = { materiSelesai: 0, akurasi: 0 };
   let materiProgress = [];
+  let quizRiwayat = [];
   let user = null;
   try {
     user = await EduvixAPI.initPage();
     if (user && user.id) materiProgress = await EduvixAPI.getProgressMateri();
-    const quizRiwayat = await EduvixAPI.getRiwayatQuiz();
+    quizRiwayat = await EduvixAPI.getRiwayatQuiz();
 
     // Hitung Stats
     stats.materiSelesai = materiProgress.length;
+    const totalMateriTersedia = 6; // Sesuaikan dengan jumlah total materi di silabus
+    stats.progresPersen = Math.round((stats.materiSelesai / totalMateriTersedia) * 100);
+
     if (quizRiwayat.length > 0) {
-      const totalSkor = quizRiwayat.reduce((acc, curr) => acc + curr.skor, 0);
-      stats.akurasi = Math.round(totalSkor / quizRiwayat.length);
+      // Kelompokkan skor terbaik per quiz_id
+      const bestScores = {};
+      quizRiwayat.forEach(q => {
+        const qid = q.quiz_id || 'default';
+        if (!bestScores[qid] || q.skor > bestScores[qid]) {
+          bestScores[qid] = q.skor;
+        }
+      });
+
+      const scoresArray = Object.values(bestScores);
+      const totalSkor = scoresArray.reduce((acc, curr) => acc + curr, 0);
+
+      // Hitung rata-rata akurasi dari quiz yang sudah dikerjakan (maks 100%)
+      stats.akurasi = Math.min(100, Math.round(totalSkor / Math.max(scoresArray.length, 1)));
     }
   } catch (e) {
     console.error("Gagal sinkronisasi data:", e);
   }
 
+  // Update UI Elements
   renderUserInfo(user || EduvixAPI.getUser(), stats);
+
+  // Update progres khusus di beranda/dashboard
+  document.querySelectorAll('[data-stat-progres]').forEach(el => el.textContent = stats.progresPersen + '%');
+
+  // Update label progress kursus spesifik (jika ada)
+  const completedIds = materiProgress.map(m => m.materi_id);
+  if (completedIds.includes('materi_01')) {
+    const p1 = document.querySelector('[data-course-progress="materi_01"]');
+    if (p1) p1.textContent = '100%';
+  }
+  if (completedIds.includes('materi_02')) {
+    const p2 = document.querySelector('[data-course-progress="materi_02"]');
+    if (p2) p2.textContent = '100%';
+  }
+
   animateProgressBars(materiProgress); // Animasi progress sesuai materi yang selesai
-  initActivityGraph(materiProgress); // Grafik berdasarkan tanggal selesai materi
+  initCalendar(materiProgress, quizRiwayat); // Kalender berdasarkan aktivitas
+  initDashboardAchievements(user, materiProgress, quizRiwayat); // Memuat pencapaian di dashboard
+  initLeaderboard(); // Memuat peringkat user
 
   // Greeting berdasarkan waktu
   setTimeout(() => {
@@ -435,3 +526,196 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (jam >= 5 && jam < 12) showToast('☀️ Selamat pagi! Semangat belajar hari ini!', 'i', 3000);
   }, 800);
 });
+
+// ─── PENCAPAIAN DASHBOARD ──────────────────────
+function initDashboardAchievements(user, materiProgress = [], quizRiwayat = []) {
+  const container = document.querySelector('.dashboard-badges');
+  if (!container) return;
+
+  const done = materiProgress.length;
+  const isPioneer = user.id <= 5;
+  const streak = user.streak || 0;
+
+  // Hitung kuis dengan nilai sempurna (100)
+  const bestScores = {};
+  quizRiwayat.forEach(q => {
+    const qid = q.quiz_id || 'default';
+    if (!bestScores[qid] || q.skor > bestScores[qid]) {
+      bestScores[qid] = q.skor;
+    }
+  });
+  const perfectQuizzes = Object.values(bestScores).filter(s => s === 100).length;
+
+  const allBadges = [
+    { name: 'Pemula', icon: 'fa-graduation-cap', color: '#fbbf24', earned: done >= 1 },
+    { name: '7 Hari Belajar', icon: 'fa-fire', color: '#ef4444', earned: streak >= 7 },
+    { name: 'Ahli Logika', icon: 'fa-brain', color: '#6366f1', earned: done >= 5 },
+    { name: 'Skor Tertinggi', icon: 'fa-trophy', color: '#10b981', earned: perfectQuizzes >= 3 },
+    { name: 'Raja Belajar', icon: 'fa-crown', color: '#f59e0b', earned: done >= 20 },
+    { name: 'Pelopor EDUVIX', icon: 'fa-star', color: '#ec4899', earned: isPioneer }
+  ];
+
+  container.innerHTML = '';
+
+  allBadges.forEach(badge => {
+    const card = document.createElement('div');
+    card.style.cssText = `
+      background: ${badge.earned ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.01)'};
+      border: 1px solid ${badge.earned ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.02)'};
+      padding: 16px;
+      border-radius: 16px;
+      min-width: 120px;
+      text-align: center;
+      opacity: ${badge.earned ? '1' : '0.4'};
+      transition: all 0.2s ease;
+    `;
+
+    card.innerHTML = `
+      <i class="fa-solid ${badge.icon}" style="font-size: 32px; color: ${badge.earned ? badge.color : '#64748b'};"></i>
+      <p style="font-size: 12px; font-weight: 700; margin-top: 8px; color: ${badge.earned ? 'var(--text)' : '#64748b'};">${badge.name}</p>
+    `;
+    container.appendChild(card);
+  });
+}
+
+// ─── LEADERBOARD ──────────────────────────────
+async function initLeaderboard() {
+  const listEl = document.querySelector('.leaderboard-list');
+  if (!listEl) return;
+
+  const sortSelect = document.getElementById('leaderboardSort');
+  const sortBy = sortSelect ? sortSelect.value : 'xp';
+
+  // Tambah listener sekali saja
+  if (sortSelect && !sortSelect.dataset.listenerAdded) {
+    sortSelect.addEventListener('change', () => initLeaderboard());
+    sortSelect.dataset.listenerAdded = 'true';
+  }
+
+  try {
+    const response = await EduvixAPI.apiFetch(`/api/leaderboard?sort=${sortBy}`);
+    console.log('[Leaderboard] Response:', response);
+    listEl.innerHTML = '';
+
+    if (!response || response.length === 0) {
+      listEl.innerHTML = '<div style="text-align: center; color: #64748b; font-size: 14px;">Belum ada data peringkat.</div>';
+      return;
+    }
+
+    // Ambil top 5 saja untuk di dashboard
+    const top5 = response.slice(0, 5);
+
+    top5.forEach((u, index) => {
+      const item = document.createElement('div');
+      item.className = 'leaderboard-item';
+      item.style.cssText = `
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 10px 12px; background: rgba(255,255,255,0.02);
+        border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);
+      `;
+
+      const rankColors = ['#fbbf24', '#94a3b8', '#b45309'];
+      const rankColor = rankColors[index] || '#64748b';
+
+      const displayName = u.nama || u.username || 'Anonim';
+
+      // Julukan untuk member 1-5 (Pelopor)
+      const isPioneer = u.id <= 5;
+      const titleHtml = isPioneer ? `<span style="background: #ec4899; color: white; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 6px; font-weight: 800;">Pelopor</span>` : '';
+
+      // Label nilai sesuai sort
+      let valueLabel = `${u.value || 0} XP`;
+      if (sortBy === 'nilai') valueLabel = `${u.value || 0} Poin`;
+      if (sortBy === 'akurasi') valueLabel = `${u.value || 0}`;
+
+      item.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-weight: 900; color: ${rankColor}; font-size: 16px; width: 24px;">#${index + 1}</span>
+          <div>
+            <div style="font-weight: 700; color: #1a1d2e; font-size: 14px;">${displayName}${titleHtml}</div>
+            <div style="font-size: 11px; color: #64748b;">Level ${u.level || 1}</div>
+          </div>
+        </div>
+        <div style="font-weight: 800; color: #6366f1; font-size: 14px;">${valueLabel}</div>
+      `;
+      listEl.appendChild(item);
+    });
+  } catch (error) {
+    listEl.innerHTML = '<div style="text-align: center; color: #ef4444; font-size: 14px;">Gagal memuat peringkat.</div>';
+  }
+}
+
+// --- RESPONSIVE MENU (HAMBURGER) --------------
+function initResponsiveMenu() {
+  const header = document.querySelector(".top-header");
+  const sidebar = document.querySelector(".sidebar");
+
+  if (!header || !sidebar) return;
+
+  // 1. Inject Hamburger Button if not exists
+  if (!document.querySelector(".mobile-toggle")) {
+    const toggle = document.createElement("button");
+    toggle.className = "mobile-toggle";
+    toggle.innerHTML = `
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    `;
+    header.insertBefore(toggle, header.firstChild);
+
+    // 2. Inject Overlay if not exists
+    let overlay = document.querySelector(".sidebar-overlay");
+    if (!overlay) {
+      overlay = document.createElement("div");
+      overlay.className = "sidebar-overlay";
+      document.body.appendChild(overlay);
+    }
+
+    // 3. Toggle Events
+    const toggleSidebar = () => {
+      sidebar.classList.toggle("show");
+      overlay.classList.toggle("active");
+      document.body.style.overflow = sidebar.classList.contains("show") ? "hidden" : "";
+    };
+
+    toggle.addEventListener("click", toggleSidebar);
+    overlay.addEventListener("click", toggleSidebar);
+
+    // Close on nav click (mobile)
+    sidebar.querySelectorAll(".nav-item").forEach(item => {
+      item.addEventListener("click", () => {
+        if (window.innerWidth <= 768) toggleSidebar();
+      });
+    });
+  }
+}
+
+
+// --- UNIFY SIDEBAR NAV -------------------------
+function unifySidebarNav() {
+  const nav = document.querySelector(".sidebar-nav");
+  if (!nav) return;
+
+  const menuItems = [
+    { href: "dashboard.html", icon: `<rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/><rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/><rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/>`, text: "Dashboard" },
+    { href: "progress.html", icon: `<path d="M4 19.5C4 18.837 4.26339 18.2011 4.73223 17.7322C5.20107 17.2634 5.83696 17 6.5 17H20" stroke="currentColor" stroke-width="2"/><path d="M6.5 2H20V22H6.5C5.83696 22 5.20107 21.7366 4.73223 21.2678C4.26339 20.7989 4 20.163 4 19.5V4.5C4 3.83696 4.26339 3.20107 4.73223 2.73223C5.20107 2.26339 5.83696 2 6.5 2Z" stroke="currentColor" stroke-width="2"/>`, text: "Semua Materi" },
+    { href: "pencapaian.html", icon: `<path d="M12 15l-2 5 2-1 2 1-2-5zm0-13C7.58 2 4 5.58 4 10c0 4.42 3.58 8 8 8s8-3.58 8-8c0-4.42-3.58-8-8-8z" stroke="currentColor" stroke-width="2"/>`, text: "Pencapaian" },
+    { href: "store.html", icon: `<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z" stroke="currentColor" stroke-width="2"/><path d="M9 22V12h6v10" stroke="currentColor" stroke-width="2"/>`, text: "Toko Hadiah" },
+    { href: "materi komunitas.html", icon: `<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"/><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/><path d="M23 21v-2a4 4 0 0 0-3-3.87" stroke="currentColor" stroke-width="2"/><path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2"/>`, text: "Materi Komunitas" }
+  ];
+
+  // Perbaikan: Decode URL untuk menangani spasi (%20) dan abaikan query string/hash
+  const rawFilename = window.location.pathname.split("/").pop() || "dashboard.html";
+  const currentPath = decodeURIComponent(rawFilename.split(/[#?]/)[0]);
+
+  nav.innerHTML = menuItems.map(item => `
+    <a href="${item.href}" class="nav-item ${currentPath === item.href ? "active" : ""}">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        ${item.icon}
+      </svg>
+      <span>${item.text}</span>
+    </a>
+  `).join("");
+}

@@ -70,7 +70,9 @@ let streak = 0;
 let totalXP = 0;
 let timeLeft = 1200;
 let timerInterval;
+let isFinished = false;
 const MAX_TIME = 1200;
+const PROGRESS_KEY = 'eduvix_quiz_progress_02';
 
 // ==================== DOM REFS (Initialized in init) ====================
 let dom = {};
@@ -138,6 +140,10 @@ function init() {
     initDOMRefs();
     buildQmap();
     buildNavDots();
+    
+    // Load progress jika ada
+    loadQuizProgress();
+
     loadQuestion();
     startTimer();
     updateProgress();
@@ -150,6 +156,31 @@ function init() {
     dom.qmapBackdrop.addEventListener('click', closeQmap);
     dom.btnMark.addEventListener('click', toggleMark);
     document.querySelector('.btn-review-answers').addEventListener('click', reviewAnswers);
+    
+    // Global handleBack
+    window.handleBack = function() {
+        if (!isFinished && userAnswers.some(a => a !== undefined)) {
+            document.getElementById('exitConfirmModal').classList.add('open');
+        } else {
+            window.location.href = 'materi.html';
+        }
+    };
+
+    window.closeExitModal = function() {
+        document.getElementById('exitConfirmModal').classList.remove('open');
+    };
+
+    window.confirmExit = function() {
+        window.location.href = 'materi.html';
+    };
+
+    // Navigation Lock
+    window.onbeforeunload = function(e) {
+        if (!isFinished && userAnswers.some(a => a !== undefined)) {
+            return "Apakah Anda yakin ingin keluar? Progress quiz Anda mungkin tidak tersimpan.";
+        }
+    };
+
     document.querySelector('.btn-back-dashboard').addEventListener('click', () => window.location.href = 'dashboard.html');
 }
 
@@ -160,6 +191,7 @@ function startTimer() {
         timeLeft--;
         updateTimerDisplay();
         if (timeLeft <= 0) { clearInterval(timerInterval); finishQuiz(); }
+        if (timeLeft % 10 === 0) saveQuizProgress(); // Save setiap 10 detik
         if (timeLeft === 300) showToast('⏰ Waktu tinggal 5 menit!', 'warn');
     }, 1000);
 }
@@ -255,6 +287,7 @@ function selectOption(index, skipFX = false) {
         updateNavButtons();
         updateQmap();
         updateNavDots();
+        saveQuizProgress();
         if (!skipFX) playSound(isCorrect ? 'correct' : 'wrong');
     }, skipFX ? 0 : 260);
 }
@@ -327,8 +360,13 @@ function updateQmap() {
     const btns = dom.qmapGrid.querySelectorAll('button');
     btns.forEach((btn, i) => {
         btn.className = '';
+        const ans = userAnswers[i];
         if (i === currentQuestion) btn.classList.add('current');
-        else if (userAnswers[i] !== undefined) btn.classList.add('answered');
+        else if (ans !== undefined) {
+            btn.classList.add('answered');
+            const isCorrect = ans === quizData[i].correct;
+            btn.classList.add(isCorrect ? 'correct' : 'wrong');
+        }
         if (markedQuestions.has(i)) btn.classList.add('marked');
     });
 }
@@ -375,7 +413,9 @@ function updateStreakUI() {
 
 // ==================== FINISH ====================
 function finishQuiz() {
+    isFinished = true;
     clearInterval(timerInterval);
+    clearQuizProgress();
     const correct = userAnswers.filter((a, i) => a === quizData[i].correct).length;
     const wrong = quizData.length - correct;
     const pct = Math.round((correct / quizData.length) * 100);
@@ -444,6 +484,19 @@ function saveResult(score, correct) {
     if (window.EduvixAPI && EduvixAPI.tambahKoin) {
         EduvixAPI.tambahXP(xpEarned, 'Menyelesaikan Quiz');
         EduvixAPI.tambahKoin(goldEarned, 'Hadiah Quiz');
+        
+        // Simpan hasil quiz untuk statistik
+        if (EduvixAPI.simpanHasilQuiz) {
+            EduvixAPI.simpanHasilQuiz('quiz_02', score, correct, quizData.length - correct, quizData.length)
+                .then(res => {
+                    console.log("TKA Quiz saved:", res);
+                    // Tandai materi sebagai selesai juga jika belum
+                    if (EduvixAPI.selesaikanMateri) {
+                        EduvixAPI.selesaikanMateri('materi_02', 0).catch(() => {});
+                    }
+                })
+                .catch(err => console.error("Failed to save TKA quiz:", err));
+        }
     }
     else if (typeof eduvixSimpanQuiz === 'function') {
         eduvixSimpanQuiz({
@@ -553,6 +606,47 @@ style.textContent = `
 document.head.appendChild(style);
 
 
+
+// ==================== PROGRESS PERSISTENCE ====================
+function saveQuizProgress() {
+    if (isFinished) return;
+    const progress = {
+        answers: userAnswers,
+        current: currentQuestion,
+        time: timeLeft,
+        xp: totalXP,
+        streak: streak,
+        marked: Array.from(markedQuestions)
+    };
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress));
+}
+
+function loadQuizProgress() {
+    try {
+        const raw = localStorage.getItem(PROGRESS_KEY);
+        if (!raw) return;
+        const data = JSON.parse(raw);
+        
+        // Kembalikan null jadi undefined agar bisa diklik lagi
+        if (data.answers) {
+            userAnswers = data.answers.map(a => a === null ? undefined : a);
+        }
+
+        currentQuestion = data.current || 0;
+        timeLeft = data.time || timeLeft;
+        totalXP = data.xp || 0;
+        streak = data.streak || 0;
+        markedQuestions = new Set(data.marked || []);
+        
+        if (totalXP > 0 && dom.xpBadge) dom.xpBadge.textContent = `+${totalXP} XP`;
+    } catch (e) {
+        console.error("Failed to load progress:", e);
+    }
+}
+
+function clearQuizProgress() {
+    localStorage.removeItem(PROGRESS_KEY);
+}
 
 // =========================================
 //   BOOTSTRAP

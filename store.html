@@ -165,6 +165,52 @@
             font-size: 32px;
             box-shadow: inset 0 0 0 2px rgba(245, 158, 11, 0.1);
         }
+
+        @media (max-width: 768px) {
+            .coin-display-large {
+                padding: 12px 16px;
+                margin-bottom: 16px;
+            }
+            .coin-meta h2 {
+                font-size: 20px;
+            }
+            .coin-icon-large {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+            .store-grid {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns for shop items */
+                gap: 10px;
+            }
+            .item-card {
+                padding: 12px;
+                gap: 10px;
+            }
+            .item-preview {
+                height: 100px;
+                font-size: 32px;
+            }
+            .item-info h3 {
+                font-size: 14px;
+            }
+            .item-info p {
+                font-size: 10px;
+                line-height: 1.3;
+                line-clamp: 2;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+            .price-tag {
+                font-size: 14px;
+            }
+            .btn-buy {
+                padding: 8px 12px;
+                font-size: 12px;
+                border-radius: 8px;
+            }
+        }
     </style>
 </head>
 
@@ -339,7 +385,7 @@
                 </div>
                 <div class="stats-widget">
                     <div class="stat-box">
-                        <span class="stat-box-val">3</span>
+                        <span id="itemsAvailableCount" class="stat-box-val">0</span>
                         <div class="stat-box-lbl">Item Tersedia</div>
                     </div>
                     <div class="stat-box">
@@ -362,41 +408,134 @@
     <script src="api.js"></script>
     <script src="jalan.js"></script>
     <script>
+        let shopItems = [];
+        let userInventory = [];
+
         async function initStore() {
             const user = await EduvixAPI.initPage();
             if (!user) return;
 
-            // Tampilkan koin di area khusus store
-            document.getElementById('userCoinsDisplay').innerText = user.coins || 0;
-
-            // Logika item yang dimiliki (simulasi)
-            const owned = user.inventory || [];
-            document.querySelectorAll('.item-card').forEach(card => {
-                const id = card.getAttribute('data-item-id');
-                if (owned.includes(id)) {
-                    card.classList.add('is-owned');
-                    card.querySelector('.btn-buy').textContent = 'Dimiliki';
-                    card.querySelector('.btn-buy').classList.add('owned');
-                }
-            });
+            // Load Items & Inventory parallel
+            try {
+                [shopItems, userInventory] = await Promise.all([
+                    EduvixAPI.getShopItems(),
+                    EduvixAPI.getInventory()
+                ]);
+                
+                document.getElementById('itemsAvailableCount').innerText = shopItems.length;
+                
+                renderShop();
+                renderHistory();
+            } catch (e) {
+                console.error("Gagal load store:", e);
+                EduvixAPI.showApiToast('Gagal memuat data toko', 'error');
+            }
         }
 
-        async function handlePurchase(itemId, price, btn) {
+        function renderShop() {
+            const grid = document.querySelector('.store-grid');
+            const inventoryIds = userInventory.map(i => i.id);
+            const user = EduvixAPI.getUser();
+
+            grid.innerHTML = shopItems.map(item => {
+                const isOwned = inventoryIds.includes(item.id);
+                const isEquipped = (item.tipe === 'avatar' && user.avatarValue === `fas ${item.icon}`) || 
+                                   (item.tipe === 'border' && user.avatarBorder === item.icon);
+
+                return `
+                    <div class="item-card ${isOwned ? 'is-owned' : ''}" data-item-id="${item.id}">
+                        <div class="owned-badge">Dimiliki</div>
+                        <div class="item-preview" style="color:${getItemColor(item.tipe)};">
+                            <i class="fa-solid ${item.icon}"></i>
+                        </div>
+                        <div class="item-info">
+                            <h3>${item.nama}</h3>
+                            <p>${item.deskripsi}</p>
+                        </div>
+                        <div class="item-footer">
+                            <div class="price-tag">
+                                ${item.id === 'rainbow_infinity' ? `<span style="text-decoration: line-through; color: #94a3b8; font-size: 12px; margin-right: 6px;"><i class="fa-solid fa-coins"></i> 500</span>` : ''}
+                                <i class="fa-solid fa-coins"></i> ${item.harga}
+                                ${item.id === 'rainbow_infinity' ? `<span style="background: #ef4444; color: white; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 6px; font-weight: 800;">-20%</span>` : ''}
+                            </div>
+                            ${isOwned ? 
+                                `<button class="btn-buy" style="background: ${isEquipped ? 'var(--emerald)' : 'var(--indigo)'}" 
+                                    onclick="handleEquip('${item.id}', '${item.tipe}', '${item.icon}', this)">
+                                    ${isEquipped ? 'Dipakai' : 'Pakai Item'}
+                                </button>` : 
+                                `<button class="btn-buy" onclick="handlePurchase('${item.id}', ${item.harga})">Beli Sekarang</button>`
+                            }
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Update coin display
+            document.getElementById('userCoinsDisplay').innerText = user.coins || 0;
+        }
+
+        function getItemColor(type) {
+            if (type === 'avatar') return 'var(--indigo)';
+            if (type === 'border') return 'var(--amber)';
+            return 'var(--emerald)';
+        }
+
+        function renderHistory() {
+            const historyWidget = document.querySelector('.widget:last-child');
+            if (!historyWidget) return;
+            
+            const historyList = userInventory.length > 0 ? 
+                userInventory.map(i => `
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #f1f5f9;">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <i class="fa-solid ${i.icon}" style="color:var(--indigo); width:20px; text-align:center;"></i>
+                            <span style="font-size:13px; font-weight:600;">${i.nama}</span>
+                        </div>
+                        <span style="font-size:11px; color:var(--text-soft);">${new Date(i.purchased_at).toLocaleDateString()}</span>
+                    </div>
+                `).join('') : 
+                '<p style="font-size:12px; color:var(--text-soft); text-align:center; padding:10px;">Belum ada riwayat pembelian.</p>';
+
+            historyWidget.innerHTML = `
+                <div class="widget-header"><h3>Riwayat Pembelian</h3></div>
+                <div style="padding:0 15px 15px;">${historyList}</div>
+            `;
+        }
+
+        async function handlePurchase(itemId, price) {
             const user = EduvixAPI.getUser();
             if (!user) return;
 
-            if ((user.coins || 0) >= price) {
-                // Gunakan koin via jalan.js
-                const sukses = await eduvixGunakanKoin(price, `Beli item: ${itemId}`);
-                if (sukses) {
-                    user.inventory = user.inventory || [];
-                    user.inventory.push(itemId);
-                    EduvixAPI.setUser(user);
-                    alert(`Pembelian berhasil! Item '${itemId}' kini milikmu.`);
-                    location.reload();
+            if ((user.coins || 0) < price) {
+                EduvixAPI.showApiToast('Koin kamu tidak mencukupi!', 'error');
+                return;
+            }
+
+            if (confirm(`Yakin ingin membeli item ini seharga ${price} koin?`)) {
+                try {
+                    await EduvixAPI.buyItem(itemId);
+                    EduvixAPI.showApiToast('Berhasil membeli item!', 'success');
+                    initStore(); // Refresh
+                } catch (e) {
+                    EduvixAPI.showApiToast(e.message, 'error');
                 }
-            } else {
-                alert('Koin kamu tidak mencukupi!');
+            }
+        }
+
+        async function handleEquip(itemId, type, icon, btn) {
+            try {
+                if (type === 'avatar') {
+                    await eduvixSetAvatar('icon', `fas ${icon}`);
+                } else if (type === 'border') {
+                    await eduvixSetBorder(icon);
+                } else {
+                    EduvixAPI.showApiToast('Item ini aktif secara otomatis!', 'info');
+                    return;
+                }
+                EduvixAPI.showApiToast('Item berhasil dipasang!', 'success');
+                initStore(); // Refresh UI
+            } catch (e) {
+                EduvixAPI.showApiToast('Gagal memasang item', 'error');
             }
         }
 
