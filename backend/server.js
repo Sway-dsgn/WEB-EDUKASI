@@ -1,14 +1,14 @@
 // =============================================
 //   EDUVIX.ID — Backend Server (PostgreSQL)
-//   Railway-optimized, no native binding issues
+//   Railway-optimized, FINAL VERSION
 // =============================================
 
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
-const { Pool } = require('pg');
 const path = require('path');
+const { Pool } = require('pg');
 
 require('dotenv').config();
 
@@ -167,6 +167,7 @@ const initData = async () => {
 app.use(cors({ origin: '*' }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'frontend')));
+
 // ─── HELPER FUNCTIONS ─────────────────────────
 const hitungLevel = xp => Math.floor((Math.sqrt(0.16 * xp + 9) - 1) / 2);
 const makeToken = user => jwt.sign({ id: user.id, username: user.username }, JWT_SECRET, { expiresIn: '7d' });
@@ -657,9 +658,16 @@ app.get('/api/admin/ban', adminMiddleware, async (req, res) => {
 });
 
 // =============================================
-//   ROOT ENDPOINT
+//   FRONTEND ROUTE
 // =============================================
 app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
+});
+
+// =============================================
+//   ROOT ENDPOINT
+// =============================================
+app.get('/api', (req, res) => {
   res.json({
     status: '✅ EDUVIX.ID API jalan!',
     db: 'PostgreSQL',
