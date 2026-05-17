@@ -4,7 +4,7 @@
 // ============================================
 
 const EduvixAPI = (() => {
-    const API_BASE = 'http://localhost:5000/api'; // ✅ PORT 5000
+    const API_URL = 'https://web-edukasi-production-77b3.up.railway.app';
 
     return {
         login: async (username, password) => {
