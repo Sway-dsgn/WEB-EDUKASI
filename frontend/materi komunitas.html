@@ -1297,6 +1297,26 @@
         display: none !important;
       }
 
+      /* Sidebar muncul saat hamburger diklik */
+      .sidebar.show {
+        display: flex !important;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 260px;
+        z-index: 900;
+        flex-direction: column;
+        box-shadow: 4px 0 24px rgba(0,0,0,0.18);
+        overflow-y: auto;
+        animation: slideInSidebar 0.28s cubic-bezier(0.16,1,0.3,1);
+      }
+
+      @keyframes slideInSidebar {
+        from { transform: translateX(-100%); opacity: 0; }
+        to   { transform: translateX(0);    opacity: 1; }
+      }
+
       .main-content {
         padding: 16px !important;
       }
@@ -2788,6 +2808,53 @@
   <script src="api.js"></script>
   <script>
     EduvixAPI.initPage();
+
+    // ─── HAMBURGER MENU (sama seperti halaman lain) ──────────────
+    document.addEventListener('DOMContentLoaded', function () {
+      const header = document.querySelector('.top-header');
+      const sidebar = document.querySelector('.sidebar');
+      if (!header || !sidebar) return;
+
+      if (!document.querySelector('.mobile-toggle')) {
+        // Inject tombol hamburger
+        const toggle = document.createElement('button');
+        toggle.className = 'mobile-toggle';
+        toggle.setAttribute('aria-label', 'Buka menu');
+        toggle.innerHTML = `
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        `;
+        header.insertBefore(toggle, header.firstChild);
+
+        // Inject overlay
+        let overlay = document.querySelector('.sidebar-overlay');
+        if (!overlay) {
+          overlay = document.createElement('div');
+          overlay.className = 'sidebar-overlay';
+          document.body.appendChild(overlay);
+        }
+
+        // Toggle buka/tutup
+        const toggleSidebar = () => {
+          sidebar.classList.toggle('show');
+          overlay.classList.toggle('active');
+          document.body.style.overflow = sidebar.classList.contains('show') ? 'hidden' : '';
+        };
+
+        toggle.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+
+        // Tutup sidebar kalau klik menu item di HP
+        sidebar.querySelectorAll('.nav-item').forEach(item => {
+          item.addEventListener('click', () => {
+            if (window.innerWidth <= 768) toggleSidebar();
+          });
+        });
+      }
+    });
   </script>
 
 
