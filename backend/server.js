@@ -166,7 +166,7 @@ const initData = async () => {
 // ─── MIDDLEWARE ───────────────────────────────
 app.use(cors({ origin: '*' }));
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'frontend')));
+
 
 // ─── HELPER FUNCTIONS ─────────────────────────
 const hitungLevel = xp => Math.floor((Math.sqrt(0.16 * xp + 9) - 1) / 2);
@@ -658,14 +658,6 @@ app.get('/api/admin/ban', adminMiddleware, async (req, res) => {
 });
 
 // =============================================
-//   FRONTEND ROUTE
-// =============================================
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
-});
-
-// =============================================
-//   ROOT ENDPOINT
 // =============================================
 app.get('/api', (req, res) => {
   res.json({
