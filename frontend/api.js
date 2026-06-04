@@ -4,8 +4,8 @@
 //   Tambahkan ke semua halaman HTML
 // =============================================
 
-// URL Backend - Ganti dengan URL backend Render/Railway Anda di production
-const PRODUCTION_BACKEND_URL = 'https://nama-backend-anda.onrender.com'; 
+// URL Backend - Dikosongkan agar otomatis menggunakan domain Vercel yang sama saat online
+const PRODUCTION_BACKEND_URL = ''; 
 
 const API_URL = (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') 
                 ? 'http://localhost:3000' // Sesuaikan dengan port server lokal (default server.js menggunakan 3000)

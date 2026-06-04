@@ -668,8 +668,12 @@ app.get('/api', (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server jalan di http://localhost:${PORT}`);
-  console.log(`📦 Database: PostgreSQL`);
-  console.log(`🔐 JWT Secret configured`);
-});
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server jalan di http://localhost:${PORT}`);
+    console.log(`📦 Database: PostgreSQL`);
+    console.log(`🔐 JWT Secret configured`);
+  });
+}
+
+module.exports = app;
