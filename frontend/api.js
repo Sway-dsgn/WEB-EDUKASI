@@ -4,10 +4,12 @@
 //   Tambahkan ke semua halaman HTML
 // =============================================
 
-// URL Backend - Otomatis deteksi localhost atau production
+// URL Backend - Ganti dengan URL backend Render/Railway Anda di production
+const PRODUCTION_BACKEND_URL = 'https://nama-backend-anda.onrender.com'; 
+
 const API_URL = (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') 
-                ? 'http://localhost:5000' 
-                : window.location.origin;
+                ? 'http://localhost:3000' // Sesuaikan dengan port server lokal (default server.js menggunakan 3000)
+                : (PRODUCTION_BACKEND_URL || window.location.origin);
 
 // ─── LEVELING LOGIC ───────────────────────────
 function eduvixHitungLevel(xp) {

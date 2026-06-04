@@ -1,0 +1,6 @@
+{
+  "name": "EDUVIX.ID",
+  "description": "Platform Belajar Berpikir Kritis Interaktif - Lengkap dengan Modul, Kuis, Tracker Streak, Pencapaian, dan Toko Hadiah.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

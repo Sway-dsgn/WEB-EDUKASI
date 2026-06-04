@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <script>
+      (function() {
+        try {
+          var originalFetch = window.fetch;
+          if (originalFetch) {
+            var customFetch = originalFetch;
+            var targets = [window, globalThis, self];
+            targets.forEach(function(target) {
+              if (target) {
+                try {
+                  Object.defineProperty(target, 'fetch', {
+                    get: function() { return customFetch; },
+                    set: function(val) { customFetch = val; },
+                    configurable: true,
+                    enumerable: true
+                  });
+                } catch (err) {
+                  try {
+                    var proto = Object.getPrototypeOf(target);
+                    if (proto) {
+                      Object.defineProperty(proto, 'fetch', {
+                        get: function() { return customFetch; },
+                        set: function(val) { customFetch = val; },
+                        configurable: true,
+                        enumerable: true
+                      });
+                    }
+                  } catch (protoErr) {}
+                }
+              }
+            });
+          }
+        } catch (e) {
+          console.warn("Eduvix: Failed to patch fetch setter", e);
+        }
+      })();
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Google AI Studio App</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

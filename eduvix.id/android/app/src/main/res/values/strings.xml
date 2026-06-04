@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Eduvix</string>
+    <string name="title_activity_main">Eduvix</string>
+    <string name="package_name">eduvix.id.app</string>
+    <string name="custom_url_scheme">eduvix.id.app</string>
+</resources>
