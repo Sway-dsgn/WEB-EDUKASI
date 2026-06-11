@@ -202,21 +202,42 @@ async function selesaikanMateri(materi_id, xp_materi) {
     const user = getUser();
     const oldLvl = user ? (user.level || eduvixHitungLevel(user.xp || 0)) : 1;
 
-    const data = await apiFetch('/api/materi/selesai', {
-        method: 'POST',
-        body: JSON.stringify({ materiId: materi_id, xpDapat: xp_materi })
-    });
+    try {
+        const data = await apiFetch('/api/materi/selesai', {
+            method: 'POST',
+            body: JSON.stringify({ materiId: materi_id, xpDapat: xp_materi })
+        });
 
-    if (data.level > oldLvl) showLevelUp(data.level);
+        if (data.level > oldLvl) showLevelUp(data.level);
 
-    if (user) {
-        user.xp = data.xpBaru;
-        user.coins = data.koinBaru;
-        user.level = data.level;
+        if (user) {
+            user.xp = data.xpBaru;
+            user.coins = data.koinBaru;
+            user.level = data.level;
+            setUser(user);
+            updateUI(user);
+        }
+        return data;
+    } catch (err) {
+        console.warn("⚠️ Server tidak merespon. Menggunakan data lokal untuk Selesaikan Materi.");
+        if (!user) return { xpBaru: 0, koinBaru: 0, level: 1 };
+        
+        user.xp = (user.xp || 0) + xp_materi;
+        user.coins = (user.coins || 0) + 25; // Asumsi koin dapat 25
+        
+        const newLvl = eduvixHitungLevel(user.xp);
+        if (newLvl > oldLvl) {
+            user.level = newLvl;
+            showLevelUp(newLvl);
+        }
+        
         setUser(user);
         updateUI(user);
+        
+        showXPPopup(xp_materi);
+        
+        return { xpBaru: user.xp, koinBaru: user.coins, level: user.level };
     }
-    return data;
 }
 
 async function getProgressMateri() {

@@ -125,14 +125,14 @@ async function eduvixSetAvatar(type, value) {
             method: 'POST',
             body: JSON.stringify({ avatarType: type, avatarValue: value })
         });
-        user.avatarType = type;
-        user.avatarValue = value;
-        EduvixAPI.setUser(user);
-        EduvixAPI.updateUI();
-        EduvixAPI.showApiToast('Avatar berhasil diupdate!', 'success');
     } catch (e) {
-        EduvixAPI.showApiToast('Gagal update avatar: ' + e.message, 'error');
+        console.warn("⚠️ Gagal update ke server, update lokal saja:", e.message);
     }
+    user.avatarType = type;
+    user.avatarValue = value;
+    EduvixAPI.setUser(user);
+    if(EduvixAPI.updateUI) EduvixAPI.updateUI(user);
+    if(typeof eduvixUpdateUI === 'function') eduvixUpdateUI();
 }
 
 // ── Set Border Avatar ─────────────────────
@@ -144,13 +144,13 @@ async function eduvixSetBorder(value) {
             method: 'POST',
             body: JSON.stringify({ avatarBorder: value })
         });
-        user.avatarBorder = value;
-        EduvixAPI.setUser(user);
-        EduvixAPI.updateUI();
-        EduvixAPI.showApiToast('Border profil berhasil diubah!', 'success');
     } catch (e) {
-        EduvixAPI.showApiToast('Gagal update border: ' + e.message, 'error');
+        console.warn("⚠️ Gagal update ke server, update lokal saja:", e.message);
     }
+    user.avatarBorder = value;
+    EduvixAPI.setUser(user);
+    if(EduvixAPI.updateUI) EduvixAPI.updateUI(user);
+    if(typeof eduvixUpdateUI === 'function') eduvixUpdateUI();
 }
 
 // ── Set Badge ─────────────────────────────
