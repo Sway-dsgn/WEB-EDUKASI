@@ -1,4 +1,4 @@
-// =============================================
+﻿// =============================================
 //   EDUVIX.ID — API Helper (SQLite version)
 //   Taruh di folder WEB-EDUKASI
 //   Tambahkan ke semua halaman HTML
@@ -89,7 +89,7 @@ async function login(username, password) {
 
 function logout() {
     clearAuth();
-    window.location.href = 'login.html';
+    window.location.href = '/login';
 }
 
 // Cek login — redirect kalau belum login
@@ -106,7 +106,7 @@ async function requireLogin() {
     if (!token || !user) {
         if (!user) {
             console.warn("[EduvixAPI] No token or user found, redirecting to login...");
-            window.location.href = 'login.html';
+            window.location.href = '/login';
         }
         return null;
     }
@@ -134,7 +134,7 @@ async function requireLogin() {
         
         console.warn("[EduvixAPI] Session invalid, clearing auth and redirecting...");
         clearAuth();
-        window.location.href = 'login.html';
+        window.location.href = '/login';
         return null;
     }
 }
@@ -464,5 +464,5 @@ window.EduvixAPI = {
     // UI
     updateUI, initPage, showApiToast, showXPPopup, showLevelUp, apiFetch,
     // Data
-    getUser, getToken
+    getUser, setUser, getToken
 };

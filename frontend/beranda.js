@@ -1,4 +1,4 @@
-// =============================================
+﻿// =============================================
 //   EDUVIX.ID — Dashboard Modern JS
 // =============================================
 
@@ -362,8 +362,8 @@ function initTasks() {
     item.style.cursor = 'pointer';
     item.addEventListener('click', () => {
       // Modul 1 ke quizz.html, Modul 2 ke tka.html
-      if (index === 0) window.location.href = 'quizz.html';
-      else if (index === 1) window.location.href = 'tka.html';
+      if (index === 0) window.location.href = '/quizz';
+      else if (index === 1) window.location.href = '/tka';
     });
   });
 }

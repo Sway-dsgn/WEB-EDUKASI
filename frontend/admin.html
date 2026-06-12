@@ -263,7 +263,7 @@
             margin-bottom: 8px;
         }
 
-        .form-group input {
+        .form-group input, .form-group textarea, .form-group select {
             width: 100%;
             padding: 12px 16px;
             background: rgba(255, 255, 255, 0.03);
@@ -272,12 +272,47 @@
             color: #fff;
             font-size: 14px;
             transition: all 0.2s;
+            font-family: inherit;
         }
 
-        .form-group input:focus {
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
             border-color: var(--indigo);
             background: rgba(255, 255, 255, 0.05);
             outline: none;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .form-group select {
+            appearance: none;
+        }
+
+        .form-group select option {
+            background: var(--card);
+            color: var(--text);
+        }
+
+        .btn-submit {
+            padding: 12px 24px;
+            background: var(--indigo);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            display: inline-block;
+        }
+        .btn-submit:hover {
+            background: #4f46e5;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
         }
 
         .btn-login {
@@ -384,6 +419,65 @@
                     <div style="text-align: center; color: var(--text-mid);">Memuat data...</div>
                 </div>
             </div>
+
+            <!-- Card Kelola Materi -->
+            <div class="card">
+                <h2><i class="fas fa-book"></i> Tambah Materi Baru</h2>
+                <form id="form-materi" onsubmit="submitMateri(event)">
+                    <div class="form-group">
+                        <label>ID Materi (contoh: materi_02)</label>
+                        <input type="text" id="m_id" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Judul Materi</label>
+                        <input type="text" id="m_title" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Deskripsi Singkat</label>
+                        <input type="text" id="m_desc" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Konten HTML</label>
+                        <textarea id="m_html" required placeholder="Gunakan tag HTML seperti <h2>, <p> untuk format konten."></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit">Simpan Materi</button>
+                </form>
+            </div>
+
+            <!-- Card Kelola Quiz -->
+            <div class="card">
+                <h2><i class="fas fa-question-circle"></i> Tambah Soal Kuis Baru</h2>
+                <form id="form-quiz" onsubmit="submitQuiz(event)">
+                    <div class="form-group">
+                        <label>ID Quiz</label>
+                        <input type="text" id="q_id" value="default" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Pertanyaan</label>
+                        <textarea id="q_question" required rows="2"></textarea>
+                    </div>
+                    <div class="options-grid" style="margin-bottom: 20px;">
+                        <div class="form-group" style="margin-bottom:0;"><label>Pilihan A</label><input type="text" id="q_opt0" required></div>
+                        <div class="form-group" style="margin-bottom:0;"><label>Pilihan B</label><input type="text" id="q_opt1" required></div>
+                        <div class="form-group" style="margin-bottom:0;"><label>Pilihan C</label><input type="text" id="q_opt2" required></div>
+                        <div class="form-group" style="margin-bottom:0;"><label>Pilihan D</label><input type="text" id="q_opt3" required></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Jawaban Benar</label>
+                        <select id="q_correct" required>
+                            <option value="0">Pilihan A</option>
+                            <option value="1">Pilihan B</option>
+                            <option value="2">Pilihan C</option>
+                            <option value="3">Pilihan D</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Penjelasan</label>
+                        <textarea id="q_explanation" required rows="2"></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit">Simpan Soal Kuis</button>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -476,7 +570,7 @@
 
         async function loadAll() {
             if (!adminToken) return;
-            await Promise.all([loadUsers(), loadFeedback()]);
+            await Promise.all([loadUsers(), loadFeedback(), loadMateri(), loadQuiz()]);
         }
 
         async function loadUsers() {
@@ -519,6 +613,10 @@
                             <button class="btn-action ${isBanned ? 'btn-unban' : 'btn-ban'}" 
                                     onclick="toggleBan('${u.username}', ${isBanned ? 0 : 1})">
                                 ${isBanned ? 'Unban' : 'Ban'}
+                            </button>
+                            <button class="btn-action" style="background: rgba(239, 68, 68, 0.1); color: var(--red); margin-left: 8px;" 
+                                    onclick="deleteUser('${u.username}')">
+                                Hapus
                             </button>
                         </td>
                     `;
@@ -586,6 +684,192 @@
             } catch (error) {
                 showToast('Terjadi kesalahan jaringan', true);
             }
+        }
+
+        async function deleteUser(username) {
+            if (!confirm(`Yakin ingin MENGHAPUS akun ${username} beserta semua datanya secara permanen?`)) return;
+            try {
+                const res = await fetch(`${API_URL}/api/admin/users/${username}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${adminToken}` }
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    showToast(data.message);
+                    loadUsers();
+                } else {
+                    showToast(data.error || 'Gagal menghapus user', true);
+                }
+            } catch (error) {
+                showToast('Terjadi kesalahan jaringan', true);
+            }
+        }
+
+        async function submitMateri(e) {
+            e.preventDefault();
+            const payload = {
+                materi_id: document.getElementById('m_id').value,
+                title: document.getElementById('m_title').value,
+                description: document.getElementById('m_desc').value,
+                content_html: document.getElementById('m_html').value
+            };
+            try {
+                const res = await fetch(`${API_URL}/api/admin/materi`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${adminToken}`
+                    },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    showToast(data.message);
+                    document.getElementById('form-materi').reset();
+                    loadMateri();
+                } else {
+                    showToast(data.error || 'Gagal menyimpan materi', true);
+                }
+            } catch (error) {
+                showToast('Terjadi kesalahan jaringan', true);
+            }
+        }
+
+        async function submitQuiz(e) {
+            e.preventDefault();
+            const options = [
+                document.getElementById('q_opt0').value,
+                document.getElementById('q_opt1').value,
+                document.getElementById('q_opt2').value,
+                document.getElementById('q_opt3').value
+            ];
+            const payload = {
+                quiz_id: document.getElementById('q_id').value,
+                question: document.getElementById('q_question').value,
+                options_json: JSON.stringify(options),
+                correct_index: parseInt(document.getElementById('q_correct').value),
+                explanation: document.getElementById('q_explanation').value
+            };
+            try {
+                const res = await fetch(`${API_URL}/api/admin/quiz`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${adminToken}`
+                    },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    showToast(data.message);
+                    document.getElementById('form-quiz').reset();
+                    loadQuiz();
+                } else {
+                    showToast(data.error || 'Gagal menyimpan soal kuis', true);
+                }
+            } catch (error) {
+                showToast('Terjadi kesalahan jaringan', true);
+            }
+        }
+
+        async function loadMateri() {
+            const tbody = document.getElementById('admin-materi-list');
+            if (!tbody) return;
+            try {
+                const res = await fetch(`${API_URL}/api/materi`);
+                const data = await res.json();
+                tbody.innerHTML = '';
+                if (data.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: var(--text-mid);">Belum ada materi dinamis.</td></tr>`;
+                    return;
+                }
+                data.forEach(m => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${m.materi_id}</td>
+                        <td style="font-weight:600;">${m.title}</td>
+                        <td>
+                            <button class="btn-action" style="background: rgba(239, 68, 68, 0.1); color: var(--red);" 
+                                    onclick="deleteMateri('${m.id}')">Hapus</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (error) {
+                tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: var(--red);">Gagal memuat materi.</td></tr>`;
+            }
+        }
+
+        async function deleteMateri(id) {
+            if (!confirm('Yakin ingin menghapus materi ini?')) return;
+            try {
+                const res = await fetch(`${API_URL}/api/admin/materi/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${adminToken}` }
+                });
+                if (res.ok) {
+                    showToast('Materi berhasil dihapus!');
+                    loadMateri();
+                } else {
+                    showToast('Gagal menghapus materi', true);
+                }
+            } catch (error) {
+                showToast('Terjadi kesalahan jaringan', true);
+            }
+        }
+
+        async function loadQuiz() {
+            const tbody = document.getElementById('admin-quiz-list');
+            if (!tbody) return;
+            try {
+                const res = await fetch(`${API_URL}/api/quiz`);
+                const data = await res.json();
+                tbody.innerHTML = '';
+                if (data.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: var(--text-mid);">Belum ada soal kuis dinamis.</td></tr>`;
+                    return;
+                }
+                data.forEach(q => {
+                    const tr = document.createElement('tr');
+                    const options = JSON.parse(q.options_json);
+                    tr.innerHTML = `
+                        <td>${q.question}</td>
+                        <td style="font-weight:600; color:var(--emerald);">${options[q.correct_index]}</td>
+                        <td>
+                            <button class="btn-action" style="background: rgba(239, 68, 68, 0.1); color: var(--red);" 
+                                    onclick="deleteQuiz('${q.id}')">Hapus</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (error) {
+                tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: var(--red);">Gagal memuat kuis.</td></tr>`;
+            }
+        }
+
+        async function deleteQuiz(id) {
+            if (!confirm('Yakin ingin menghapus soal kuis ini?')) return;
+            try {
+                const res = await fetch(`${API_URL}/api/admin/quiz/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${adminToken}` }
+                });
+                if (res.ok) {
+                    showToast('Soal kuis berhasil dihapus!');
+                    loadQuiz();
+                } else {
+                    showToast('Gagal menghapus kuis', true);
+                }
+            } catch (error) {
+                showToast('Terjadi kesalahan jaringan', true);
+            }
+        }
+
+        function showTab(tabId) {
+            document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.admin-nav button').forEach(b => b.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            event.target.classList.add('active');
         }
     </script>
 </body>

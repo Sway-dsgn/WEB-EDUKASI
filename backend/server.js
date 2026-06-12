@@ -111,6 +111,31 @@ const initDB = async () => {
       )
     `);
 
+    // Materi content table
+    await query(`
+      CREATE TABLE IF NOT EXISTS materi_content (
+        id            SERIAL PRIMARY KEY,
+        materi_id     TEXT    NOT NULL UNIQUE,
+        title         TEXT    NOT NULL,
+        description   TEXT    NOT NULL,
+        content_html  TEXT    NOT NULL,
+        order_index   INTEGER DEFAULT 0
+      )
+    `);
+
+    // Quiz content table
+    await query(`
+      CREATE TABLE IF NOT EXISTS quiz_content (
+        id            SERIAL PRIMARY KEY,
+        quiz_id       TEXT    NOT NULL DEFAULT 'default',
+        question      TEXT    NOT NULL,
+        options_json  TEXT    NOT NULL,
+        correct_index INTEGER NOT NULL,
+        explanation   TEXT    NOT NULL,
+        order_index   INTEGER DEFAULT 0
+      )
+    `);
+
     console.log('✅ Database tables ready!');
   } catch (e) {
     console.error('❌ Error creating tables:', e.message);
@@ -122,12 +147,20 @@ const initData = async () => {
   try {
     // Insert shop items
     const items = [
+      // Avatars
+      ['astronaut_avatar', 'Astronaut Avatar', 'Tampil seperti penjelajah luar angkasa yang keren.', 'avatar', 150, 'fa-user-astronaut'],
+      ['robot_avatar', 'Robot Avatar', 'Jadilah robot cerdas yang selalu siap belajar.', 'avatar', 150, 'fa-robot'],
+      ['dragon_avatar', 'Dragon Avatar', 'Kekuatan naga yang tak tertandingi di EDUVIX.', 'avatar', 200, 'fa-dragon'],
       ['ninja_avatar', 'Cyber Ninja Avatar', 'Avatar ninja futuristik eksklusif.', 'avatar', 200, 'fa-user-ninja'],
+      ['ghost_avatar', 'Ghost Hunter', 'Avatar hantu yang misterius dan eksklusif.', 'avatar', 250, 'fa-ghost'],
+      // Borders
+      ['indigo_border', 'Indigo Border', 'Border biru indigo elegan untuk profilmu.', 'border', 100, 'fa-circle'],
+      ['gold_border', 'Gold Border', 'Border emas mewah tanda prestasi tinggi.', 'border', 200, 'fa-crown'],
+      ['red_border', 'Red Border', 'Border merah berani yang penuh semangat.', 'border', 100, 'fa-circle'],
+      ['fire_border', 'Aura Berapi', 'Border profil dengan efek api yang membara.', 'border', 350, 'fa-fire'],
+      ['rainbow_infinity', 'Rainbow Infinity', 'Border pelangi yang berubah warna — eksklusif!', 'border', 400, 'fa-circle-notch'],
+      // Boosters
       ['xp_booster', 'XP Booster 2x', 'Gandakan perolehan XP selama 24 jam.', 'booster', 300, 'fa-bolt'],
-      ['royal_crown', 'Mahkota Kerajaan', 'Simbol kejayaan murid rajin.', 'border', 600, 'fa-crown'],
-      ['ghost_avatar', 'Ghost Hunter', 'Avatar hantu yang misterius.', 'avatar', 250, 'fa-ghost'],
-      ['fire_border', 'Aura Berapi', 'Border profil dengan efek api.', 'border', 350, 'fa-fire'],
-      ['rainbow_infinity', 'Rainbow Infinity', 'Border pelangi yang berubah warna.', 'border', 400, 'fa-circle-notch']
     ];
 
     for (const item of items) {
@@ -170,7 +203,7 @@ app.use(express.json());
 
 // ─── HELPER FUNCTIONS ─────────────────────────
 const hitungLevel = xp => Math.floor((Math.sqrt(0.16 * xp + 9) - 1) / 2);
-const makeToken = user => jwt.sign({ id: user.id, username: user.username }, JWT_SECRET, { expiresIn: '7d' });
+const makeToken = user => jwt.sign({ id: user.id, username: user.username }, JWT_SECRET, { expiresIn: '365d' });
 
 function authMiddleware(req, res, next) {
   const token = req.headers.authorization?.split(' ')[1];
@@ -626,7 +659,7 @@ app.get('/api/admin/feedback', adminMiddleware, async (req, res) => {
 
 app.get('/api/admin/users', adminMiddleware, async (req, res) => {
   try {
-    const result = await query('SELECT username, level, streak, password, is_banned FROM users');
+    const result = await query('SELECT id, username, level, streak, password, is_banned, role FROM users');
     res.json(result.rows);
   } catch (e) {
     res.status(500).json({ error: e.message });
@@ -652,6 +685,92 @@ app.get('/api/admin/ban', adminMiddleware, async (req, res) => {
 
     await query('UPDATE users SET is_banned = $1 WHERE username = $2', [status === '1' ? 1 : 0, username]);
     res.json({ message: `User ${username} berhasil ${status === '1' ? 'diblokir' : 'dipulihkan'}!` });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+app.delete('/api/admin/users/:username', adminMiddleware, async (req, res) => {
+  try {
+    const { username } = req.params;
+    if (!username) return res.status(400).json({ error: 'Username wajib diisi' });
+
+    const userResult = await query('SELECT id FROM users WHERE username = $1', [username]);
+    if (userResult.rows.length === 0) return res.status(404).json({ error: 'User tidak ditemukan' });
+    const userId = userResult.rows[0].id;
+
+    await query('DELETE FROM user_inventory WHERE user_id = $1', [userId]);
+    await query('DELETE FROM quiz_hasil WHERE user_id = $1', [userId]);
+    await query('DELETE FROM materi_progress WHERE user_id = $1', [userId]);
+    await query('DELETE FROM feedback WHERE user_id = $1', [userId]);
+    await query('DELETE FROM users WHERE id = $1', [userId]);
+
+    res.json({ message: `User ${username} berhasil dihapus beserta seluruh datanya!` });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// Admin Materi
+app.post('/api/admin/materi', adminMiddleware, async (req, res) => {
+  try {
+    const { materi_id, title, description, content_html, order_index } = req.body;
+    await query(
+      'INSERT INTO materi_content (materi_id, title, description, content_html, order_index) VALUES ($1, $2, $3, $4, $5)',
+      [materi_id, title, description, content_html, order_index || 0]
+    );
+    res.json({ message: 'Materi berhasil ditambahkan!' });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+app.delete('/api/admin/materi/:id', adminMiddleware, async (req, res) => {
+  try {
+    await query('DELETE FROM materi_content WHERE id = $1', [req.params.id]);
+    res.json({ message: 'Materi berhasil dihapus!' });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// Admin Quiz
+app.post('/api/admin/quiz', adminMiddleware, async (req, res) => {
+  try {
+    const { quiz_id, question, options_json, correct_index, explanation, order_index } = req.body;
+    await query(
+      'INSERT INTO quiz_content (quiz_id, question, options_json, correct_index, explanation, order_index) VALUES ($1, $2, $3, $4, $5, $6)',
+      [quiz_id || 'default', question, options_json, correct_index, explanation, order_index || 0]
+    );
+    res.json({ message: 'Soal Kuis berhasil ditambahkan!' });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+app.delete('/api/admin/quiz/:id', adminMiddleware, async (req, res) => {
+  try {
+    await query('DELETE FROM quiz_content WHERE id = $1', [req.params.id]);
+    res.json({ message: 'Soal Kuis berhasil dihapus!' });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// Public Materi & Quiz (Dynamic)
+app.get('/api/materi', async (req, res) => {
+  try {
+    const result = await query('SELECT * FROM materi_content ORDER BY order_index ASC, id ASC');
+    res.json(result.rows);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+app.get('/api/quiz', async (req, res) => {
+  try {
+    const result = await query('SELECT * FROM quiz_content ORDER BY order_index ASC, id ASC');
+    res.json(result.rows);
   } catch (e) {
     res.status(500).json({ error: e.message });
   }

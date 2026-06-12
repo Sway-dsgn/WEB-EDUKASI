@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 
 <head>
@@ -585,7 +585,7 @@
 
       // ── REDIRECT LOGIN ──
       if (localStorage.getItem('eduvix_token')) {
-        window.location.href = 'dashboard.html';
+        window.location.href = '/dashboard';
       }
 
       // ── ELEMENTS ──
@@ -718,7 +718,7 @@
           }
 
           setTimeout(() => {
-            window.location.href = 'dashboard.html';
+            window.location.href = '/dashboard';
           }, 1000);
         } catch (err) {
           setLoading(btnLogin, false);
@@ -767,7 +767,7 @@
           showToast('Selamat datang di EDUVIX! 🚀', 'success', 3000);
 
           setTimeout(() => {
-            window.location.href = 'dashboard.html';
+            window.location.href = '/dashboard';
           }, 1500);
         } catch (err) {
           setLoading(btnDaftar, false);

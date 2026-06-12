@@ -1,4 +1,4 @@
-// ============================================
+﻿// ============================================
 //   EDUVIX.ID — jalan.js
 //   SISTEM USER GLOBAL (XP, Level, Streak)
 //   Tambahkan: <script src="jalan.js"></script>
@@ -194,7 +194,7 @@ async function eduvixGetLeaderboard() {
 function eduvixLogout() {
     EduvixAPI.clearAuth();
     localStorage.removeItem('eduvix_logged_in');
-    window.location.href = 'login.html';
+    window.location.href = '/login';
 }
 
 // ── Guard: Cek sudah login ────────────────
@@ -202,7 +202,7 @@ function eduvixLogout() {
 function eduvixRequireLogin() {
     if (!EduvixAPI.getUser()) {
         console.warn("[JalanJS] requireLogin failed: User not found in storage.");
-        window.location.href = 'login.html';
+        window.location.href = '/login';
         return false;
     }
     return true;
@@ -547,28 +547,32 @@ function eduvixInitGlobalUI() {
                 </div>
                 <div class="custom-section">
                     <h4>Kustomisasi Avatar</h4>
-                    <div class="avatar-options" style="display:flex; flex-wrap:wrap; gap:10px; margin-top:10px;">
-                        <div class="avatar-opt" data-avatar="initial" style="color:#1e293b;">A</div>
-                        <div class="avatar-opt" data-avatar="fas fa-user-astronaut" style="color:#1e293b;"><i class="fas fa-user-astronaut"></i></div>
-                        <div class="avatar-opt" data-avatar="fas fa-robot" style="color:#1e293b;"><i class="fas fa-robot"></i></div>
-                        <div class="avatar-opt" data-avatar="fas fa-dragon" style="color:#1e293b;"><i class="fas fa-dragon"></i></div>
+                    <p style="font-size:11px; color:#94a3b8; margin-top:4px; margin-bottom:6px;">Beli avatar di <a href="/store" style="color:#6366f1; font-weight:700;">Toko</a> untuk membukanya!</p>
+                    <div class="avatar-options" style="display:flex; flex-wrap:wrap; gap:10px; margin-top:6px;">
+                        <!-- Default avatar (selalu tersedia) -->
+                        <div class="avatar-opt" data-avatar="initial" style="color:#1e293b;" title="Inisial (Default)">A</div>
                         
-                        <!-- Premium Avatars -->
-                        <div class="avatar-opt avatar-premium" data-avatar="fas fa-user-ninja" style="display:none; color:#1e293b;" title="Cyber Ninja (Premium)"><i class="fas fa-user-ninja"></i></div>
-                        <div class="avatar-opt avatar-premium" data-avatar="fas fa-ghost" style="display:none; color:#1e293b;" title="Ghost Hunter (Premium)"><i class="fas fa-ghost"></i></div>
+                        <!-- Shop Avatars (hanya tampil jika sudah dibeli) -->
+                        <div class="avatar-opt avatar-shop" data-avatar="fas fa-user-astronaut" data-item-id="astronaut_avatar" style="display:none; color:#1e293b;" title="Astronaut Avatar"><i class="fas fa-user-astronaut"></i></div>
+                        <div class="avatar-opt avatar-shop" data-avatar="fas fa-robot" data-item-id="robot_avatar" style="display:none; color:#1e293b;" title="Robot Avatar"><i class="fas fa-robot"></i></div>
+                        <div class="avatar-opt avatar-shop" data-avatar="fas fa-dragon" data-item-id="dragon_avatar" style="display:none; color:#1e293b;" title="Dragon Avatar"><i class="fas fa-dragon"></i></div>
+                        <div class="avatar-opt avatar-shop" data-avatar="fas fa-user-ninja" data-item-id="ninja_avatar" style="display:none; color:#1e293b;" title="Cyber Ninja (Premium)"><i class="fas fa-user-ninja"></i></div>
+                        <div class="avatar-opt avatar-shop" data-avatar="fas fa-ghost" data-item-id="ghost_avatar" style="display:none; color:#1e293b;" title="Ghost Hunter (Premium)"><i class="fas fa-ghost"></i></div>
                     </div>
                 </div>
                 <div class="custom-section">
                     <h4>Kustomisasi Border</h4>
-                    <div class="border-options" style="display:flex; flex-wrap:wrap; gap:10px; margin-top:10px;">
-                        <div class="border-opt" data-border="none" style="background:#ddd;" title="Default"></div>
-                        <div class="border-opt" data-border="#1BAAED" style="background:#1BAAED;" title="Indigo"></div>
-                        <div class="border-opt" data-border="gold" style="background:linear-gradient(gold, yellow);" title="Gold"></div>
-                        <div class="border-opt" data-border="#ef4444" style="background:#ef4444;" title="Red"></div>
+                    <p style="font-size:11px; color:#94a3b8; margin-top:4px; margin-bottom:6px;">Beli border di <a href="/store" style="color:#6366f1; font-weight:700;">Toko</a> untuk membukanya!</p>
+                    <div class="border-options" style="display:flex; flex-wrap:wrap; gap:10px; margin-top:6px;">
+                        <!-- Default border (selalu tersedia) -->
+                        <div class="border-opt" data-border="none" style="background:#ddd;" title="Tidak Ada (Default)"></div>
                         
-                        <!-- Premium Borders (Only show if owned) -->
-                        <div class="border-opt border-premium" data-border="fa-fire" style="display:none; background:linear-gradient(45deg, #f97316, #fbbf24);" title="Lava Aura (Premium)"></div>
-                        <div class="border-opt border-premium" data-border="fa-circle-notch" style="display:none; background:linear-gradient(45deg, #ff0000, #00ff00, #0000ff);" title="Rainbow Infinity (Premium)"></div>
+                        <!-- Shop Borders (hanya tampil jika sudah dibeli) -->
+                        <div class="border-opt border-shop" data-border="#1BAAED" data-item-id="indigo_border" style="display:none; background:#1BAAED;" title="Indigo Border"></div>
+                        <div class="border-opt border-shop" data-border="gold" data-item-id="gold_border" style="display:none; background:linear-gradient(gold, yellow);" title="Gold Border"></div>
+                        <div class="border-opt border-shop" data-border="#ef4444" data-item-id="red_border" style="display:none; background:#ef4444;" title="Red Border"></div>
+                        <div class="border-opt border-shop" data-border="fa-fire" data-item-id="fire_border" style="display:none; background:linear-gradient(45deg, #f97316, #fbbf24);" title="Aura Berapi (Premium)"></div>
+                        <div class="border-opt border-shop" data-border="fa-circle-notch" data-item-id="rainbow_infinity" style="display:none; background:linear-gradient(45deg, #ff0000, #ffff00, #00ff00, #0000ff);" title="Rainbow Infinity (Premium)"></div>
                     </div>
                 </div>
                 <div class="custom-section" id="premiumInventorySection" style="display:none; margin-top:15px; padding-top:15px; border-top:1px dashed #e2e8f0;">
@@ -664,39 +668,50 @@ function eduvixInitGlobalUI() {
         };
     }
 
-    // --- Sinkronkan Inventory Premium ---
-    function syncPremiumInventory() {
+    // --- Sinkronkan Inventory: tampilkan semua item yang sudah dibeli ---
+    async function syncPremiumInventory() {
         const user = EduvixAPI.getUser();
-        if (!user || !user.inventory) return;
+        if (!user) return;
 
-        const inventory = user.inventory;
-        const premiumBorders = document.querySelectorAll('.border-opt.border-premium');
+        // Ambil inventory dari API
+        let inventoryIds = [];
+        try {
+            const inv = await EduvixAPI.getInventory();
+            inventoryIds = inv.map(i => i.id);
+            // Simpan ke user object untuk akses cepat
+            user.inventory = inventoryIds;
+            EduvixAPI.setUser(user);
+        } catch (e) {
+            // Fallback ke inventory yang sudah tersimpan
+            inventoryIds = user.inventory || [];
+        }
+
         const premiumSection = document.getElementById('premiumInventorySection');
-        const premiumList = document.getElementById('premiumItemsList');
-
         let hasPremium = false;
-        premiumBorders.forEach(opt => {
-            const borderId = opt.dataset.border;
-            const map = { 'rainbow_infinity': 'fa-circle-notch', 'fire_border': 'fa-fire' };
-            const itemId = Object.keys(map).find(key => map[key] === borderId);
-            if (inventory.includes(itemId) || inventory.includes(borderId)) {
-                opt.style.display = 'block';
+
+        // Tampilkan semua border yang sudah dibeli
+        document.querySelectorAll('.border-opt.border-shop').forEach(opt => {
+            const itemId = opt.dataset.itemId;
+            if (itemId && inventoryIds.includes(itemId)) {
+                opt.style.display = 'flex';
                 hasPremium = true;
+            } else {
+                opt.style.display = 'none';
             }
         });
 
-        const premiumAvatars = document.querySelectorAll('.avatar-opt.avatar-premium');
-        premiumAvatars.forEach(opt => {
-            const avatarId = opt.dataset.avatar;
-            const map = { 'ninja_avatar': 'fas fa-user-ninja', 'ghost_avatar': 'fas fa-ghost' };
-            const itemId = Object.keys(map).find(key => map[key] === avatarId);
-            if (inventory.includes(itemId) || inventory.includes(avatarId)) {
-                opt.style.display = 'block';
+        // Tampilkan semua avatar yang sudah dibeli
+        document.querySelectorAll('.avatar-opt.avatar-shop').forEach(opt => {
+            const itemId = opt.dataset.itemId;
+            if (itemId && inventoryIds.includes(itemId)) {
+                opt.style.display = 'flex';
                 hasPremium = true;
+            } else {
+                opt.style.display = 'none';
             }
         });
 
-        if (hasPremium) premiumSection.style.display = 'block';
+        if (premiumSection) premiumSection.style.display = hasPremium ? 'block' : 'none';
     }
 
     // Klik Tombol Logout di Modal

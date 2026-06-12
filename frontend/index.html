@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <meta http-equiv="refresh" content="0;url=login.html">
+    <title>EduVix</title>
+    <script>
+        if (localStorage.getItem('eduvix_token')) {
+            window.location.replace('dashboard.html');
+        } else {
+            window.location.replace('landing page.html');
+        }
+    </script>
 </head>
-
+<body></body>
 </html>
-<!-- Trigger Deploy Vercel -->

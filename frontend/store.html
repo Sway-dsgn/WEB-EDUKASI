@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 
 <head>
@@ -226,7 +226,7 @@
             </div>
 
             <nav class="sidebar-nav">
-                <a href="dashboard.html" class="nav-item">
+                <a href="/dashboard" class="nav-item">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" />
                         <rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" />
@@ -235,7 +235,7 @@
                     </svg>
                     <span>Dashboard</span>
                 </a>
-                <a href="progress.html" class="nav-item">
+                <a href="/progress" class="nav-item">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M4 19.5C4 18.837 4.26339 18.2011 4.73223 17.7322C5.20107 17.2634 5.83696 17 6.5 17H20"
                             stroke="currentColor" stroke-width="2" />
@@ -245,7 +245,7 @@
                     </svg>
                     <span>Semua Materi</span>
                 </a>
-                <a href="pencapaian.html" class="nav-item">
+                <a href="/pencapaian" class="nav-item">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M12 15l-2 5 2-1 2 1-2-5zm0-13C7.58 2 4 5.58 4 10c0 4.42 3.58 8 8 8s8-3.58 8-8c0-4.42-3.58-8-8-8z"
@@ -253,7 +253,7 @@
                     </svg>
                     <span>Pencapaian</span>
                 </a>
-                <a href="store.html" class="nav-item active">
+                <a href="/store" class="nav-item active">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z" stroke="currentColor"
                             stroke-width="2" />
@@ -261,7 +261,7 @@
                     </svg>
                     <span>Toko Hadiah</span>
                 </a>
-                <a href="materi komunitas.html" class="nav-item">
+                <a href="/materi-komunitas" class="nav-item">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" />
                         <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2" />
@@ -411,11 +411,23 @@
         let shopItems = [];
         let userInventory = [];
 
+        // Urutan kategori di toko
+        const CATEGORY_ORDER = { 'avatar': 0, 'border': 1, 'booster': 2 };
+        const CATEGORY_LABEL = { 'avatar': '🧑 Avatar', 'border': '✨ Border', 'booster': '⚡ Booster' };
+
+        // Mapping item_id ke nilai border yang disimpan di database
+        const BORDER_VALUE_MAP = {
+            'indigo_border': '#1BAAED',
+            'gold_border': 'gold',
+            'red_border': '#ef4444',
+            'fire_border': 'fa-fire',
+            'rainbow_infinity': 'fa-circle-notch',
+        };
+
         async function initStore() {
             const user = await EduvixAPI.initPage();
             if (!user) return;
 
-            // Load Items & Inventory parallel
             try {
                 [shopItems, userInventory] = await Promise.all([
                     EduvixAPI.getShopItems(),
@@ -437,15 +449,31 @@
             const inventoryIds = userInventory.map(i => i.id);
             const user = EduvixAPI.getUser();
 
-            grid.innerHTML = shopItems.map(item => {
+            // Sort berdasarkan kategori
+            const sorted = [...shopItems].sort((a, b) => 
+                (CATEGORY_ORDER[a.tipe] ?? 9) - (CATEGORY_ORDER[b.tipe] ?? 9)
+            );
+
+            // Group by kategori
+            let currentCat = null;
+            let html = '';
+            sorted.forEach(item => {
+                if (item.tipe !== currentCat) {
+                    currentCat = item.tipe;
+                    html += `<div style="grid-column: 1/-1; margin-top: 8px; margin-bottom: -8px;">
+                        <h4 style="font-size:13px; font-weight:800; color:var(--text-soft); text-transform:uppercase; letter-spacing:1px;">${CATEGORY_LABEL[item.tipe] || item.tipe}</h4>
+                    </div>`;
+                }
+
                 const isOwned = inventoryIds.includes(item.id);
                 const isEquipped = (item.tipe === 'avatar' && user.avatarValue === `fas ${item.icon}`) || 
-                                   (item.tipe === 'border' && user.avatarBorder === item.icon);
+                                   (item.tipe === 'border' && user.avatarBorder === (BORDER_VALUE_MAP[item.id] || item.icon));
+                const isDiscount = item.id === 'rainbow_infinity';
 
-                return `
+                html += `
                     <div class="item-card ${isOwned ? 'is-owned' : ''}" data-item-id="${item.id}">
-                        <div class="owned-badge">Dimiliki</div>
-                        <div class="item-preview" style="color:${getItemColor(item.tipe)};">
+                        <div class="owned-badge">${isEquipped ? '✓ Dipakai' : 'Dimiliki'}</div>
+                        <div class="item-preview" style="color:${getItemColor(item.tipe)}; ${item.tipe === 'border' ? getBorderPreviewStyle(item.id) : ''}">
                             <i class="fa-solid ${item.icon}"></i>
                         </div>
                         <div class="item-info">
@@ -454,23 +482,23 @@
                         </div>
                         <div class="item-footer">
                             <div class="price-tag">
-                                ${item.id === 'rainbow_infinity' ? `<span style="text-decoration: line-through; color: #94a3b8; font-size: 12px; margin-right: 6px;"><i class="fa-solid fa-coins"></i> 500</span>` : ''}
+                                ${isDiscount ? `<span style="text-decoration:line-through; color:#94a3b8; font-size:12px; margin-right:6px;"><i class="fa-solid fa-coins"></i> 500</span>` : ''}
                                 <i class="fa-solid fa-coins"></i> ${item.harga}
-                                ${item.id === 'rainbow_infinity' ? `<span style="background: #ef4444; color: white; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 6px; font-weight: 800;">-20%</span>` : ''}
+                                ${isDiscount ? `<span style="background:#ef4444; color:white; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:6px; font-weight:800;">-20%</span>` : ''}
                             </div>
                             ${isOwned ? 
-                                `<button class="btn-buy" style="background: ${isEquipped ? 'var(--emerald)' : 'var(--indigo)'}" 
+                                `<button class="btn-buy" style="background:${isEquipped ? 'var(--emerald)' : 'var(--indigo)'}" 
                                     onclick="handleEquip('${item.id}', '${item.tipe}', '${item.icon}', this)">
-                                    ${isEquipped ? 'Dipakai' : 'Pakai Item'}
+                                    ${isEquipped ? '✓ Dipakai' : 'Pakai Item'}
                                 </button>` : 
                                 `<button class="btn-buy" onclick="handlePurchase('${item.id}', ${item.harga})">Beli Sekarang</button>`
                             }
                         </div>
                     </div>
                 `;
-            }).join('');
+            });
 
-            // Update coin display
+            grid.innerHTML = html;
             document.getElementById('userCoinsDisplay').innerText = user.coins || 0;
         }
 
@@ -478,6 +506,17 @@
             if (type === 'avatar') return 'var(--indigo)';
             if (type === 'border') return 'var(--amber)';
             return 'var(--emerald)';
+        }
+
+        function getBorderPreviewStyle(itemId) {
+            const map = {
+                'indigo_border': 'border: 6px solid #1BAAED; border-radius: 12px;',
+                'gold_border': 'border: 6px solid gold; border-radius: 12px;',
+                'red_border': 'border: 6px solid #ef4444; border-radius: 12px;',
+                'fire_border': 'border: 6px solid #f97316; border-radius: 12px;',
+                'rainbow_infinity': 'border: 6px solid transparent; background-clip: padding-box; outline: 4px solid #a855f7; border-radius: 12px;',
+            };
+            return map[itemId] || '';
         }
 
         function renderHistory() {
@@ -491,7 +530,7 @@
                             <i class="fa-solid ${i.icon}" style="color:var(--indigo); width:20px; text-align:center;"></i>
                             <span style="font-size:13px; font-weight:600;">${i.nama}</span>
                         </div>
-                        <span style="font-size:11px; color:var(--text-soft);">${new Date(i.purchased_at).toLocaleDateString()}</span>
+                        <span style="font-size:11px; color:var(--text-soft);">${new Date(i.purchased_at).toLocaleDateString('id-ID')}</span>
                     </div>
                 `).join('') : 
                 '<p style="font-size:12px; color:var(--text-soft); text-align:center; padding:10px;">Belum ada riwayat pembelian.</p>';
@@ -507,14 +546,14 @@
             if (!user) return;
 
             if ((user.coins || 0) < price) {
-                EduvixAPI.showApiToast('Koin kamu tidak mencukupi!', 'error');
+                EduvixAPI.showApiToast('Koin kamu tidak mencukupi! 😢', 'error');
                 return;
             }
 
             if (confirm(`Yakin ingin membeli item ini seharga ${price} koin?`)) {
                 try {
                     await EduvixAPI.buyItem(itemId);
-                    EduvixAPI.showApiToast('Berhasil membeli item!', 'success');
+                    EduvixAPI.showApiToast('Item berhasil dibeli! 🎉', 'success');
                     initStore(); // Refresh
                 } catch (e) {
                     EduvixAPI.showApiToast(e.message, 'error');
@@ -527,12 +566,14 @@
                 if (type === 'avatar') {
                     await eduvixSetAvatar('icon', `fas ${icon}`);
                 } else if (type === 'border') {
-                    await eduvixSetBorder(icon);
+                    // Gunakan nilai yang tepat: hex untuk border warna biasa, icon untuk efek animasi
+                    const borderValue = BORDER_VALUE_MAP[itemId] || icon;
+                    await eduvixSetBorder(borderValue);
                 } else {
                     EduvixAPI.showApiToast('Item ini aktif secara otomatis!', 'info');
                     return;
                 }
-                EduvixAPI.showApiToast('Item berhasil dipasang!', 'success');
+                EduvixAPI.showApiToast('Item berhasil dipasang! ✅', 'success');
                 initStore(); // Refresh UI
             } catch (e) {
                 EduvixAPI.showApiToast('Gagal memasang item', 'error');

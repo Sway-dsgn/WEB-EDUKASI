@@ -1,4 +1,4 @@
-// ==================== Quiz Data ====================
+﻿// ==================== Quiz Data ====================
 const quizData = [
     {
         question: "Analogi: KAOS KAKI : KAKI = ... : ...",
@@ -162,7 +162,7 @@ function init() {
         if (!isFinished && userAnswers.some(a => a !== undefined)) {
             document.getElementById('exitConfirmModal').classList.add('open');
         } else {
-            window.location.href = 'materi.html';
+            window.location.href = '/materi';
         }
     };
 
@@ -171,7 +171,7 @@ function init() {
     };
 
     window.confirmExit = function() {
-        window.location.href = 'materi.html';
+        window.location.href = '/materi';
     };
 
     // Navigation Lock
@@ -181,7 +181,7 @@ function init() {
         }
     };
 
-    document.querySelector('.btn-back-dashboard').addEventListener('click', () => window.location.href = 'dashboard.html');
+    document.querySelector('.btn-back-dashboard').addEventListener('click', () => window.location.href = '/dashboard');
 }
 
 // ==================== TIMER ====================

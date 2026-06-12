@@ -1,13 +1,77 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>EduVix – Belajar Berpikir Kritis</title>
+
+  <!-- ═══ SEO UTAMA ═══ -->
+  <title>EDUVIX.ID – Platform Belajar Berpikir Kritis & Rasional</title>
+  <meta name="description" content="EDUVIX.ID adalah platform edukasi online interaktif untuk belajar berpikir kritis dan rasional. Tersedia materi terstruktur, kuis, leaderboard, dan komunitas belajar. Daftar gratis sekarang!">
+  <meta name="keywords" content="eduvix, belajar berpikir kritis, platform edukasi, belajar online, logika, penalaran, kuis interaktif, edukasi indonesia, belajar rasional">
+  <meta name="author" content="EDUVIX.ID">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="Indonesian">
+  <meta name="revisit-after" content="7 days">
+  <link rel="canonical" href="https://eduvix-id.vercel.app/landing%20page.html">
+
+  <!-- ═══ OPEN GRAPH (Facebook, WhatsApp, LinkedIn) ═══ -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://eduvix-id.vercel.app/landing%20page.html">
+  <meta property="og:title" content="EDUVIX.ID – Platform Belajar Berpikir Kritis">
+  <meta property="og:description" content="Belajar berpikir kritis, logika, dan penalaran secara interaktif. Kumpulkan XP, naik level, dan bersaing di leaderboard bersama ribuan pelajar Indonesia!">
+  <meta property="og:image" content="https://eduvix-id.vercel.app/WhatsApp%20Image%202026-05-05%20at%2018.33.04.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:site_name" content="EDUVIX.ID">
+
+  <!-- ═══ TWITTER / X CARD ═══ -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="EDUVIX.ID – Platform Belajar Berpikir Kritis">
+  <meta name="twitter:description" content="Belajar berpikir kritis dan rasional secara interaktif. Daftar gratis dan mulai perjalanan belajarmu!">
+  <meta name="twitter:image" content="https://eduvix-id.vercel.app/WhatsApp%20Image%202026-05-05%20at%2018.33.04.png">
+
+  <!-- ═══ STRUCTURED DATA (JSON-LD) — Nilai utama untuk Google ═══ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": "EDUVIX.ID",
+    "url": "https://eduvix-id.vercel.app",
+    "logo": "https://eduvix-id.vercel.app/WhatsApp%20Image%202026-05-05%20at%2018.33.04.png",
+    "description": "Platform edukasi online interaktif untuk belajar berpikir kritis dan rasional bagi pelajar Indonesia.",
+    "inLanguage": "id",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "IDR",
+      "description": "Akses gratis ke semua materi berpikir kritis"
+    },
+    "sameAs": []
+  }
+  </script>
+
+  <!-- ═══ WEBSITE SCHEMA ═══ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "EDUVIX.ID",
+    "url": "https://eduvix-id.vercel.app",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://eduvix-id.vercel.app/login.html",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+
+  <!-- ═══ FONTS & ASSETS ═══ -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="landing page.css"/>
   <link rel="icon" type="image/png" href="WhatsApp Image 2026-05-05 at 18.33.04.png">
+  <link rel="apple-touch-icon" href="WhatsApp Image 2026-05-05 at 18.33.04.png">
   <script src="landing page.js"></script>
 </head>
 <body>
@@ -59,10 +123,23 @@
           <strong>500+ TUTORIALS</strong>
         </div>
 
-        <a href="login.html" class="btn-join">
+        <a href="/login" id="masukBtn" class="btn-join">
            Masuk
            <span class="arr-circle">↗</span>
        </a>
+      </div>
+
+      <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          if (localStorage.getItem('eduvix_token')) {
+            const btn = document.getElementById('masukBtn');
+            if (btn) {
+              btn.href = 'dashboard.html';
+              btn.innerHTML = 'Lanjut Belajar <span class="arr-circle">↗</span>';
+            }
+          }
+        });
+      </script>
       </div>
 
       <!-- Icon slider -->

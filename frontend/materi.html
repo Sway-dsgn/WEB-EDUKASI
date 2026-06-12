@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 
 <head>
@@ -496,7 +496,7 @@
             </div>
 
             <nav class="sidebar-nav">
-                <a href="dashboard.html" class="nav-item">
+                <a href="/dashboard" class="nav-item">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" />
                         <rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" />
@@ -505,7 +505,7 @@
                     </svg>
                     <span>Dashboard</span>
                 </a>
-                <a href="progress.html" class="nav-item active">
+                <a href="/progress" class="nav-item active">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M4 19.5C4 18.837 4.26339 18.2011 4.73223 17.7322C5.20107 17.2634 5.83696 17 6.5 17H20"
                             stroke="currentColor" stroke-width="2" />
@@ -515,7 +515,7 @@
                     </svg>
                     <span>Kursus Saya</span>
                 </a>
-                <a href="pencapaian.html" class="nav-item">
+                <a href="/pencapaian" class="nav-item">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M12 15l-2 5 2-1 2 1-2-5zm0-13C7.58 2 4 5.58 4 10c0 4.42 3.58 8 8 8s8-3.58 8-8c0-4.42-3.58-8-8-8z"
@@ -523,7 +523,7 @@
                     </svg>
                     <span>Pencapaian</span>
                 </a>
-                <a href="store.html" class="nav-item">
+                <a href="/store" class="nav-item">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z" stroke="currentColor"
                             stroke-width="2" />
@@ -531,7 +531,7 @@
                     </svg>
                     <span>Toko Hadiah</span>
                 </a>
-                <a href="materi komunitas.html" class="nav-item">
+                <a href="/materi-komunitas" class="nav-item">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" />
                         <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2" />
@@ -593,7 +593,7 @@
                 </div>
             </header>
 
-            <button class="icon-btn" onclick="location.href='progress.html'"
+            <button class="icon-btn" onclick="location.href='/progress'"
                 style="margin-bottom: 16px; border-radius: 12px; width: auto; padding: 0 16px; font-size: 14px; font-weight: 600; gap: 8px;">
                 <i class="fa-solid fa-arrow-left"></i> Kembali ke Silabus
             </button>
@@ -669,13 +669,16 @@
                     <p>Banyak kesesatan logika terjadi karena seseorang menganggap opininya sebagai fakta mutlak.</p>
                 </div>
 
-                <a href="#" class="btn-quiz" onclick="EduvixAPI.selesaikanMateri('materi_01', 50).then(() => EduvixAPI.showApiToast('XP & Koin Berhasil Diambil!', 'success')); return false;"
-                    style="background: var(--green); color: white;">
-                    <i class="fa-solid fa-check"></i> Selesaikan Modul & Ambil XP
-                </a>
-                <a href="quizz.html" class="btn-quiz" style="margin-top: 12px;">
-                    <i class="fa-solid fa-gamepad"></i> Mulai Kuis Interaktif
-                </a>
+                <div style="display: flex; gap: 16px; margin-top: 32px; justify-content: center;">
+                    <a href="#" class="btn-quiz" onclick="goToPage(2); return false;"
+                        style="background: white; color: var(--indigo); border: 1.5px solid var(--border); box-shadow: none; width: auto; padding: 12px 24px; margin-top: 0;">
+                        <i class="fa-solid fa-arrow-right"></i> Next
+                    </a>
+                    <a href="/quizz" class="btn-quiz" 
+                        style="width: auto; padding: 12px 24px; margin-top: 0;">
+                        <i class="fa-solid fa-gamepad"></i> Quiz Materi
+                    </a>
+                </div>
 
             </div>
 
@@ -848,7 +851,7 @@
 
                 <!-- Navigasi -->
 
-                <a href="#" class="btn-quiz" onclick="EduvixAPI.selesaikanMateri('materi_02', 50).then(() => window.location.href='dashboard.html'); return false;"
+                <a href="#" class="btn-quiz" onclick="EduvixAPI.selesaikanMateri('materi_02', 50).then(() => window.location.href='/dashboard'); return false;"
                     style="background: var(--green); color: white; margin-top: 12px;">
                     <i class="fa-solid fa-check-double"></i> Selesaikan Modul & Ambil XP
                 </a>
@@ -975,18 +978,74 @@
     </div>
 
     <script>
-        const TOTAL_PAGES = 4;
+        let TOTAL_PAGES = 4;
 
-        // Build nav dots
-        const navBar = document.getElementById('pageNavBar');
-        for (let i = 1; i <= TOTAL_PAGES; i++) {
-            const d = document.createElement('div');
-            d.className = 'page-dot' + (i === 1 ? ' active' : '');
-            d.onclick = () => goToPage(i);
-            navBar.appendChild(d);
+        async function initMateriDynamic() {
+            try {
+                if (window.EduvixAPI) {
+                    const dbMateri = await EduvixAPI.apiFetch('/api/materi');
+                    if (dbMateri && dbMateri.length > 0) {
+                        const mainContent = document.querySelector('.main-content');
+                        const navBar = document.getElementById('pageNavBar');
+                        
+                        dbMateri.forEach((m, index) => {
+                            TOTAL_PAGES++;
+                            const pageNum = TOTAL_PAGES;
+                            
+                            const div = document.createElement('div');
+                            div.className = 'materi-container lesson-page';
+                            div.id = 'page-' + pageNum;
+                            div.style.display = 'none';
+                            
+                            div.innerHTML = `
+                                <div class="materi-header">
+                                    <div class="mh-badge">Modul Tambahan</div>
+                                    <h1>${m.title}</h1>
+                                    <p>${m.description}</p>
+                                </div>
+                                <div class="materi-section">
+                                    ${m.content_html}
+                                </div>
+                                <div style="display: flex; gap: 16px; margin-top: 40px; justify-content: flex-end;">
+                                    <button class="btn-quiz" style="background: transparent; color: var(--indigo); border: 2px solid var(--indigo); padding: 12px 24px;" onclick="goToPage(${pageNum - 1})">
+                                        Kembali
+                                    </button>
+                                    <button class="btn-quiz" style="padding: 12px 24px;" onclick="goToPage(${pageNum + 1})">
+                                        Selanjutnya
+                                    </button>
+                                </div>
+                            `;
+                            
+                            mainContent.insertBefore(div, navBar);
+                        });
+                    }
+                }
+            } catch (e) {
+                console.error("Gagal memuat materi dinamis:", e);
+            }
+            
+            // Build nav dots
+            const navBar = document.getElementById('pageNavBar');
+            navBar.innerHTML = '';
+            for (let i = 1; i <= TOTAL_PAGES; i++) {
+                const d = document.createElement('div');
+                d.className = 'page-dot' + (i === 1 ? ' active' : '');
+                d.onclick = () => goToPage(i);
+                navBar.appendChild(d);
+            }
+
+            // Check URL hash on load
+            const hash = window.location.hash;
+            if (hash.startsWith('#page-')) {
+                const num = parseInt(hash.replace('#page-', ''));
+                if (num) goToPage(num);
+            }
         }
 
         function goToPage(num) {
+            // Guard
+            if (num < 1 || num > TOTAL_PAGES) return;
+            
             // Hide all
             document.querySelectorAll('.lesson-page').forEach(p => {
                 p.style.display = 'none';
@@ -1006,14 +1065,7 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Check URL hash on load
-        window.addEventListener('DOMContentLoaded', () => {
-            const hash = window.location.hash;
-            if (hash.startsWith('#page-')) {
-                const num = parseInt(hash.replace('#page-', ''));
-                if (num) goToPage(num);
-            }
-        });
+        window.addEventListener('DOMContentLoaded', initMateriDynamic);
 
         // Contoh soal interaktif
         function jawab(btn, soalId, pilihan, jawaban) {

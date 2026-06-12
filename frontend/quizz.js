@@ -1,5 +1,5 @@
-// ==================== Quiz Data ====================
-const quizData = [
+﻿// ==================== Quiz Data ====================
+let quizData = [
   {
     question: "Apa yang dimaksud dengan berpikir kritis?",
     options: ["Kemampuan untuk mengkritik orang lain tanpa dasar", "Kemampuan menganalisis informasi secara logis dan objektif", "Hanya menerima informasi dari sumber yang terpercaya", "Mengikuti pendapat mayoritas dalam sebuah diskusi"],
@@ -140,6 +140,23 @@ async function init() {
   // Cek login dulu
   if (window.EduvixAPI) await EduvixAPI.requireLogin();
   
+  // Fetch kuis dinamis dari database
+  try {
+      const dbQuizzes = await EduvixAPI.apiFetch('/api/quiz');
+      if (dbQuizzes && dbQuizzes.length > 0) {
+          const parsedQuizzes = dbQuizzes.map(q => ({
+              question: q.question,
+              options: JSON.parse(q.options_json),
+              correct: q.correct_index,
+              explanation: q.explanation
+          }));
+          quizData = [...quizData, ...parsedQuizzes];
+          userAnswers = new Array(quizData.length).fill(undefined);
+      }
+  } catch (e) {
+      console.error("Gagal memuat kuis dinamis:", e);
+  }
+  
   initDOMRefs();
   buildQmap();
   buildNavDots();
@@ -164,7 +181,7 @@ async function init() {
     if (!isFinished && userAnswers.some(a => a !== undefined)) {
         document.getElementById('exitConfirmModal').classList.add('open');
     } else {
-        window.location.href = 'dashboard.html';
+        window.location.href = '/dashboard';
     }
   };
 
@@ -173,7 +190,7 @@ async function init() {
   };
 
   window.confirmExit = function() {
-    window.location.href = 'dashboard.html';
+    window.location.href = '/dashboard';
   };
   dom.btnPrev.addEventListener('click', prevQ);
   dom.btnNext.addEventListener('click', nextQ);
@@ -183,7 +200,7 @@ async function init() {
   dom.qmapBackdrop.addEventListener('click', closeQmap);
   dom.btnMark.addEventListener('click', toggleMark);
   document.querySelector('.btn-review-answers').addEventListener('click', reviewAnswers);
-  document.querySelector('.btn-back-dashboard').addEventListener('click', () => window.location.href = 'dashboard.html');
+  document.querySelector('.btn-back-dashboard').addEventListener('click', () => window.location.href = '/dashboard');
 }
 
 // ==================== TIMER ====================
@@ -611,6 +628,10 @@ function loadQuizProgress() {
         // Kembalikan null jadi undefined agar bisa diklik lagi
         if (data.answers) {
             userAnswers = data.answers.map(a => a === null ? undefined : a);
+            // Pad if new quizzes were added
+            while (userAnswers.length < quizData.length) {
+                userAnswers.push(undefined);
+            }
         }
         
         currentQuestion = data.current || 0;

@@ -1,0 +1,25 @@
+# robots.txt — EDUVIX.ID
+# Mengizinkan semua crawler untuk mengakses halaman publik
+
+User-agent: *
+Allow: /
+
+# Halaman yang tidak perlu diindeks Google
+Disallow: /admin.html
+Disallow: /dashboard.html
+Disallow: /materi.html
+Disallow: /progress.html
+Disallow: /pencapaian.html
+Disallow: /store.html
+Disallow: /leaderboard.html
+Disallow: /quizz.html
+Disallow: /tka.html
+Disallow: /materi komunitas.html
+Disallow: /api/
+
+# Halaman yang boleh diindeks
+Allow: /landing page.html
+Allow: /login.html
+
+# Sitemap
+Sitemap: https://eduvix-id.vercel.app/sitemap.xml
