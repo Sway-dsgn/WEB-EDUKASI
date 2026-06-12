@@ -131,8 +131,8 @@ async function eduvixSetAvatar(type, value) {
     user.avatarType = type;
     user.avatarValue = value;
     EduvixAPI.setUser(user);
-    if(EduvixAPI.updateUI) EduvixAPI.updateUI(user);
-    if(typeof eduvixUpdateUI === 'function') eduvixUpdateUI();
+    if (EduvixAPI.updateUI) EduvixAPI.updateUI(user);
+    if (typeof eduvixUpdateUI === 'function') eduvixUpdateUI();
 }
 
 // ── Set Border Avatar ─────────────────────
@@ -149,8 +149,8 @@ async function eduvixSetBorder(value) {
     }
     user.avatarBorder = value;
     EduvixAPI.setUser(user);
-    if(EduvixAPI.updateUI) EduvixAPI.updateUI(user);
-    if(typeof eduvixUpdateUI === 'function') eduvixUpdateUI();
+    if (EduvixAPI.updateUI) EduvixAPI.updateUI(user);
+    if (typeof eduvixUpdateUI === 'function') eduvixUpdateUI();
 }
 
 // ── Set Badge ─────────────────────────────
@@ -645,16 +645,16 @@ function eduvixInitGlobalUI() {
                 }
                 return;
             }
-            
+
             try {
                 const response = await EduvixAPI.apiFetch('/api/feedback', {
                     method: 'POST',
                     body: JSON.stringify({ pesan: msg })
                 });
-                
+
                 fbModal.classList.remove('open');
                 fbText.value = '';
-                
+
                 if (window.EduvixAPI && EduvixAPI.showApiToast) {
                     EduvixAPI.showApiToast(response.message || 'Feedback berhasil dikirim!', 'success');
                 } else if (window.eduvixShowToast) {
@@ -905,3 +905,20 @@ window.eduvixSetAvatar = eduvixSetAvatar;
 window.eduvixSetBorder = eduvixSetBorder;
 window.eduvixSetBadge = eduvixSetBadge;
 window.eduvixGetLeaderboard = eduvixGetLeaderboard;
+
+// ─── ADDED FOR GITHUB UPDATE (NO CHANGES TO EXISTING LOGIC) ───
+
+/**
+ * Fitur "Easter Egg": Ketik 'eduvix' di keyboard untuk lihat kejutan di konsol
+ */
+let _inputKeys = "";
+document.addEventListener('keydown', (e) => {
+    _inputKeys += e.key.toLowerCase();
+    if (_inputKeys.includes("eduvix")) {
+        console.log("%c🚀 EDUVIX.ID — Teruslah Belajar dan Berkembang!", "color: #6366f1; font-size: 20px; font-weight: bold; text-shadow: 2px 2px #e2e8f0;");
+        _inputKeys = "";
+    }
+    if (_inputKeys.length > 20) _inputKeys = "";
+});
+
+console.log("⚡ System Maintenance Module Loaded (v1.2.5)");

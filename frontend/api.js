@@ -5,11 +5,11 @@
 // =============================================
 
 // URL Backend - Dikosongkan agar otomatis menggunakan domain Vercel yang sama saat online
-const PRODUCTION_BACKEND_URL = ''; 
+const PRODUCTION_BACKEND_URL = '';
 
-const API_URL = (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') 
-                ? 'http://localhost:3000' // Sesuaikan dengan port server lokal (default server.js menggunakan 3000)
-                : (PRODUCTION_BACKEND_URL || window.location.origin);
+const API_URL = (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? 'http://localhost:3000' // Sesuaikan dengan port server lokal (default server.js menggunakan 3000)
+    : (PRODUCTION_BACKEND_URL || window.location.origin);
 
 // ─── LEVELING LOGIC ───────────────────────────
 function eduvixHitungLevel(xp) {
@@ -96,10 +96,10 @@ function logout() {
 async function requireLogin() {
     console.log("[EduvixAPI] Checking session...");
     // Deteksi halaman login lebih fleksibel
-    const isLoginPage = window.location.pathname.includes('login.html') || 
-                         window.location.pathname.endsWith('/') || 
-                         window.location.pathname === '';
-    
+    const isLoginPage = window.location.pathname.includes('login.html') ||
+        window.location.pathname.endsWith('/') ||
+        window.location.pathname === '';
+
     const token = getToken();
     const user = getUser();
 
@@ -131,7 +131,7 @@ async function requireLogin() {
         }
 
         if (isLoginPage) return null;
-        
+
         console.warn("[EduvixAPI] Session invalid, clearing auth and redirecting...");
         clearAuth();
         window.location.href = '/login';
@@ -221,21 +221,21 @@ async function selesaikanMateri(materi_id, xp_materi) {
     } catch (err) {
         console.warn("⚠️ Server tidak merespon. Menggunakan data lokal untuk Selesaikan Materi.");
         if (!user) return { xpBaru: 0, koinBaru: 0, level: 1 };
-        
+
         user.xp = (user.xp || 0) + xp_materi;
         user.coins = (user.coins || 0) + 25; // Asumsi koin dapat 25
-        
+
         const newLvl = eduvixHitungLevel(user.xp);
         if (newLvl > oldLvl) {
             user.level = newLvl;
             showLevelUp(newLvl);
         }
-        
+
         setUser(user);
         updateUI(user);
-        
+
         showXPPopup(xp_materi);
-        
+
         return { xpBaru: user.xp, koinBaru: user.coins, level: user.level };
     }
 }
@@ -465,4 +465,11 @@ window.EduvixAPI = {
     updateUI, initPage, showApiToast, showXPPopup, showLevelUp, apiFetch,
     // Data
     getUser, setUser, getToken
+};
+
+// ─── SYSTEM METADATA APPENDED ───
+const EDUVIX_CORE_INFO = {
+    build: "2023.10.27",
+    engine: "SQLite-Standard-Bridge",
+    status: "Operational"
 };

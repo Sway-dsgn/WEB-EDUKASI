@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,7 +38,8 @@
         .container {
             width: 100%;
             max-width: 1000px;
-            display: none; /* Sembunyikan dulu sampai login */
+            display: none;
+            /* Sembunyikan dulu sampai login */
         }
 
         header {
@@ -61,7 +63,8 @@
             gap: 12px;
         }
 
-        .refresh-btn, .logout-btn {
+        .refresh-btn,
+        .logout-btn {
             padding: 10px 20px;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border);
@@ -75,7 +78,8 @@
             gap: 8px;
         }
 
-        .refresh-btn:hover, .logout-btn:hover {
+        .refresh-btn:hover,
+        .logout-btn:hover {
             background: rgba(255, 255, 255, 0.1);
             transform: translateY(-2px);
         }
@@ -121,7 +125,8 @@
             text-align: left;
         }
 
-        th, td {
+        th,
+        td {
             padding: 12px 16px;
             border-bottom: 1px solid var(--border);
         }
@@ -232,7 +237,8 @@
             width: 100%;
             max-width: 400px;
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-            display: block; /* Tampilkan di awal */
+            display: block;
+            /* Tampilkan di awal */
         }
 
         .login-card h2 {
@@ -263,7 +269,9 @@
             margin-bottom: 8px;
         }
 
-        .form-group input, .form-group textarea, .form-group select {
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
             width: 100%;
             padding: 12px 16px;
             background: rgba(255, 255, 255, 0.03);
@@ -275,17 +283,19 @@
             font-family: inherit;
         }
 
-        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
             border-color: var(--indigo);
             background: rgba(255, 255, 255, 0.05);
             outline: none;
         }
-        
+
         .form-group textarea {
             min-height: 100px;
             resize: vertical;
         }
-        
+
         .form-group select {
             appearance: none;
         }
@@ -305,6 +315,7 @@
             font-weight: 700;
             display: inline-block;
         }
+
         .btn-submit:hover {
             background: #4f46e5;
         }
@@ -358,6 +369,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Card Login -->
     <div class="login-card" id="loginCard">
@@ -438,7 +450,8 @@
                     </div>
                     <div class="form-group">
                         <label>Konten HTML</label>
-                        <textarea id="m_html" required placeholder="Gunakan tag HTML seperti <h2>, <p> untuk format konten."></textarea>
+                        <textarea id="m_html" required
+                            placeholder="Gunakan tag HTML seperti <h2>, <p> untuk format konten."></textarea>
                     </div>
                     <button type="submit" class="btn-submit">Simpan Materi</button>
                 </form>
@@ -457,10 +470,14 @@
                         <textarea id="q_question" required rows="2"></textarea>
                     </div>
                     <div class="options-grid" style="margin-bottom: 20px;">
-                        <div class="form-group" style="margin-bottom:0;"><label>Pilihan A</label><input type="text" id="q_opt0" required></div>
-                        <div class="form-group" style="margin-bottom:0;"><label>Pilihan B</label><input type="text" id="q_opt1" required></div>
-                        <div class="form-group" style="margin-bottom:0;"><label>Pilihan C</label><input type="text" id="q_opt2" required></div>
-                        <div class="form-group" style="margin-bottom:0;"><label>Pilihan D</label><input type="text" id="q_opt3" required></div>
+                        <div class="form-group" style="margin-bottom:0;"><label>Pilihan A</label><input type="text"
+                                id="q_opt0" required></div>
+                        <div class="form-group" style="margin-bottom:0;"><label>Pilihan B</label><input type="text"
+                                id="q_opt1" required></div>
+                        <div class="form-group" style="margin-bottom:0;"><label>Pilihan C</label><input type="text"
+                                id="q_opt2" required></div>
+                        <div class="form-group" style="margin-bottom:0;"><label>Pilihan D</label><input type="text"
+                                id="q_opt3" required></div>
                     </div>
                     <div class="form-group">
                         <label>Jawaban Benar</label>
@@ -484,9 +501,9 @@
     <div id="toast">Pesan muncul di sini</div>
 
     <script>
-        const API_URL = (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') 
-                        ? 'http://localhost:5000' 
-                        : window.location.origin;
+        const API_URL = (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+            ? 'http://localhost:5000'
+            : window.location.origin;
         let adminToken = localStorage.getItem('admin_token');
 
         function showToast(msg, isError = false) {
@@ -539,12 +556,12 @@
                     // Simpan token sementara
                     localStorage.setItem('admin_token', data.token);
                     adminToken = data.token;
-                    
+
                     // Cek apakah beneran admin dengan mencoba tarik data
                     const testRes = await fetch(`${API_URL}/api/admin/users`, {
                         headers: { 'Authorization': `Bearer ${adminToken}` }
                     });
-                    
+
                     if (testRes.status === 403) {
                         showToast('Akses ditolak! Akun Anda bukan Admin.', true);
                         localStorage.removeItem('admin_token');
@@ -579,14 +596,14 @@
                 const res = await fetch(`${API_URL}/api/admin/users`, {
                     headers: { 'Authorization': `Bearer ${adminToken}` }
                 });
-                
+
                 if (res.status === 401 || res.status === 403) {
                     handleLogout();
                     return;
                 }
-                
+
                 const data = await res.json();
-                
+
                 tbody.innerHTML = '';
                 if (data.length === 0) {
                     tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-mid);">Belum ada user.</td></tr>`;
@@ -599,7 +616,7 @@
 
                     const tr = document.createElement('tr');
                     const isBanned = u.is_banned === 1;
-                    
+
                     tr.innerHTML = `
                         <td style="font-weight:700;">${u.username}</td>
                         <td>Lv. ${u.level || 1}</td>
@@ -634,7 +651,7 @@
                     headers: { 'Authorization': `Bearer ${adminToken}` }
                 });
                 const data = await res.json();
-                
+
                 list.innerHTML = '';
                 if (data.length === 0) {
                     list.innerHTML = `<div style="text-align: center; color: var(--text-mid);">Belum ada feedback.</div>`;
@@ -644,7 +661,7 @@
                 data.forEach(f => {
                     const item = document.createElement('div');
                     item.className = 'feedback-item';
-                    
+
                     const date = new Date(f.created_at).toLocaleString('id-ID', {
                         day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'
                     });
@@ -667,14 +684,14 @@
             try {
                 const res = await fetch(`${API_URL}/api/admin/ban`, {
                     method: 'POST',
-                    headers: { 
+                    headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${adminToken}`
                     },
                     body: JSON.stringify({ username, status })
                 });
                 const data = await res.json();
-                
+
                 if (res.ok) {
                     showToast(data.message);
                     loadUsers(); // Reload table
@@ -716,7 +733,7 @@
             try {
                 const res = await fetch(`${API_URL}/api/admin/materi`, {
                     method: 'POST',
-                    headers: { 
+                    headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${adminToken}`
                     },
@@ -753,7 +770,7 @@
             try {
                 const res = await fetch(`${API_URL}/api/admin/quiz`, {
                     method: 'POST',
-                    headers: { 
+                    headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${adminToken}`
                     },
@@ -873,4 +890,5 @@
         }
     </script>
 </body>
+
 </html>
